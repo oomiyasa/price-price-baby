@@ -1,10 +1,9 @@
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ProductItem } from "@/types/bundle";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -27,6 +26,11 @@ const BundleConfiguration = () => {
   const [blendedMargin, setBlendedMargin] = useState<number | null>(null);
   const [discountedBlendedMargin, setDiscountedBlendedMargin] = useState<number | null>(null);
 
+  // If no products in state, redirect back to bundle-pricing
+  if (!location.state?.products) {
+    return <Navigate to="/bundle-pricing" replace />;
+  }
+
   useEffect(() => {
     if (location.state?.products) {
       setProducts(location.state.products);
@@ -34,11 +38,8 @@ const BundleConfiguration = () => {
         productId: p.id,
         discount: 0
       })));
-    } else {
-      navigate("/bundle-pricing");
-      toast.error("Please add products to your bundle first");
     }
-  }, [location.state, navigate]);
+  }, [location.state]);
 
   const getDiscountForProduct = (productId: string) => {
     return discounts.find(d => d.productId === productId)?.discount || 0;
