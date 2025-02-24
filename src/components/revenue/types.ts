@@ -24,3 +24,20 @@ export interface NRRResults {
   netRevenue: number;
   cohorts: CohortData[];
 }
+
+export interface ChurnData {
+  startingCustomers: number;
+  endingCustomers: number;
+  churnedCustomers: number;
+  newCustomers: number;
+  timePeriod: "monthly" | "quarterly" | "annually";
+  churnType: "voluntary" | "involuntary" | "both";
+}
+
+export interface ChurnResults {
+  churnRate: number;
+  customerLifetimeMonths: number;
+  retentionRate: number;
+  netCustomerChange: number;
+  growthRate: number;
+}

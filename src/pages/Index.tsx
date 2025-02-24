@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronRight, DollarSign, RefreshCw, Calculator, Box, Percent, ChartBar } from "lucide-react";
+import { ChevronRight, DollarSign, RefreshCw, Calculator, Box, Percent, ChartBar, UserMinus } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const pricingTools = [
@@ -18,6 +18,13 @@ const pricingTools = [
     description: "Track cohort performance and revenue retention",
     route: "/nrr",
     icon: ChartBar
+  },
+  {
+    id: "churn",
+    title: "Churn Rate Calculator",
+    description: "Analyze and prevent customer churn",
+    route: "/churn",
+    icon: UserMinus
   },
   {
     id: "new-offer",
