@@ -2,7 +2,7 @@
 import { CardHeader, CardContent } from "@/components/ui/card";
 import { Industry } from "@/types/cogs";
 import { industryConfigs } from "@/constants/cogsCalculator";
-import { Building2, BookOpen, Factory, Store, UtensilsCrossed } from "lucide-react";
+import { Building2, BookOpen, Factory, Store, UtensilsCrossed, HardHat, Heart } from "lucide-react";
 
 interface IndustrySelectorProps {
   selectedIndustry: Industry;
@@ -13,7 +13,7 @@ const getIndustryIcon = (industry: Industry) => {
   switch (industry) {
     case "Software/SaaS":
       return Building2;
-    case "Professional Services":
+    case "Services":
       return BookOpen;
     case "Manufacturing":
       return Factory;
@@ -21,6 +21,10 @@ const getIndustryIcon = (industry: Industry) => {
       return Store;
     case "Food Service":
       return UtensilsCrossed;
+    case "Construction":
+      return HardHat;
+    case "Healthcare":
+      return Heart;
   }
 };
 
