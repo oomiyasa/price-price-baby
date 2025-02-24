@@ -3,12 +3,12 @@ import { motion } from "framer-motion";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50 p-6">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="text-center"
+        className="text-center px-6"
       >
         <span className="inline-block px-3 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-full mb-4">
           Welcome to
@@ -25,4 +25,3 @@ const Index = () => {
 };
 
 export default Index;
-
