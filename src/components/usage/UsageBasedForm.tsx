@@ -8,8 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Form,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { CurrentPricingForm } from "@/types/usage-based";
 import { OfferingTypeSelector } from "./OfferingTypeSelector";
@@ -17,9 +16,11 @@ import { SubscriptionDetails } from "./SubscriptionDetails";
 import { PerpetualDetails } from "./PerpetualDetails";
 import { UsageMetricsForm } from "./UsageMetricsForm";
 import { PricingComponentsForm } from "./PricingComponentsForm";
+import { useNavigate } from "react-router-dom";
 
 export const UsageBasedForm = () => {
   const [step, setStep] = useState(1);
+  const navigate = useNavigate();
   const form = useForm<CurrentPricingForm>({
     defaultValues: {
       offerType: "new",
@@ -30,6 +31,9 @@ export const UsageBasedForm = () => {
     console.log(data);
     if (step < 3) {
       setStep(step + 1);
+    } else {
+      // Navigate to the impact analysis page
+      navigate("/usage-pricing-impact");
     }
   };
 
