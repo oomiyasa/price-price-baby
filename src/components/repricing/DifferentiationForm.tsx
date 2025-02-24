@@ -8,18 +8,9 @@ import { Label } from "@/components/ui/label";
 import { HelpCircle } from "lucide-react";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
-import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 
-interface Feature {
-  id: string;
-  name: string;
-  checked: boolean;
-}
-
 interface DifferentiationFormProps {
-  selectedFeatures: Feature[];
-  onFeatureChange: (features: Feature[]) => void;
   uniqueness: "low" | "medium" | "high";
   onUniquenessChange: (value: "low" | "medium" | "high") => void;
   valuePerception: number;
@@ -27,20 +18,11 @@ interface DifferentiationFormProps {
 }
 
 export const DifferentiationForm = ({
-  selectedFeatures,
-  onFeatureChange,
   uniqueness = "medium",
   onUniquenessChange,
   valuePerception = 50,
   onValuePerceptionChange,
 }: DifferentiationFormProps) => {
-  const handleFeatureChange = (featureId: string, checked: boolean) => {
-    const updatedFeatures = selectedFeatures.map(feature =>
-      feature.id === featureId ? { ...feature, checked } : feature
-    );
-    onFeatureChange(updatedFeatures);
-  };
-
   const getUniquenessLabel = (value: string) => {
     switch (value) {
       case "low":
@@ -131,43 +113,10 @@ export const DifferentiationForm = ({
         </div>
       </div>
 
-      {/* Competitive Features */}
-      <div>
-        <div className="flex items-center gap-2 mb-4">
-          <Label className="text-xl font-medium text-[#4A4A3F]">
-            Competitive Features
-          </Label>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
-            </TooltipTrigger>
-            <TooltipContent>
-              Select features that differentiate your offering
-            </TooltipContent>
-          </Tooltip>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          {selectedFeatures.map((feature) => (
-            <div key={feature.id} className="flex items-center space-x-2">
-              <Checkbox
-                id={feature.id}
-                checked={feature.checked}
-                onCheckedChange={(checked) => handleFeatureChange(feature.id, checked as boolean)}
-                className="border-[#8B8B73] data-[state=checked]:bg-[#8B8B73] data-[state=checked]:text-white"
-              />
-              <Label htmlFor={feature.id} className="text-[#4A4A3F]">
-                {feature.name}
-              </Label>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Competitive Summary */}
-      {(selectedFeatures.some(f => f.checked) || uniqueness || valuePerception !== 50) && (
+      {/* Summary */}
+      {(uniqueness || valuePerception !== 50) && (
         <div className="p-4 bg-[#FAFAFA] rounded-lg border border-[#E5E5E0]">
-          <h3 className="text-lg font-medium text-[#4A4A3F] mb-3">Competitive Analysis Summary</h3>
+          <h3 className="text-lg font-medium text-[#4A4A3F] mb-3">Market Position Summary</h3>
           <div className="space-y-2 text-sm text-[#6B6B5F]">
             <p>
               • Market position: {getUniquenessLabel(uniqueness)} with {
@@ -176,11 +125,6 @@ export const DifferentiationForm = ({
                 "above average"
               } perceived value
             </p>
-            {selectedFeatures.some(f => f.checked) && (
-              <p>
-                • Competitive features: {selectedFeatures.filter(f => f.checked).length} selected
-              </p>
-            )}
           </div>
         </div>
       )}

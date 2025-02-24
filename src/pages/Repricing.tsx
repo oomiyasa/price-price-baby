@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -10,23 +11,6 @@ import { MarketChangesForm } from "@/components/repricing/MarketChangesForm";
 import { DifferentiationForm } from "@/components/repricing/DifferentiationForm";
 import { SalesPerformance } from "@/types/repricing";
 
-interface Feature {
-  id: string;
-  name: string;
-  checked: boolean;
-}
-
-const defaultFeatures: Feature[] = [
-  { id: "quality", name: "Superior Quality", checked: false },
-  { id: "service", name: "Better Service", checked: false },
-  { id: "features", name: "More Features", checked: false },
-  { id: "delivery", name: "Faster Delivery", checked: false },
-  { id: "support", name: "24/7 Support", checked: false },
-  { id: "customization", name: "Customization Options", checked: false },
-  { id: "warranty", name: "Better Warranty", checked: false },
-  { id: "integration", name: "Easy Integration", checked: false }
-];
-
 const Repricing = () => {
   const [step, setStep] = useState(1);
   const [currentPrice, setCurrentPrice] = useState("");
@@ -34,7 +18,6 @@ const Repricing = () => {
   const [salesPerformance, setSalesPerformance] = useState<SalesPerformance>(0);
   const [competitorPrices, setCompetitorPrices] = useState<"increased" | "decreased" | "mixed" | "unchanged" | null>(null);
   const [marketDemand, setMarketDemand] = useState<"growing" | "shrinking" | "stable" | null>(null);
-  const [features, setFeatures] = useState<Feature[]>(defaultFeatures);
   const [uniqueness, setUniqueness] = useState<"low" | "medium" | "high">("medium");
   const [valuePerception, setValuePerception] = useState(50);
 
@@ -128,8 +111,6 @@ const Repricing = () => {
                 )}
                 {step === 4 && (
                   <DifferentiationForm
-                    selectedFeatures={features}
-                    onFeatureChange={setFeatures}
                     uniqueness={uniqueness}
                     onUniquenessChange={setUniqueness}
                     valuePerception={valuePerception}
