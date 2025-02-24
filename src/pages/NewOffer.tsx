@@ -1,104 +1,16 @@
-import { useState, KeyboardEvent, useRef } from "react";
+
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Building, Users, User, DollarSign, ChartBar, HelpCircle, ArrowDown, ArrowRight, ArrowUp, Crown, ArrowLeft, ChevronRight } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider
-} from "@/components/ui/tooltip";
-
-type CompanyType = "SMB" | "Growth" | "Enterprise" | null;
-type PricingPath = "cost" | "market" | null;
-type PricingStrategy = "lower" | "similar" | "premium" | null;
-
-const companyTypes = [
-  {
-    id: "SMB",
-    title: "Small Business",
-    description: "Solo entrepreneurs and small teams looking to establish pricing for their first offers",
-    icon: User,
-  },
-  {
-    id: "Growth",
-    title: "Growth Company",
-    description: "Established businesses looking to scale their pricing strategy and optimize revenue",
-    icon: Building,
-  },
-  {
-    id: "Enterprise",
-    title: "Enterprise",
-    description: "Large organizations with complex pricing needs and multiple stakeholders",
-    icon: Users,
-  },
-];
-
-const pricingPaths = [
-  {
-    id: "cost",
-    title: "Cost-Based Pricing",
-    description: "Calculate your price based on your costs plus desired profit margin. Best for products/services with clear cost structures.",
-    icon: DollarSign,
-  },
-  {
-    id: "market",
-    title: "Market-Based Pricing",
-    description: "Set your price based on market research and competitor analysis. Ideal for established markets with clear competitors.",
-    icon: ChartBar,
-  },
-];
-
-const pricingStrategies = [
-  {
-    id: "lower",
-    title: "Lower than competitors",
-    description: "Gain market share through competitive pricing",
-    icon: ArrowDown,
-  },
-  {
-    id: "similar",
-    title: "Similar to competitors",
-    description: "Match market expectations and compete on value",
-    icon: ArrowRight,
-  },
-  {
-    id: "premium",
-    title: "Premium pricing",
-    description: "Position as a high-value, premium solution",
-    icon: ArrowUp,
-  },
-];
-
-const industryBenchmarks = {
-  SMB: {
-    low: 15,
-    average: 25,
-    high: 35,
-  },
-  Growth: {
-    low: 20,
-    average: 35,
-    high: 45,
-  },
-  Enterprise: {
-    low: 25,
-    average: 40,
-    high: 55,
-  },
-};
-
-const industryMargins = {
-  'Software/SaaS': '70-85%',
-  'Professional Services': '50-70%',
-  'Manufacturing': '20-35%',
-  'Retail': '25-35%',
-  'Food Service': '15-30%'
-};
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { CompanyType, PricingPath, PricingStrategy } from "@/types/pricing";
+import { CompanyTypeSelector } from "@/components/pricing/CompanyTypeSelector";
+import { PricingPathSelector } from "@/components/pricing/PricingPathSelector";
+import { PricingStrategySelector } from "@/components/pricing/PricingStrategySelector";
+import { MarginSelector } from "@/components/pricing/MarginSelector";
+import { CostBasedForm, MarketBasedForm } from "@/components/pricing/PricingForms";
 
 const NewOffer = () => {
   const [step, setStep] = useState(1);
@@ -147,156 +59,6 @@ const NewOffer = () => {
     }
   };
 
-  const renderCostBasedForm = () => (
-    <div className="space-y-8 max-w-2xl mx-auto">
-      <div>
-        <h3 className="text-xl font-medium text-[#4A4A3F] mb-2">Enter your total cost per unit/service</h3>
-        <div className="space-y-4">
-          <Input
-            id="costPerUnit"
-            type="text"
-            value={costPerUnit}
-            onChange={(e) => {
-              const value = e.target.value.replace(/[^\d.]/g, '');
-              if (value === '' || /^\d*\.?\d*$/.test(value)) {
-                setCostPerUnit(value);
-              }
-            }}
-            className="border-[#8B8B73] text-lg"
-            placeholder="0.00"
-          />
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderMarketBasedForm = () => (
-    <div className="space-y-6 max-w-2xl mx-auto">
-      <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <Label htmlFor="marketPrice">Average Market Price</Label>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
-            </TooltipTrigger>
-            <TooltipContent>
-              The typical price point for similar products/services in your market
-            </TooltipContent>
-          </Tooltip>
-        </div>
-        <Input
-          id="marketPrice"
-          type="text"
-          value={marketPrice}
-          onChange={(e) => {
-            const value = e.target.value.replace(/[^\d.]/g, '');
-            if (value === '' || /^\d*\.?\d*$/.test(value)) {
-              setMarketPrice(value);
-            }
-          }}
-          className="border-[#8B8B73]"
-          placeholder="0.00"
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="competitorLow">Lowest Competitor Price</Label>
-          <Input
-            id="competitorLow"
-            type="text"
-            value={competitorLow}
-            onChange={(e) => {
-              const value = e.target.value.replace(/[^\d.]/g, '');
-              if (value === '' || /^\d*\.?\d*$/.test(value)) {
-                setCompetitorLow(value);
-              }
-            }}
-            className="border-[#8B8B73]"
-            placeholder="0.00"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="competitorHigh">Highest Competitor Price</Label>
-          <Input
-            id="competitorHigh"
-            type="text"
-            value={competitorHigh}
-            onChange={(e) => {
-              const value = e.target.value.replace(/[^\d.]/g, '');
-              if (value === '' || /^\d*\.?\d*$/.test(value)) {
-                setCompetitorHigh(value);
-              }
-            }}
-            className="border-[#8B8B73]"
-            placeholder="0.00"
-          />
-        </div>
-      </div>
-    </div>
-  );
-
-  const calculateRecommendedPrice = () => {
-    if (pricingPath === "cost" && costPerUnit) {
-      const cost = parseFloat(costPerUnit);
-      const marginMultiplier = (100 + desiredMargin) / 100;
-      return (cost * marginMultiplier).toFixed(2);
-    }
-    return "0.00";
-  };
-
-  const renderMarginSelector = () => {
-    return (
-      <div className="space-y-8 max-w-2xl mx-auto text-center">
-        <div className="space-y-4">
-          <h2 className="text-2xl font-semibold text-[#4A4A3F]">What's your target gross profit margin?</h2>
-          <p className="text-lg text-[#4A4A3F]">{desiredMargin}%</p>
-          <p className="text-sm text-[#6B6B5F]">Target Gross Profit Margin</p>
-          <p className="text-xs text-[#6B6B5F]">(Revenue - Cost of Goods Sold) ÷ Revenue × 100</p>
-        </div>
-
-        <div className="space-y-8">
-          <div className="w-full px-4">
-            <Slider
-              value={[desiredMargin]}
-              onValueChange={(value) => setDesiredMargin(value[0])}
-              max={100}
-              step={1}
-              className="w-full"
-            />
-          </div>
-
-          <div className="flex justify-between text-sm text-[#6B6B5F] px-4">
-            <div>
-              <p>Conservative</p>
-              <p>15-30%</p>
-            </div>
-            <div>
-              <p>Balanced</p>
-              <p>30-60%</p>
-            </div>
-            <div>
-              <p>Aggressive</p>
-              <p>60-90%+</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-12 space-y-4">
-          <p className="text-sm text-[#6B6B5F]">Note: Gross profit margins vary significantly by industry. For reference:</p>
-          <div className="space-y-2 text-sm text-[#6B6B5F]">
-            {Object.entries(industryMargins).map(([industry, margin]) => (
-              <p key={industry}>• {industry}: {margin}</p>
-            ))}
-          </div>
-          <p className="text-xs text-[#6B6B5F] mt-4">
-            Sources: NYU Stern School of Business (2023), KPMG Industry Margins Report, S&P Capital IQ
-          </p>
-        </div>
-      </div>
-    );
-  };
-
   return (
     <TooltipProvider>
       <div className="min-h-screen flex flex-col bg-[#FAFAFA]">
@@ -314,105 +76,53 @@ const NewOffer = () => {
                    step === 1 ? "Select Your Company Type" : 
                    step === 2 ? "Choose Your Pricing Path" :
                    step === 3 ? (pricingPath === "cost" ? "Cost-Based Pricing Details" : "Market-Based Pricing Details") :
-                   step === 4 ? "Select Your Pricing Strategy" :
-                   "Set Your Target Margin"}
+                   "Select Your Pricing Strategy"}
                 </CardTitle>
                 <CardDescription className="text-[#6B6B5F]">
                   {step === 5 ? "Set your target margin based on your business goals and industry benchmarks" : 
                    step === 1 ? "Choose the option that best describes your business" : 
                    step === 2 ? "Select the pricing strategy that aligns with your goals" :
                    step === 3 ? (pricingPath === "cost" ? "Enter your costs to calculate optimal pricing" : "Enter market research data to determine competitive pricing") :
-                   step === 4 ? "Choose how you want to position your pricing relative to the market" :
-                   "Define your target profit margin and see real-time calculations"}
+                   "Choose how you want to position your pricing relative to the market"}
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-6">
                 {step === 1 ? (
-                  <div className="grid grid-cols-1 gap-4">
-                    {companyTypes.map((type) => {
-                      const Icon = type.icon;
-                      return (
-                        <Card 
-                          key={type.id}
-                          className={`cursor-pointer transition-all hover:bg-gray-50 ${
-                            companyType === type.id ? 'border-[#8B8B73] bg-gray-50' : 'border-gray-100'
-                          }`}
-                          onClick={() => handleCompanySelect(type.id as CompanyType)}
-                        >
-                          <CardContent className="p-6 flex items-center justify-between">
-                            <div className="flex items-center gap-4">
-                              <div className="bg-gray-100 p-3 rounded-lg">
-                                <Icon className="h-6 w-6 text-[#4A4A3F]" />
-                              </div>
-                              <div>
-                                <h3 className="font-medium text-[#4A4A3F]">{type.title}</h3>
-                                <p className="text-sm text-[#6B6B5F]">{type.description}</p>
-                              </div>
-                            </div>
-                            <ChevronRight className="h-5 w-5 text-gray-400" />
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </div>
+                  <CompanyTypeSelector 
+                    selectedType={companyType} 
+                    onSelect={handleCompanySelect} 
+                  />
                 ) : step === 2 ? (
-                  <div className="grid grid-cols-1 gap-4">
-                    {pricingPaths.map((path) => {
-                      const Icon = path.icon;
-                      return (
-                        <Card 
-                          key={path.id}
-                          className={`cursor-pointer transition-all hover:bg-gray-50 ${
-                            pricingPath === path.id ? 'border-[#8B8B73] bg-gray-50' : 'border-gray-100'
-                          }`}
-                          onClick={() => handlePricingPathSelect(path.id as PricingPath)}
-                        >
-                          <CardContent className="p-6 flex items-center justify-between">
-                            <div className="flex items-center gap-4">
-                              <div className="bg-gray-100 p-3 rounded-lg">
-                                <Icon className="h-6 w-6 text-[#4A4A3F]" />
-                              </div>
-                              <div>
-                                <h3 className="font-medium text-[#4A4A3F]">{path.title}</h3>
-                                <p className="text-sm text-[#6B6B5F]">{path.description}</p>
-                              </div>
-                            </div>
-                            <ChevronRight className="h-5 w-5 text-gray-400" />
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </div>
+                  <PricingPathSelector 
+                    selectedPath={pricingPath} 
+                    onSelect={handlePricingPathSelect} 
+                  />
                 ) : step === 3 ? (
-                  pricingPath === "cost" ? renderCostBasedForm() : renderMarketBasedForm()
+                  pricingPath === "cost" ? (
+                    <CostBasedForm 
+                      costPerUnit={costPerUnit}
+                      onCostChange={setCostPerUnit}
+                    />
+                  ) : (
+                    <MarketBasedForm 
+                      marketPrice={marketPrice}
+                      competitorLow={competitorLow}
+                      competitorHigh={competitorHigh}
+                      onMarketPriceChange={setMarketPrice}
+                      onCompetitorLowChange={setCompetitorLow}
+                      onCompetitorHighChange={setCompetitorHigh}
+                    />
+                  )
+                ) : step === 4 ? (
+                  <PricingStrategySelector 
+                    selectedStrategy={pricingStrategy}
+                    onSelect={handlePricingStrategySelect}
+                  />
                 ) : (
-                  <div className="grid grid-cols-1 gap-4">
-                    {pricingStrategies.map((strategy) => {
-                      const Icon = strategy.icon;
-                      return (
-                        <Card 
-                          key={strategy.id}
-                          className={`cursor-pointer transition-all hover:bg-gray-50 ${
-                            pricingStrategy === strategy.id ? 'border-[#8B8B73] bg-gray-50' : 'border-gray-100'
-                          }`}
-                          onClick={() => handlePricingStrategySelect(strategy.id as PricingStrategy)}
-                        >
-                          <CardContent className="p-6 flex items-center justify-between">
-                            <div className="flex items-center gap-4">
-                              <div className="bg-gray-100 p-3 rounded-lg">
-                                <Icon className="h-6 w-6 text-[#4A4A3F]" />
-                              </div>
-                              <div>
-                                <h3 className="font-medium text-[#4A4A3F]">{strategy.title}</h3>
-                                <p className="text-sm text-[#6B6B5F]">{strategy.description}</p>
-                              </div>
-                            </div>
-                            <ChevronRight className="h-5 w-5 text-gray-400" />
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </div>
+                  <MarginSelector 
+                    value={desiredMargin}
+                    onChange={setDesiredMargin}
+                  />
                 )}
                 
                 <div className="mt-6 flex justify-between">
