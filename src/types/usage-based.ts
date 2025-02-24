@@ -1,8 +1,23 @@
 
-export type PricingTier = {
+export type VolumeCommitTier = {
+  commitmentAmount: number;
+  pricePerUnit: number;
+};
+
+export type UsageTier = {
   minUsage: number;
   maxUsage: number;
   pricePerUnit: number;
+};
+
+export type PricingComponentsConfig = {
+  pricingModel: "fixed" | "volumeCommitment" | "tiered";
+  setupFee?: number;
+  monthlyBase?: number;
+  includedUnits?: number;
+  additionalUnitPrice?: number;
+  volumeCommitTiers?: VolumeCommitTier[];
+  usageTiers?: UsageTier[];
 };
 
 export type CurrentPricingForm = {
@@ -19,7 +34,5 @@ export type CurrentPricingForm = {
   averageMonthlyUsage?: string;
   usageVariance?: string;
   customMetricName?: string;
-  pricingTiers?: PricingTier[];
-  overage?: number;
-  minimumCommitment?: number;
+  pricingComponents?: PricingComponentsConfig;
 };

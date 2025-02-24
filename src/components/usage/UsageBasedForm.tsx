@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,14 +16,13 @@ import { OfferingTypeSelector } from "./OfferingTypeSelector";
 import { SubscriptionDetails } from "./SubscriptionDetails";
 import { PerpetualDetails } from "./PerpetualDetails";
 import { UsageMetricsForm } from "./UsageMetricsForm";
-import { PricingTiersForm } from "./PricingTiersForm";
+import { PricingComponentsForm } from "./PricingComponentsForm";
 
 export const UsageBasedForm = () => {
   const [step, setStep] = useState(1);
   const form = useForm<CurrentPricingForm>({
     defaultValues: {
       offerType: "new",
-      pricingTiers: [],
     },
   });
 
@@ -96,7 +96,7 @@ export const UsageBasedForm = () => {
 
   const renderStep3 = () => (
     <div className="space-y-6">
-      <PricingTiersForm form={form} />
+      <PricingComponentsForm form={form} />
       <div className="flex justify-between">
         <Button
           type="button"
