@@ -10,6 +10,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
+  TooltipProvider
 } from "@/components/ui/tooltip";
 
 type CompanyType = "SMB" | "Growth" | "Enterprise" | null;
@@ -285,150 +286,152 @@ const NewOffer = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAFAFA]">
-      <div className="container max-w-3xl mx-auto px-4 py-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="flex flex-col space-y-4"
-        >
-          <Card className="bg-white border-gray-100 shadow-sm">
-            <CardHeader className="text-center border-b border-gray-100">
-              <CardTitle className="text-[#4A4A3F] text-2xl">
-                {step === 1 ? "Select Your Company Type" : 
-                 step === 2 ? "Choose Your Pricing Path" :
-                 step === 3 ? (pricingPath === "cost" ? "Cost-Based Pricing Details" : "Market-Based Pricing Details") :
-                 step === 4 ? "Select Your Pricing Strategy" :
-                 "Set Your Target Margin"}
-              </CardTitle>
-              <CardDescription className="text-[#6B6B5F]">
-                {step === 1 ? "Choose the option that best describes your business" : 
-                 step === 2 ? "Select the pricing strategy that aligns with your goals" :
-                 step === 3 ? (pricingPath === "cost" ? "Enter your costs to calculate optimal pricing" : "Enter market research data to determine competitive pricing") :
-                 step === 4 ? "Choose how you want to position your pricing relative to the market" :
-                 "Define your target profit margin and see real-time calculations"}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-6">
-              {step === 1 ? (
-                <div className="grid grid-cols-1 gap-4">
-                  {companyTypes.map((type) => {
-                    const Icon = type.icon;
-                    return (
-                      <Card 
-                        key={type.id}
-                        className={`cursor-pointer transition-all hover:bg-gray-50 ${
-                          companyType === type.id ? 'border-[#8B8B73] bg-gray-50' : 'border-gray-100'
-                        }`}
-                        onClick={() => handleCompanySelect(type.id as CompanyType)}
-                      >
-                        <CardContent className="p-6 flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            <div className="bg-gray-100 p-3 rounded-lg">
-                              <Icon className="h-6 w-6 text-[#4A4A3F]" />
+    <TooltipProvider>
+      <div className="min-h-screen flex flex-col bg-[#FAFAFA]">
+        <div className="container max-w-3xl mx-auto px-4 py-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="flex flex-col space-y-4"
+          >
+            <Card className="bg-white border-gray-100 shadow-sm">
+              <CardHeader className="text-center border-b border-gray-100">
+                <CardTitle className="text-[#4A4A3F] text-2xl">
+                  {step === 1 ? "Select Your Company Type" : 
+                   step === 2 ? "Choose Your Pricing Path" :
+                   step === 3 ? (pricingPath === "cost" ? "Cost-Based Pricing Details" : "Market-Based Pricing Details") :
+                   step === 4 ? "Select Your Pricing Strategy" :
+                   "Set Your Target Margin"}
+                </CardTitle>
+                <CardDescription className="text-[#6B6B5F]">
+                  {step === 1 ? "Choose the option that best describes your business" : 
+                   step === 2 ? "Select the pricing strategy that aligns with your goals" :
+                   step === 3 ? (pricingPath === "cost" ? "Enter your costs to calculate optimal pricing" : "Enter market research data to determine competitive pricing") :
+                   step === 4 ? "Choose how you want to position your pricing relative to the market" :
+                   "Define your target profit margin and see real-time calculations"}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-6">
+                {step === 1 ? (
+                  <div className="grid grid-cols-1 gap-4">
+                    {companyTypes.map((type) => {
+                      const Icon = type.icon;
+                      return (
+                        <Card 
+                          key={type.id}
+                          className={`cursor-pointer transition-all hover:bg-gray-50 ${
+                            companyType === type.id ? 'border-[#8B8B73] bg-gray-50' : 'border-gray-100'
+                          }`}
+                          onClick={() => handleCompanySelect(type.id as CompanyType)}
+                        >
+                          <CardContent className="p-6 flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <div className="bg-gray-100 p-3 rounded-lg">
+                                <Icon className="h-6 w-6 text-[#4A4A3F]" />
+                              </div>
+                              <div>
+                                <h3 className="font-medium text-[#4A4A3F]">{type.title}</h3>
+                                <p className="text-sm text-[#6B6B5F]">{type.description}</p>
+                              </div>
                             </div>
-                            <div>
-                              <h3 className="font-medium text-[#4A4A3F]">{type.title}</h3>
-                              <p className="text-sm text-[#6B6B5F]">{type.description}</p>
+                            <ChevronRight className="h-5 w-5 text-gray-400" />
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                ) : step === 2 ? (
+                  <div className="grid grid-cols-1 gap-4">
+                    {pricingPaths.map((path) => {
+                      const Icon = path.icon;
+                      return (
+                        <Card 
+                          key={path.id}
+                          className={`cursor-pointer transition-all hover:bg-gray-50 ${
+                            pricingPath === path.id ? 'border-[#8B8B73] bg-gray-50' : 'border-gray-100'
+                          }`}
+                          onClick={() => handlePricingPathSelect(path.id as PricingPath)}
+                        >
+                          <CardContent className="p-6 flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <div className="bg-gray-100 p-3 rounded-lg">
+                                <Icon className="h-6 w-6 text-[#4A4A3F]" />
+                              </div>
+                              <div>
+                                <h3 className="font-medium text-[#4A4A3F]">{path.title}</h3>
+                                <p className="text-sm text-[#6B6B5F]">{path.description}</p>
+                              </div>
                             </div>
-                          </div>
-                          <ChevronRight className="h-5 w-5 text-gray-400" />
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </div>
-              ) : step === 2 ? (
-                <div className="grid grid-cols-1 gap-4">
-                  {pricingPaths.map((path) => {
-                    const Icon = path.icon;
-                    return (
-                      <Card 
-                        key={path.id}
-                        className={`cursor-pointer transition-all hover:bg-gray-50 ${
-                          pricingPath === path.id ? 'border-[#8B8B73] bg-gray-50' : 'border-gray-100'
-                        }`}
-                        onClick={() => handlePricingPathSelect(path.id as PricingPath)}
-                      >
-                        <CardContent className="p-6 flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            <div className="bg-gray-100 p-3 rounded-lg">
-                              <Icon className="h-6 w-6 text-[#4A4A3F]" />
+                            <ChevronRight className="h-5 w-5 text-gray-400" />
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                ) : step === 3 ? (
+                  pricingPath === "cost" ? renderCostBasedForm() : renderMarketBasedForm()
+                ) : (
+                  <div className="grid grid-cols-1 gap-4">
+                    {pricingStrategies.map((strategy) => {
+                      const Icon = strategy.icon;
+                      return (
+                        <Card 
+                          key={strategy.id}
+                          className={`cursor-pointer transition-all hover:bg-gray-50 ${
+                            pricingStrategy === strategy.id ? 'border-[#8B8B73] bg-gray-50' : 'border-gray-100'
+                          }`}
+                          onClick={() => handlePricingStrategySelect(strategy.id as PricingStrategy)}
+                        >
+                          <CardContent className="p-6 flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <div className="bg-gray-100 p-3 rounded-lg">
+                                <Icon className="h-6 w-6 text-[#4A4A3F]" />
+                              </div>
+                              <div>
+                                <h3 className="font-medium text-[#4A4A3F]">{strategy.title}</h3>
+                                <p className="text-sm text-[#6B6B5F]">{strategy.description}</p>
+                              </div>
                             </div>
-                            <div>
-                              <h3 className="font-medium text-[#4A4A3F]">{path.title}</h3>
-                              <p className="text-sm text-[#6B6B5F]">{path.description}</p>
-                            </div>
-                          </div>
-                          <ChevronRight className="h-5 w-5 text-gray-400" />
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </div>
-              ) : step === 3 ? (
-                pricingPath === "cost" ? renderCostBasedForm() : renderMarketBasedForm()
-              ) : (
-                <div className="grid grid-cols-1 gap-4">
-                  {pricingStrategies.map((strategy) => {
-                    const Icon = strategy.icon;
-                    return (
-                      <Card 
-                        key={strategy.id}
-                        className={`cursor-pointer transition-all hover:bg-gray-50 ${
-                          pricingStrategy === strategy.id ? 'border-[#8B8B73] bg-gray-50' : 'border-gray-100'
-                        }`}
-                        onClick={() => handlePricingStrategySelect(strategy.id as PricingStrategy)}
-                      >
-                        <CardContent className="p-6 flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            <div className="bg-gray-100 p-3 rounded-lg">
-                              <Icon className="h-6 w-6 text-[#4A4A3F]" />
-                            </div>
-                            <div>
-                              <h3 className="font-medium text-[#4A4A3F]">{strategy.title}</h3>
-                              <p className="text-sm text-[#6B6B5F]">{strategy.description}</p>
-                            </div>
-                          </div>
-                          <ChevronRight className="h-5 w-5 text-gray-400" />
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </div>
-              )}
-              
-              <div className="mt-6 flex justify-between">
-                {step > 1 && (
-                  <Button
-                    variant="outline"
-                    className="border-[#8B8B73] text-[#4A4A3F] hover:bg-gray-50"
-                    onClick={handlePreviousStep}
-                  >
-                    <ArrowLeft className="h-4 w-4 mr-2" />
-                    Previous
-                  </Button>
+                            <ChevronRight className="h-5 w-5 text-gray-400" />
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </div>
                 )}
-                {(step === 3 || step === 4) && (
-                  <Button 
-                    className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F] ml-auto"
-                    onClick={() => setStep(step + 1)}
-                  >
-                    Next
-                    <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
+                
+                <div className="mt-6 flex justify-between">
+                  {step > 1 && (
+                    <Button
+                      variant="outline"
+                      className="border-[#8B8B73] text-[#4A4A3F] hover:bg-gray-50"
+                      onClick={handlePreviousStep}
+                    >
+                      <ArrowLeft className="h-4 w-4 mr-2" />
+                      Previous
+                    </Button>
+                  )}
+                  {(step === 3 || step === 4) && (
+                    <Button 
+                      className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F] ml-auto"
+                      onClick={() => setStep(step + 1)}
+                    >
+                      Next
+                      <ArrowRight className="h-4 w-4 ml-2" />
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
 
-      <footer className="py-4 px-6 text-center text-gray-400 text-sm mt-auto">
-        Price Price Baby | Oomiyasa LLC
-      </footer>
-    </div>
+        <footer className="py-4 px-6 text-center text-gray-400 text-sm mt-auto">
+          Price Price Baby | Oomiyasa LLC
+        </footer>
+      </div>
+    </TooltipProvider>
   );
 };
 
