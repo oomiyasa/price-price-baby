@@ -19,7 +19,8 @@ import Repricing from "@/pages/Repricing";
 import BundleConfiguration from "@/pages/BundleConfiguration";
 
 const Layout = ({ children }: { children: React.ReactNode }) => (
-  <div className="min-h-screen flex flex-col">
+  // Add bg-[#FAFAFA] to the root div to prevent white flashes
+  <div className="min-h-screen flex flex-col bg-[#FAFAFA]">
     <div className="fixed top-4 left-4 z-50">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -49,18 +50,21 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
 
 function App() {
   return (
-    <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/new-offer" element={<NewOffer />} />
-          <Route path="/bundle-pricing" element={<BundlePricing />} />
-          <Route path="/bundle-configuration" element={<BundleConfiguration />} />
-          <Route path="/repricing" element={<Repricing />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Layout>
-    </Router>
+    // Add a wrapper div with bg-[#FAFAFA] for consistent background
+    <div className="bg-[#FAFAFA]">
+      <Router>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/new-offer" element={<NewOffer />} />
+            <Route path="/bundle-pricing" element={<BundlePricing />} />
+            <Route path="/bundle-configuration" element={<BundleConfiguration />} />
+            <Route path="/repricing" element={<Repricing />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Layout>
+      </Router>
+    </div>
   );
 }
 
