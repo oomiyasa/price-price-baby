@@ -1,8 +1,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-import { CopyIcon } from "lucide-react";
+import { PenLine } from "lucide-react";
 import { CompanyType, PricingPath, PricingStrategy } from "@/types/pricing";
-import { toast } from "sonner";
 
 interface PricingRecommendationProps {
   companyType: CompanyType;
@@ -13,6 +12,7 @@ interface PricingRecommendationProps {
   competitorLow: string;
   competitorHigh: string;
   desiredMargin: number;
+  onEditStep: (step: number) => void;
 }
 
 export const PricingRecommendation = ({
@@ -23,6 +23,7 @@ export const PricingRecommendation = ({
   competitorLow,
   competitorHigh,
   desiredMargin,
+  onEditStep,
 }: PricingRecommendationProps) => {
   const calculatePriceRange = () => {
     if (pricingPath === "market") {
@@ -66,14 +67,6 @@ export const PricingRecommendation = ({
     return `Based on market positioning, you can expect margins around ${desiredMargin}%.`;
   };
 
-  const handleCopy = (text: string, label: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      toast.success(`${label} copied to clipboard`);
-    }).catch(() => {
-      toast.error("Failed to copy to clipboard");
-    });
-  };
-
   return (
     <div className="space-y-6">
       <div className="text-center">
@@ -94,9 +87,9 @@ export const PricingRecommendation = ({
                   Based on your market research and pricing strategy, this range {getMarketPositionText()}.
                 </p>
               </div>
-              <CopyIcon 
+              <PenLine 
                 className="w-4 h-4 text-gray-400 cursor-pointer ml-auto flex-shrink-0 hover:text-gray-600" 
-                onClick={() => handleCopy(`Based on your market research and pricing strategy, this range ${getMarketPositionText()}.`, "Market position")}
+                onClick={() => onEditStep(4)} // Navigate to pricing strategy step
               />
             </div>
           </CardContent>
@@ -112,9 +105,9 @@ export const PricingRecommendation = ({
                   {getProfitPotentialText()}
                 </p>
               </div>
-              <CopyIcon 
+              <PenLine 
                 className="w-4 h-4 text-gray-400 cursor-pointer ml-auto flex-shrink-0 hover:text-gray-600" 
-                onClick={() => handleCopy(getProfitPotentialText(), "Profit potential")}
+                onClick={() => onEditStep(5)} // Navigate to margin step
               />
             </div>
           </CardContent>
@@ -127,23 +120,23 @@ export const PricingRecommendation = ({
               <ul className="space-y-2 text-sm text-[#6B6B5F]">
                 <li className="flex items-center justify-between">
                   • Pricing approach: {pricingPath === "market" ? "Market-based pricing" : "Cost-based pricing"}
-                  <CopyIcon 
+                  <PenLine 
                     className="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-600" 
-                    onClick={() => handleCopy(`Pricing approach: ${pricingPath === "market" ? "Market-based pricing" : "Cost-based pricing"}`, "Pricing approach")}
+                    onClick={() => onEditStep(2)} // Navigate to pricing path step
                   />
                 </li>
                 <li className="flex items-center justify-between">
                   • Market position: {pricingStrategy === "lower" ? "lower" : pricingStrategy === "premium" ? "premium" : "similar"} than competitors
-                  <CopyIcon 
+                  <PenLine 
                     className="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-600" 
-                    onClick={() => handleCopy(`Market position: ${pricingStrategy === "lower" ? "lower" : pricingStrategy === "premium" ? "premium" : "similar"} than competitors`, "Market position")}
+                    onClick={() => onEditStep(4)} // Navigate to pricing strategy step
                   />
                 </li>
                 <li className="flex items-center justify-between">
                   • Target profit margin: {desiredMargin}%
-                  <CopyIcon 
+                  <PenLine 
                     className="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-600" 
-                    onClick={() => handleCopy(`Target profit margin: ${desiredMargin}%`, "Target profit margin")}
+                    onClick={() => onEditStep(5)} // Navigate to margin step
                   />
                 </li>
               </ul>

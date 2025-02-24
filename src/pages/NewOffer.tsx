@@ -63,6 +63,10 @@ const NewOffer = () => {
     setStep(6);
   };
 
+  const handleEditStep = (newStep: number) => {
+    setStep(newStep);
+  };
+
   return (
     <TooltipProvider>
       <div className="min-h-screen flex flex-col bg-[#FAFAFA]">
@@ -139,6 +143,7 @@ const NewOffer = () => {
                     competitorLow={competitorLow}
                     competitorHigh={competitorHigh}
                     desiredMargin={desiredMargin}
+                    onEditStep={handleEditStep}
                   />
                 )}
                 
