@@ -1,4 +1,3 @@
-
 import { useState, KeyboardEvent, useRef } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -6,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Building, Users, User, DollarSign, ChartBar, HelpCircle, ArrowDown, ArrowRight, ArrowUp, Crown, ArrowLeft, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
 import {
   Tooltip,
   TooltipContent,
@@ -73,6 +73,24 @@ const pricingStrategies = [
   },
 ];
 
+const industryBenchmarks = {
+  SMB: {
+    low: 15,
+    average: 25,
+    high: 35,
+  },
+  Growth: {
+    low: 20,
+    average: 35,
+    high: 45,
+  },
+  Enterprise: {
+    low: 25,
+    average: 40,
+    high: 55,
+  },
+};
+
 const NewOffer = () => {
   const [step, setStep] = useState(1);
   const [companyType, setCompanyType] = useState<CompanyType>(null);
@@ -82,6 +100,7 @@ const NewOffer = () => {
   const [marketPrice, setMarketPrice] = useState("");
   const [competitorLow, setCompetitorLow] = useState("");
   const [competitorHigh, setCompetitorHigh] = useState("");
+  const [desiredMargin, setDesiredMargin] = useState(30);
 
   const handleCompanySelect = (type: CompanyType) => {
     setCompanyType(type);
@@ -196,6 +215,75 @@ const NewOffer = () => {
     </div>
   );
 
+  const calculateRecommendedPrice = () => {
+    if (pricingPath === "cost" && costPerUnit) {
+      const cost = parseFloat(costPerUnit);
+      const marginMultiplier = (100 + desiredMargin) / 100;
+      return (cost * marginMultiplier).toFixed(2);
+    }
+    return "0.00";
+  };
+
+  const renderMarginSelector = () => {
+    const benchmarks = companyType ? industryBenchmarks[companyType] : { low: 20, average: 35, high: 45 };
+    const recommendedPrice = calculateRecommendedPrice();
+
+    return (
+      <div className="space-y-8 max-w-2xl mx-auto">
+        <div>
+          <h3 className="text-xl font-medium text-[#4A4A3F] mb-4">Set Your Target Margin</h3>
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <Label>Target Margin: {desiredMargin}%</Label>
+                <span className="text-sm text-[#6B6B5F]">Recommended Price: ${recommendedPrice}</span>
+              </div>
+              <Slider
+                value={[desiredMargin]}
+                onValueChange={(value) => setDesiredMargin(value[0])}
+                max={100}
+                step={1}
+                className="w-full"
+              />
+            </div>
+
+            <div className="bg-gray-50 p-4 rounded-lg space-y-3">
+              <h4 className="font-medium text-[#4A4A3F]">Industry Benchmarks</h4>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="text-center">
+                  <div className="text-sm text-[#6B6B5F]">Low</div>
+                  <div className="font-medium text-[#4A4A3F]">{benchmarks.low}%</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-sm text-[#6B6B5F]">Average</div>
+                  <div className="font-medium text-[#4A4A3F]">{benchmarks.average}%</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-sm text-[#6B6B5F]">High</div>
+                  <div className="font-medium text-[#4A4A3F]">{benchmarks.high}%</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center gap-2 cursor-help">
+                    <HelpCircle className="h-4 w-4 text-[#8B8B73]" />
+                    <span className="text-sm text-[#6B6B5F]">What's a good margin?</span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="max-w-xs">Industry benchmarks are based on historical data and market research. Your optimal margin may vary based on your specific costs, market position, and growth strategy.</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-[#FAFAFA]">
       <div className="container max-w-3xl mx-auto px-4 py-8">
@@ -211,13 +299,15 @@ const NewOffer = () => {
                 {step === 1 ? "Select Your Company Type" : 
                  step === 2 ? "Choose Your Pricing Path" :
                  step === 3 ? (pricingPath === "cost" ? "Cost-Based Pricing Details" : "Market-Based Pricing Details") :
-                 "Select Your Pricing Strategy"}
+                 step === 4 ? "Select Your Pricing Strategy" :
+                 "Set Your Target Margin"}
               </CardTitle>
               <CardDescription className="text-[#6B6B5F]">
                 {step === 1 ? "Choose the option that best describes your business" : 
                  step === 2 ? "Select the pricing strategy that aligns with your goals" :
                  step === 3 ? (pricingPath === "cost" ? "Enter your costs to calculate optimal pricing" : "Enter market research data to determine competitive pricing") :
-                 "Choose how you want to position your pricing relative to the market"}
+                 step === 4 ? "Choose how you want to position your pricing relative to the market" :
+                 "Define your target profit margin and see real-time calculations"}
               </CardDescription>
             </CardHeader>
             <CardContent className="p-6">
@@ -320,10 +410,10 @@ const NewOffer = () => {
                     Previous
                   </Button>
                 )}
-                {step === 3 && (
+                {(step === 3 || step === 4) && (
                   <Button 
                     className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F] ml-auto"
-                    onClick={() => setStep(4)}
+                    onClick={() => setStep(step + 1)}
                   >
                     Next
                     <ArrowRight className="h-4 w-4 ml-2" />
