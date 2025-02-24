@@ -52,12 +52,12 @@ const NewOffer = () => {
 
   const handleCompanySelect = (type: CompanyType) => {
     setCompanyType(type);
-    setStep(2); // Automatically advance to next step
+    setStep(2);
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#F2FCE2] to-[#FEF7CD]/20">
-      <div className="max-w-4xl mx-auto w-full px-4 py-8">
+      <div className="container max-w-6xl mx-auto px-4 py-8">
         <div className="mb-8 flex items-center gap-4">
           <Button 
             variant="outline" 
@@ -76,9 +76,10 @@ const NewOffer = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
+          className="flex justify-center"
         >
-          <Card className="bg-white/80 border-[#E8E8D8]">
-            <CardHeader>
+          <Card className="bg-white/80 border-[#E8E8D8] w-full max-w-5xl">
+            <CardHeader className="text-center">
               <CardTitle className="text-[#4A4A3F]">
                 {step === 1 ? "Select Your Company Type" : "Choose Your Pricing Path"}
               </CardTitle>
@@ -90,7 +91,7 @@ const NewOffer = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
                 {step === 1 ? (
                   companyTypes.map((type) => (
                     <motion.div
@@ -106,14 +107,14 @@ const NewOffer = () => {
                         }`}
                         onClick={() => handleCompanySelect(type.id as CompanyType)}
                       >
-                        <CardContent className="p-6 space-y-4 flex flex-col h-full">
-                          <div className="flex justify-center">
-                            <type.icon className="h-8 w-8 text-[#8B8B73]" />
+                        <CardContent className="p-8 flex flex-col h-full items-center justify-between">
+                          <div className="flex flex-col items-center gap-6">
+                            <div className="p-3 rounded-full bg-[#F2FCE2]">
+                              <type.icon className="h-8 w-8 text-[#8B8B73]" />
+                            </div>
+                            <h3 className="font-semibold text-[#4A4A3F] text-lg">{type.title}</h3>
                           </div>
-                          <div className="text-center flex-1 flex flex-col justify-between">
-                            <h3 className="font-semibold text-[#4A4A3F] mb-2">{type.title}</h3>
-                            <p className="text-sm text-[#6B6B5F]">{type.description}</p>
-                          </div>
+                          <p className="text-sm text-[#6B6B5F] text-center mt-4">{type.description}</p>
                         </CardContent>
                       </Card>
                     </motion.div>
@@ -125,22 +126,22 @@ const NewOffer = () => {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="md:col-span-3/2"
+                      className="md:col-span-3/2 h-full"
                     >
                       <Card 
-                        className={`cursor-pointer transition-all hover:border-[#8B8B73] ${
+                        className={`cursor-pointer transition-all hover:border-[#8B8B73] h-full ${
                           pricingPath === path.id ? 'border-[#8B8B73] bg-[#F2FCE2]' : 'border-[#E8E8D8]'
                         }`}
                         onClick={() => setPricingPath(path.id as PricingPath)}
                       >
-                        <CardContent className="p-6 space-y-4">
-                          <div className="flex justify-center">
-                            <path.icon className="h-8 w-8 text-[#8B8B73]" />
+                        <CardContent className="p-8 flex flex-col h-full items-center justify-between">
+                          <div className="flex flex-col items-center gap-6">
+                            <div className="p-3 rounded-full bg-[#F2FCE2]">
+                              <path.icon className="h-8 w-8 text-[#8B8B73]" />
+                            </div>
+                            <h3 className="font-semibold text-[#4A4A3F] text-lg">{path.title}</h3>
                           </div>
-                          <div className="text-center">
-                            <h3 className="font-semibold text-[#4A4A3F] mb-2">{path.title}</h3>
-                            <p className="text-sm text-[#6B6B5F]">{path.description}</p>
-                          </div>
+                          <p className="text-sm text-[#6B6B5F] text-center mt-4">{path.description}</p>
                         </CardContent>
                       </Card>
                     </motion.div>
@@ -148,7 +149,7 @@ const NewOffer = () => {
                 )}
               </div>
 
-              <div className="mt-8 flex justify-between">
+              <div className="mt-8 flex justify-between px-4">
                 {step === 2 && (
                   <Button
                     variant="outline"
