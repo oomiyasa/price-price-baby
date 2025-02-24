@@ -154,6 +154,14 @@ const NewOffer = () => {
           placeholder="0.00"
         />
       </div>
+      <div className="flex justify-end">
+        <Button 
+          className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
+          onClick={() => setStep(4)}
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 
@@ -226,6 +234,14 @@ const NewOffer = () => {
           />
         </div>
       </div>
+      <div className="flex justify-end">
+        <Button 
+          className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
+          onClick={() => setStep(4)}
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 
@@ -267,7 +283,7 @@ const NewOffer = () => {
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#F2FCE2] to-[#FEF7CD]/20">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#E8E8D8] to-[#F2FCE2]/20">
       <div className="container max-w-6xl mx-auto px-4 py-8">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-semibold text-[#4A4A3F]">New Offer Pricing</h1>
