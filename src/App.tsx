@@ -6,6 +6,7 @@ import Index from "@/pages/Index";
 import NewOffer from "@/pages/NewOffer";
 import Repricing from "@/pages/Repricing";
 import BundlePricing from "@/pages/BundlePricing";
+import BundleDiscount from "@/pages/BundleDiscount";
 import { Menu } from "lucide-react";
 import {
   DropdownMenu,
@@ -42,6 +43,7 @@ function App() {
             <Route path="/" element={<Index />} />
             <Route path="/new-offer" element={<NewOffer />} />
             <Route path="/bundle-pricing" element={<BundlePricing />} />
+            <Route path="/bundle-discount" element={<BundleDiscount />} />
             <Route path="/repricing" element={<Repricing />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

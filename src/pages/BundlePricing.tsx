@@ -37,8 +37,12 @@ const BundlePricing = () => {
   };
 
   const handleNextStep = () => {
-    toast.success("Changes saved");
-    // Navigate to next step/page when implemented
+    if (products.length < 2) {
+      toast.error("Please add at least 2 products to create a bundle");
+      return;
+    }
+    navigate("/bundle-discount");
+    toast.success("Proceeding to bundle discount");
   };
 
   const calculateMRR = (products: ProductItem[]) => {
