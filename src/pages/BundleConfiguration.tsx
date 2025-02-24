@@ -20,22 +20,21 @@ import {
 const BundleConfiguration = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [products, setProducts] = useState<ProductItem[]>([]);
-  const [discounts, setDiscounts] = useState<ProductDiscount[]>([]);
+  
+  // Initialize products directly from location state
+  const initialProducts = location.state?.products || [];
+  const [products, setProducts] = useState<ProductItem[]>(initialProducts);
+  const [discounts, setDiscounts] = useState<ProductDiscount[]>(
+    initialProducts.map((p: ProductItem) => ({
+      productId: p.id,
+      discount: 0
+    }))
+  );
+  
   const [originalTotalAnnual, setOriginalTotalAnnual] = useState(0);
   const [discountedTotalAnnual, setDiscountedTotalAnnual] = useState(0);
   const [blendedMargin, setBlendedMargin] = useState<number | null>(null);
   const [discountedBlendedMargin, setDiscountedBlendedMargin] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (location.state?.products) {
-      setProducts(location.state.products);
-      setDiscounts(location.state.products.map((p: ProductItem) => ({
-        productId: p.id,
-        discount: 0
-      })));
-    }
-  }, [location.state]);
 
   const getDiscountForProduct = (productId: string) => {
     return discounts.find(d => d.productId === productId)?.discount || 0;
