@@ -28,7 +28,17 @@ export const CostBasedForm = ({ costPerUnit, onCostChange }: Pick<PricingFormPro
   return (
     <div className="space-y-8 max-w-2xl mx-auto">
       <div>
-        <h3 className="text-xl font-medium text-[#4A4A3F] mb-2">Enter your total cost per unit/service</h3>
+        <div className="flex items-center gap-2 mb-2">
+          <Label htmlFor="costPerUnit" className="text-xl font-medium text-[#4A4A3F]">Enter your total cost per unit/service</Label>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              Include all direct costs (materials, labor) and indirect costs (overhead) per unit
+            </TooltipContent>
+          </Tooltip>
+        </div>
         <div className="space-y-4">
           <Input
             id="costPerUnit"

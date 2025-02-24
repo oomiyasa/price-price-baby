@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -84,7 +85,7 @@ const NewOffer = () => {
                    step === 5 ? "Target Gross Profit Margin" : 
                    step === 1 ? "Select Your Company Type" : 
                    step === 2 ? "Choose Your Pricing Path" :
-                   step === 3 ? (pricingPath === "cost" ? "Cost-Based Pricing Details" : "Market-Based Pricing Details") :
+                   step === 3 ? (pricingPath === "cost" ? "Cost-Based Pricing Details" : "Market Research Details") :
                    "Select Your Pricing Strategy"}
                 </CardTitle>
                 <CardDescription className="text-[#6B6B5F]">
