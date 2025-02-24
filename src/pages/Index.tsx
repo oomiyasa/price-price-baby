@@ -35,8 +35,8 @@ const pricingTools = [
   },
   {
     id: "usage-based",
-    title: "Switch to Usage-Based Pricing",
-    description: "Move from subscriptions to consumption pricing",
+    title: "Deploy Usage-Based Pricing",
+    description: "Whether launching new or transitioning from traditional models",
     route: "/usage-based",
     icon: Percent
   },
