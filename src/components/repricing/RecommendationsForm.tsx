@@ -1,4 +1,3 @@
-
 import {
   Tooltip,
   TooltipContent,
@@ -55,15 +54,12 @@ export const RecommendationsForm = ({
     
     if (validPrices.length < 2) return { trend: 0, volatility: 0 };
 
-    // Calculate percentage changes between consecutive prices
     const changes = validPrices.slice(1).map((price, i) => 
       ((price - validPrices[i]) / validPrices[i]) * 100
     );
 
-    // Calculate average trend
     const trend = changes.reduce((sum, change) => sum + change, 0) / changes.length;
     
-    // Calculate volatility (standard deviation of changes)
     const meanChange = trend;
     const squaredDiffs = changes.map(change => Math.pow(change - meanChange, 2));
     const volatility = Math.sqrt(squaredDiffs.reduce((sum, diff) => sum + diff, 0) / changes.length);
@@ -72,34 +68,29 @@ export const RecommendationsForm = ({
   };
 
   const calculateSalesImpact = () => {
-    // Returns a percentage adjustment based on sales performance
     if (salesPerformance <= -30) return -10;
     if (salesPerformance <= -10) return -5;
     if (salesPerformance >= 30) return 10;
     if (salesPerformance >= 10) return 5;
-    return (salesPerformance / 10); // Linear impact for small changes
+    return (salesPerformance / 10);
   };
 
   const calculateMarketImpact = () => {
     let impact = 0;
     const { trend, volatility } = analyzePriceTrend();
     
-    // Base market impact
     if (competitorPrices === "increased") impact += 5;
     if (competitorPrices === "decreased") impact -= 5;
     if (marketDemand === "growing") impact += 5;
     if (marketDemand === "shrinking") impact -= 5;
     
-    // Adjust impact based on price trend correlation
     if (Math.abs(trend) > 2) {
-      // If prices have been trending up/down, adjust market impact
-      const trendFactor = Math.min(Math.abs(trend), 5) / 5; // Normalize to max ±1
+      const trendFactor = Math.min(Math.abs(trend), 5) / 5;
       impact *= (1 + trendFactor);
     }
 
-    // Reduce confidence (impact) if price history is volatile
     if (volatility > 5) {
-      impact *= (1 - Math.min(volatility, 10) / 20); // Reduce impact by up to 50% for high volatility
+      impact *= (1 - Math.min(volatility, 10) / 20);
     }
     
     return impact;
@@ -109,15 +100,11 @@ export const RecommendationsForm = ({
     let impact = 0;
     const { trend } = analyzePriceTrend();
     
-    // Base positioning impact
     if (uniqueness === "high") impact += 5;
     if (uniqueness === "low") impact -= 5;
     
-    // Value perception impact (converts 0-100 scale to -5 to +5)
     const perceptionImpact = ((valuePerception - 50) / 10);
     
-    // Adjust perception based on price trend
-    // If prices have been rising but perception is high, or vice versa, strengthen the impact
     if (Math.abs(trend) > 2) {
       const trendAlignment = trend * perceptionImpact > 0 ? 1.2 : 0.8;
       impact = (impact + perceptionImpact) * trendAlignment;
@@ -140,8 +127,7 @@ export const RecommendationsForm = ({
     
     const totalImpact = salesImpact + marketImpact + positioningImpact;
     
-    // Adjust range based on price history volatility
-    const baseRange = 2 + (volatility / 4); // Increase range if prices have been volatile
+    const baseRange = 2 + (volatility / 4);
     
     return {
       min: basePrice * (1 + (totalImpact - baseRange) / 100),
@@ -153,6 +139,42 @@ export const RecommendationsForm = ({
         total: totalImpact
       }
     };
+  };
+
+  const calculatePercentageDifference = (price: number) => {
+    const basePrice = parseFloat(currentPrice);
+    if (isNaN(basePrice) || basePrice === 0) return 0;
+    return ((price - basePrice) / basePrice) * 100;
+  };
+
+  const balanceWeights = (changedWeight: number, changedKey: keyof typeof weights) => {
+    const remainingKeys = Object.keys(weights).filter(key => key !== changedKey) as Array<keyof typeof weights>;
+    const remainingTotal = 100 - changedWeight;
+    
+    const currentRemainingTotal = remainingKeys.reduce((sum, key) => sum + weights[key], 0);
+    const ratio = currentRemainingTotal === 0 ? 1 / remainingKeys.length : 1;
+    
+    const newWeights = {
+      ...weights,
+      [changedKey]: changedWeight,
+    };
+
+    remainingKeys.forEach((key, index) => {
+      if (index === remainingKeys.length - 1) {
+        newWeights[key] = Math.round((100 - changedWeight - remainingKeys.slice(0, -1)
+          .reduce((sum, k) => sum + newWeights[k], 0)) * 100) / 100;
+      } else {
+        newWeights[key] = Math.round((weights[key] * ratio * remainingTotal / currentRemainingTotal) * 100) / 100;
+      }
+    });
+
+    onWeightsChange(newWeights);
+  };
+
+  const impactDescriptions = {
+    salesPerformance: "Based on recent sales performance trends. Strong sales may suggest room for price increases, while declining sales might indicate pricing pressure.",
+    marketConditions: "Combines competitor price movements and market demand trends. Also considers how your historical price changes align with market conditions.",
+    positioning: "Reflects your product's uniqueness and perceived value. High differentiation and strong value perception can support premium pricing."
   };
 
   const recommendation = calculateRecommendation();
@@ -178,11 +200,13 @@ export const RecommendationsForm = ({
 
   return (
     <div className="space-y-8 max-w-2xl mx-auto">
-      {/* Recommendations Summary */}
       <div className="p-6 bg-[#FAFAFA] rounded-lg border border-[#E5E5E0]">
         <h3 className="text-xl font-medium text-[#4A4A3F] mb-4">Recommended Price Range</h3>
-        <div className="text-2xl font-semibold text-center mb-6 text-[#4A4A3F]">
+        <div className="text-2xl font-semibold text-center mb-2 text-[#4A4A3F]">
           ${formatPrice(recommendation.min)} - ${formatPrice(recommendation.max)}
+        </div>
+        <div className="text-sm text-center text-[#6B6B5F] mb-4">
+          ({calculatePercentageDifference(recommendation.min).toFixed(1)}% to {calculatePercentageDifference(recommendation.max).toFixed(1)}% from current price)
         </div>
         <div className="text-sm text-[#6B6B5F] space-y-2">
           <div className="flex items-center gap-2">
@@ -201,7 +225,6 @@ export const RecommendationsForm = ({
         </div>
       </div>
 
-      {/* Impact Factors */}
       <div className="space-y-6">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-lg font-medium text-[#4A4A3F]">Impact Factors</h3>
@@ -210,15 +233,23 @@ export const RecommendationsForm = ({
               <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
             </TooltipTrigger>
             <TooltipContent>
-              Adjust the weights to customize how each factor influences the final price
+              Adjust the weights to customize how each factor influences the final price. 
+              Total weight will always equal 100%.
             </TooltipContent>
           </Tooltip>
         </div>
 
-        {/* Sales Performance */}
         <div className="p-4 bg-white rounded-lg border border-[#E5E5E0]">
           <div className="flex items-center justify-between mb-2">
-            <Label className="text-[#4A4A3F]">Sales Performance</Label>
+            <div className="flex items-center gap-2">
+              <Label className="text-[#4A4A3F]">Sales Performance</Label>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent>{impactDescriptions.salesPerformance}</TooltipContent>
+              </Tooltip>
+            </div>
             <Button 
               variant="ghost" 
               size="sm" 
@@ -241,10 +272,7 @@ export const RecommendationsForm = ({
             max={100}
             step={1}
             onValueChange={([value]) => {
-              onWeightsChange({
-                ...weights,
-                salesPerformance: value,
-              });
+              balanceWeights(value, 'salesPerformance');
             }}
             className="w-full"
           />
@@ -253,10 +281,17 @@ export const RecommendationsForm = ({
           </div>
         </div>
 
-        {/* Market Conditions */}
         <div className="p-4 bg-white rounded-lg border border-[#E5E5E0]">
           <div className="flex items-center justify-between mb-2">
-            <Label className="text-[#4A4A3F]">Market Conditions</Label>
+            <div className="flex items-center gap-2">
+              <Label className="text-[#4A4A3F]">Market Conditions</Label>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent>{impactDescriptions.marketConditions}</TooltipContent>
+              </Tooltip>
+            </div>
             <Button 
               variant="ghost" 
               size="sm" 
@@ -279,10 +314,7 @@ export const RecommendationsForm = ({
             max={100}
             step={1}
             onValueChange={([value]) => {
-              onWeightsChange({
-                ...weights,
-                marketConditions: value,
-              });
+              balanceWeights(value, 'marketConditions');
             }}
             className="w-full"
           />
@@ -291,10 +323,17 @@ export const RecommendationsForm = ({
           </div>
         </div>
 
-        {/* Market Positioning */}
         <div className="p-4 bg-white rounded-lg border border-[#E5E5E0]">
           <div className="flex items-center justify-between mb-2">
-            <Label className="text-[#4A4A3F]">Market Positioning</Label>
+            <div className="flex items-center gap-2">
+              <Label className="text-[#4A4A3F]">Market Positioning</Label>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent>{impactDescriptions.positioning}</TooltipContent>
+              </Tooltip>
+            </div>
             <Button 
               variant="ghost" 
               size="sm" 
@@ -317,10 +356,7 @@ export const RecommendationsForm = ({
             max={100}
             step={1}
             onValueChange={([value]) => {
-              onWeightsChange({
-                ...weights,
-                positioning: value,
-              });
+              balanceWeights(value, 'positioning');
             }}
             className="w-full"
           />
