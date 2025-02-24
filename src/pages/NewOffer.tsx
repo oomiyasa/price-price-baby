@@ -41,7 +41,8 @@ const NewOffer = () => {
 
   const handlePreviousStep = () => {
     if (step > 1) {
-      setStep(step - 1);
+      const newStep = step === 5 && pricingPath === "cost" ? 3 : step - 1;
+      setStep(newStep);
       if (step === 5) setPricingStrategy(null);
       if (step === 3) setPricingPath(null);
       if (step === 2) setCompanyType(null);
@@ -50,7 +51,10 @@ const NewOffer = () => {
 
   const handleCostBasedNext = () => {
     if (costPerUnit) {
-      setStep(4);
+      // Skip pricing strategy step for cost-based pricing
+      setStep(5);
+      // Set a default strategy for cost-based pricing
+      setPricingStrategy("similar");
     }
   };
 
@@ -65,7 +69,16 @@ const NewOffer = () => {
   };
 
   const handleEditStep = (newStep: number) => {
-    setStep(newStep);
+    // Adjust edit navigation for cost-based pricing
+    if (pricingPath === "cost" && newStep === 4) {
+      setStep(3); // Skip strategy step and go to cost input
+    } else {
+      setStep(newStep);
+    }
+  };
+
+  const getStepCount = () => {
+    return pricingPath === "cost" ? 5 : 6; // One less step for cost-based pricing
   };
 
   return (
@@ -149,7 +162,7 @@ const NewOffer = () => {
                 )}
                 
                 <div className="mt-6 flex justify-between">
-                  {step > 1 && step < 6 && (
+                  {step > 1 && step < getStepCount() + 1 && (
                     <Button
                       variant="outline"
                       className="border-[#8B8B73] text-[#4A4A3F] hover:bg-gray-50"
