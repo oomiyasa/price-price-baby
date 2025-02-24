@@ -66,7 +66,7 @@ const Index = () => {
         </p>
       </motion.div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+      <div className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -79,7 +79,7 @@ const Index = () => {
               <Link
                 key={tool.id}
                 to={tool.route}
-                className="block no-underline"
+                className="no-underline"
               >
                 <Card className="h-full group bg-white hover:bg-gray-50 transition-colors border border-gray-100 shadow-sm">
                   <CardContent className="p-6 flex items-start gap-4">
@@ -98,6 +98,10 @@ const Index = () => {
           })}
         </motion.div>
       </div>
+
+      <footer className="text-center p-4 text-sm text-gray-600 border-t">
+        Price Price Baby | Oomiyasa LLC
+      </footer>
     </div>
   );
 };
