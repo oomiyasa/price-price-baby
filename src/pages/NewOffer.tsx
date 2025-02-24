@@ -2,14 +2,12 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Building, Users, User, DollarSign, ChartBar, HelpCircle, ArrowDown, ArrowRight, Crown } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Building, Users, User, DollarSign, ChartBar, HelpCircle, ArrowDown, ArrowRight, Crown, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
@@ -240,17 +238,7 @@ const NewOffer = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#F2FCE2] to-[#FEF7CD]/20">
       <div className="container max-w-6xl mx-auto px-4 py-8">
-        <div className="mb-8 flex items-center gap-4">
-          <Button 
-            variant="outline" 
-            className="border-[#8B8B73] text-[#4A4A3F] hover:bg-[#8B8B73] hover:text-white"
-            asChild
-          >
-            <Link to="/">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Tools
-            </Link>
-          </Button>
+        <div className="mb-8 text-center">
           <h1 className="text-3xl font-semibold text-[#4A4A3F]">New Offer Pricing</h1>
         </div>
 
