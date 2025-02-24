@@ -4,7 +4,11 @@ import { useForm } from "react-hook-form";
 import { CACData } from "../../types";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+} from "@/components/ui/card";
 import { NumericInput } from "./NumericInput";
 import { SelectField } from "./SelectField";
 
@@ -29,8 +33,8 @@ export function CACForm({ onSubmit }: CACFormProps) {
   });
 
   return (
-    <Card className="bg-[#FAFAFA]">
-      <CardHeader className="text-center border-b border-gray-100">
+    <Card>
+      <CardHeader>
         <h2 className="text-2xl font-semibold text-[#4A4A3F]">
           Customer Acquisition Cost Calculator
         </h2>
@@ -39,7 +43,7 @@ export function CACForm({ onSubmit }: CACFormProps) {
         </p>
       </CardHeader>
 
-      <CardContent className="pt-6">
+      <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
