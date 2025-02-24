@@ -10,12 +10,14 @@ import NewOffer from "@/pages/NewOffer";
 import Repricing from "@/pages/Repricing";
 import BundlePricing from "@/pages/BundlePricing";
 import BundleConfiguration from "@/pages/BundleConfiguration";
+import MainNav from "@/components/MainNav";
 
 const App = () => {
   return (
     <ToastProvider>
       <Router>
         <div className="min-h-screen bg-[#FAFAFA]">
+          <MainNav />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/cogs" element={<COGS />} />
