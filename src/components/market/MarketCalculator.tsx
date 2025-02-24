@@ -29,9 +29,7 @@ interface MarketSizeFormData {
   averageRevenue: number;
   growthRate: number;
   targetSegmentPercentage: number;
-  targetSegmentCustomers?: number;
   marketSharePercentage: number;
-  expectedCustomerAcquisition?: number;
   yearsProjection: number;
 }
 
@@ -79,16 +77,8 @@ export const MarketCalculator = () => {
     } else if (data.calculationType === 'customers' && data.totalCustomers) {
       // Calculate using customer count method
       tam = data.totalCustomers * data.averageRevenue;
-      if (data.targetSegmentCustomers) {
-        sam = data.targetSegmentCustomers * data.averageRevenue;
-      } else {
-        sam = tam * (data.targetSegmentPercentage / 100);
-      }
-      if (data.expectedCustomerAcquisition) {
-        som = data.expectedCustomerAcquisition * data.averageRevenue;
-      } else {
-        som = sam * (data.marketSharePercentage / 100);
-      }
+      sam = tam * (data.targetSegmentPercentage / 100);
+      som = sam * (data.marketSharePercentage / 100);
     }
 
     const projections = calculateProjections(som, data.growthRate, data.yearsProjection);
@@ -263,35 +253,6 @@ export const MarketCalculator = () => {
 
             <FormField
               control={form.control}
-              name="targetSegmentCustomers"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center gap-2">
-                    Target Segment Customers (Optional)
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
-                      </TooltipTrigger>
-                      <TooltipContent className="max-w-xs">
-                        Specific number of customers in your target segment, if known
-                      </TooltipContent>
-                    </Tooltip>
-                  </FormLabel>
-                  <FormControl>
-                    <Input 
-                      type="number" 
-                      placeholder="Enter segment customers (optional)"
-                      {...field}
-                      onChange={e => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
               name="marketSharePercentage"
               render={({ field }) => (
                 <FormItem>
@@ -310,35 +271,6 @@ export const MarketCalculator = () => {
                     <Input 
                       type="number" 
                       placeholder="Enter market share %"
-                      {...field}
-                      onChange={e => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="expectedCustomerAcquisition"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center gap-2">
-                    Expected Customer Acquisition (Optional)
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
-                      </TooltipTrigger>
-                      <TooltipContent className="max-w-xs">
-                        Specific number of customers you expect to acquire
-                      </TooltipContent>
-                    </Tooltip>
-                  </FormLabel>
-                  <FormControl>
-                    <Input 
-                      type="number" 
-                      placeholder="Enter expected customers (optional)"
                       {...field}
                       onChange={e => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
                     />
