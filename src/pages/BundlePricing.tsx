@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
@@ -41,10 +42,11 @@ const BundlePricing = () => {
       toast.error("Please add at least 2 products to create a bundle");
       return;
     }
+    
+    // Explicitly pass the state object to the next route
     navigate("/bundle-configuration", { 
-      state: { 
-        products
-      } 
+      state: { products },
+      replace: false  // Ensure we're not replacing the current history entry
     });
     toast.success("Proceeding to bundle configuration");
   };
