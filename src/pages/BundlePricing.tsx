@@ -29,6 +29,16 @@ const BundlePricing = () => {
     setProducts(reorderedProducts);
   };
 
+  const handlePrevStep = () => {
+    if (step > 1) {
+      setStep(step - 1);
+    }
+  };
+
+  const handleNextStep = () => {
+    setStep(step + 1);
+  };
+
   const calculateMRR = (products: ProductItem[]) => {
     return products.reduce((total, product) => {
       const price = parseFloat(product.price);
@@ -152,10 +162,10 @@ const BundlePricing = () => {
                   </div>
                 )}
 
-                <div className="mt-6 flex justify-between">
+                <div className="mt-6 flex justify-between gap-4">
                   <Button
                     variant="outline"
-                    onClick={() => setStep(step - 1)}
+                    onClick={handlePrevStep}
                     disabled={step === 1}
                     className="border-[#8B8B73] text-[#4A4A3F] hover:bg-gray-50 disabled:opacity-50"
                   >
@@ -163,7 +173,7 @@ const BundlePricing = () => {
                     Previous
                   </Button>
                   <Button
-                    onClick={() => setStep(step + 1)}
+                    onClick={handleNextStep}
                     className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
                   >
                     Next

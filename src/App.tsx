@@ -34,11 +34,6 @@ function App() {
                   Home
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/bundle-pricing" className="cursor-pointer">
-                  Bundle Pricing
-                </Link>
-              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -58,6 +53,6 @@ function App() {
       </div>
     </Router>
   );
-};
+}
 
 export default App;
