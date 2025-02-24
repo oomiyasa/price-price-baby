@@ -15,6 +15,9 @@ export const BundleSummary = ({
   blendedMargin,
   discountedBlendedMargin,
 }: BundleSummaryProps) => {
+  const marginImpact = blendedMargin && discountedBlendedMargin ? 
+    blendedMargin - discountedBlendedMargin : null;
+
   return (
     <>
       <div className="grid grid-cols-2 gap-4 pt-4">
@@ -62,8 +65,8 @@ export const BundleSummary = ({
               </Tooltip>
             </div>
             <div className="text-xl font-semibold text-green-800">
-              {blendedMargin && discountedBlendedMargin ? (
-                `${(discountedBlendedMargin - blendedMargin).toFixed(1)}%`
+              {discountedBlendedMargin && blendedMargin ? (
+                `${discountedBlendedMargin.toFixed(1)}% (${marginImpact && marginImpact > 0 ? "-" : ""}${Math.abs(marginImpact).toFixed(1)}%)`
               ) : 'N/A'}
             </div>
           </div>
