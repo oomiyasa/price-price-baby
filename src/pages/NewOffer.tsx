@@ -1,4 +1,3 @@
-
 import { useState, KeyboardEvent, useRef } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -97,7 +96,6 @@ const NewOffer = () => {
       if (nextRef?.current) {
         nextRef.current.focus();
       } else {
-        // If no next input field, advance to next step
         setStep(step + 1);
       }
     }
@@ -116,6 +114,15 @@ const NewOffer = () => {
   const handlePricingStrategySelect = (strategy: PricingStrategy) => {
     setPricingStrategy(strategy);
     setStep(4);
+  };
+
+  const handlePreviousStep = () => {
+    if (step > 1) {
+      setStep(step - 1);
+      if (step === 4) setPricingStrategy(null);
+      if (step === 3) setPricingPath(null);
+      if (step === 2) setCompanyType(null);
+    }
   };
 
   const renderCostBasedForm = () => (
@@ -357,7 +364,7 @@ const NewOffer = () => {
                   <Button
                     variant="outline"
                     className="border-[#8B8B73] text-[#4A4A3F] hover:bg-[#8B8B73] hover:text-white"
-                    onClick={() => setStep(step - 1)}
+                    onClick={handlePreviousStep}
                   >
                     <ArrowLeft className="h-4 w-4 mr-2" />
                     Previous
