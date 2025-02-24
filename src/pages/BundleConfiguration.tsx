@@ -1,9 +1,10 @@
+
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { useNavigate, useLocation, Navigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import { ProductItem } from "@/types/bundle";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -25,11 +26,6 @@ const BundleConfiguration = () => {
   const [discountedTotalAnnual, setDiscountedTotalAnnual] = useState(0);
   const [blendedMargin, setBlendedMargin] = useState<number | null>(null);
   const [discountedBlendedMargin, setDiscountedBlendedMargin] = useState<number | null>(null);
-
-  // If no products in state, redirect back to bundle-pricing
-  if (!location.state?.products) {
-    return <Navigate to="/bundle-pricing" replace />;
-  }
 
   useEffect(() => {
     if (location.state?.products) {
@@ -66,10 +62,8 @@ const BundleConfiguration = () => {
     }, 0);
     setDiscountedTotalAnnual(discountedTotal);
 
-    // Calculate original blended margin
     setBlendedMargin(calculateBlendedMargin(products));
 
-    // Calculate discounted blended margin by applying discounts to the annual values
     const discountedProducts = products.map(product => ({
       ...product,
       price: (parseFloat(product.price) * (1 - getDiscountForProduct(product.id) / 100)).toString()
@@ -80,6 +74,26 @@ const BundleConfiguration = () => {
   const savingsAmount = originalTotalAnnual - discountedTotalAnnual;
   const savingsPercentage = originalTotalAnnual > 0 ? 
     (savingsAmount / originalTotalAnnual) * 100 : 0;
+
+  if (!products.length) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA]">
+        <Card className="w-full max-w-md mx-4">
+          <CardContent className="p-6">
+            <h2 className="text-xl font-semibold text-[#4A4A3F] mb-4">No Products Selected</h2>
+            <p className="text-[#6B6B5F] mb-6">Please add products to configure your bundle.</p>
+            <Button
+              onClick={() => navigate("/bundle-pricing")}
+              className="w-full bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Return to Products
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <TooltipProvider>
