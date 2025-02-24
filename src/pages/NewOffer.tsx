@@ -59,8 +59,18 @@ const NewOffer = () => {
     }
   };
 
-  const handleFinalNext = () => {
-    setStep(6);
+  const handleMarginNext = () => {
+    // Here you would typically handle the final submission
+    console.log('Final data:', {
+      companyType,
+      pricingPath,
+      pricingStrategy,
+      costPerUnit,
+      marketPrice,
+      competitorLow,
+      competitorHigh,
+      desiredMargin
+    });
   };
 
   return (
@@ -80,16 +90,14 @@ const NewOffer = () => {
                    step === 1 ? "Select Your Company Type" : 
                    step === 2 ? "Choose Your Pricing Path" :
                    step === 3 ? (pricingPath === "cost" ? "Cost-Based Pricing Details" : "Market-Based Pricing Details") :
-                   step === 4 ? "Select Your Pricing Strategy" :
-                   "Review Your Pricing Strategy"}
+                   "Select Your Pricing Strategy"}
                 </CardTitle>
                 <CardDescription className="text-[#6B6B5F]">
                   {step === 5 ? "Set your target margin based on your business goals and industry benchmarks" : 
                    step === 1 ? "Choose the option that best describes your business" : 
                    step === 2 ? "Select the pricing strategy that aligns with your goals" :
                    step === 3 ? (pricingPath === "cost" ? "Enter your costs to calculate optimal pricing" : "Enter market research data to determine competitive pricing") :
-                   step === 4 ? "Choose how you want to position your pricing relative to the market" :
-                   "Review and confirm your pricing strategy"}
+                   "Choose how you want to position your pricing relative to the market"}
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-6">
@@ -148,10 +156,10 @@ const NewOffer = () => {
                       onClick={
                         step === 3 ? (pricingPath === "cost" ? handleCostBasedNext : handleMarketBasedNext) :
                         step === 4 ? () => setStep(5) :
-                        handleFinalNext
+                        handleMarginNext
                       }
                     >
-                      Next
+                      {step === 5 ? "Finish" : "Next"}
                       <ArrowRight className="h-4 w-4 ml-2" />
                     </Button>
                   )}
