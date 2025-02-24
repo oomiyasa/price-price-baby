@@ -1,4 +1,3 @@
-
 export interface RevenueData {
   monthlyRevenue: number;
   growthRate: number;
@@ -66,4 +65,22 @@ export interface ChurnResults {
   netRevenueLoss: number;
   benchmarkComparison: "good" | "average" | "risk";
   industryData: IndustryBenchmark;
+}
+
+export interface LTVData {
+  averageRevenue: number;
+  churnRate: number;
+  profitMargin: number;
+  revenueGrowth: number;
+  crossSellRevenue?: number;
+  referralRate?: number;
+  timePeriod: "monthly" | "annually";
+}
+
+export interface LTVResults {
+  basicLTV: number;
+  adjustedLTV: number;
+  netProfitLTV: number;
+  growthAdjustedLTV: number;
+  referralValue: number;
 }
