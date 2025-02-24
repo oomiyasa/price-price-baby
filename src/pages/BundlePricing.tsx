@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
@@ -154,19 +153,18 @@ const BundlePricing = () => {
                 )}
 
                 <div className="mt-6 flex justify-between">
-                  {step > 1 && (
-                    <Button
-                      variant="outline"
-                      onClick={() => setStep(step - 1)}
-                      className="border-[#8B8B73] text-[#4A4A3F] hover:bg-gray-50"
-                    >
-                      <ArrowLeft className="h-4 w-4 mr-2" />
-                      Previous
-                    </Button>
-                  )}
+                  <Button
+                    variant="outline"
+                    onClick={() => setStep(step - 1)}
+                    disabled={step === 1}
+                    className="border-[#8B8B73] text-[#4A4A3F] hover:bg-gray-50 disabled:opacity-50"
+                  >
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Previous
+                  </Button>
                   <Button
                     onClick={() => setStep(step + 1)}
-                    className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F] ml-auto"
+                    className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
                   >
                     Next
                     <ArrowRight className="h-4 w-4 ml-2" />
