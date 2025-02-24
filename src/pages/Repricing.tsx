@@ -8,7 +8,25 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { CurrentPriceForm } from "@/components/repricing/CurrentPriceForm";
 import { PerformanceForm } from "@/components/repricing/PerformanceForm";
 import { MarketChangesForm } from "@/components/repricing/MarketChangesForm";
+import { DifferentiationForm } from "@/components/repricing/DifferentiationForm";
 import { SalesPerformance, RepricingData } from "@/types/repricing";
+
+interface Feature {
+  id: string;
+  name: string;
+  checked: boolean;
+}
+
+const defaultFeatures: Feature[] = [
+  { id: "quality", name: "Superior Quality", checked: false },
+  { id: "service", name: "Better Service", checked: false },
+  { id: "features", name: "More Features", checked: false },
+  { id: "delivery", name: "Faster Delivery", checked: false },
+  { id: "support", name: "24/7 Support", checked: false },
+  { id: "customization", name: "Customization Options", checked: false },
+  { id: "warranty", name: "Better Warranty", checked: false },
+  { id: "integration", name: "Easy Integration", checked: false }
+];
 
 const Repricing = () => {
   const [step, setStep] = useState(1);
@@ -17,6 +35,8 @@ const Repricing = () => {
   const [salesPerformance, setSalesPerformance] = useState<SalesPerformance>(0);
   const [competitorPrices, setCompetitorPrices] = useState<"increased" | "decreased" | "mixed" | "unchanged" | null>(null);
   const [marketDemand, setMarketDemand] = useState<"growing" | "shrinking" | "stable" | null>(null);
+  const [features, setFeatures] = useState<Feature[]>(defaultFeatures);
+  const [valueProposition, setValueProposition] = useState("");
   
   const handleNext = () => {
     if (step < 5) {
@@ -104,6 +124,14 @@ const Repricing = () => {
                     onCompetitorPricesChange={setCompetitorPrices}
                     marketDemand={marketDemand}
                     onMarketDemandChange={setMarketDemand}
+                  />
+                )}
+                {step === 4 && (
+                  <DifferentiationForm
+                    selectedFeatures={features}
+                    onFeatureChange={setFeatures}
+                    valueProposition={valueProposition}
+                    onValuePropositionChange={setValueProposition}
                   />
                 )}
                 {/* Additional steps will be implemented here */}
