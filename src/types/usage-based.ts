@@ -9,7 +9,6 @@ export type CurrentPricingForm = {
   averageDiscount?: string;
   annualChurnRate?: string;
   annualPurchases?: string;
-  usagePattern?: "daily" | "weekly" | "monthly" | "occasional";
   unitOfMeasure?: "apiCalls" | "storage" | "activeUsers" | "messagesSent" | "computeHours" | "bandwidth" | "outputOutcome" | "custom";
   averageMonthlyUsage?: string;
   usageVariance?: string;

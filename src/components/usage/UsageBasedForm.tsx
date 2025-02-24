@@ -34,7 +34,7 @@ export const UsageBasedForm = () => {
 
   const onSubmit = (data: CurrentPricingForm) => {
     console.log(data);
-    if (step < 3) {
+    if (step < 2) {
       setStep(step + 1);
     }
   };
@@ -98,57 +98,6 @@ export const UsageBasedForm = () => {
   );
 
   const renderStep2 = () => (
-    <div className="space-y-6">
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium text-[#4A4A3F]">
-          Expected Usage Pattern
-        </h3>
-        <FormField
-          control={form.control}
-          name="usagePattern"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>How frequently will customers use your product?</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select usage pattern" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="daily">Multiple times per day</SelectItem>
-                  <SelectItem value="weekly">Few times per week</SelectItem>
-                  <SelectItem value="monthly">Few times per month</SelectItem>
-                  <SelectItem value="occasional">Occasional/Sporadic use</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
-
-      <div className="flex justify-between">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => setStep(1)}
-          className="border-[#8B8B73] text-[#8B8B73] hover:bg-[#8B8B73] hover:text-white"
-        >
-          Previous Step
-        </Button>
-        <Button
-          type="button"
-          onClick={form.handleSubmit(onSubmit)}
-          className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
-        >
-          Next Step
-        </Button>
-      </div>
-    </div>
-  );
-
-  const renderStep3 = () => (
     <div className="space-y-6">
       <div className="space-y-4">
         <h3 className="text-lg font-medium text-[#4A4A3F]">
@@ -268,7 +217,7 @@ export const UsageBasedForm = () => {
         <Button
           type="button"
           variant="outline"
-          onClick={() => setStep(2)}
+          onClick={() => setStep(1)}
           className="border-[#8B8B73] text-[#8B8B73] hover:bg-[#8B8B73] hover:text-white"
         >
           Previous Step
@@ -289,7 +238,6 @@ export const UsageBasedForm = () => {
       <form className="space-y-6">
         {step === 1 && renderStep1()}
         {step === 2 && renderStep2()}
-        {step === 3 && renderStep3()}
       </form>
     </Form>
   );
