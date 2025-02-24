@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#F2FCE2] to-[#FEF7CD]/20">
       {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -11,10 +11,10 @@ const Index = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="flex flex-col items-center justify-center px-6 py-24"
       >
-        <h1 className="text-5xl md:text-6xl font-semibold text-gray-900 tracking-tight mb-4 text-center">
+        <h1 className="text-5xl md:text-6xl font-semibold text-[#4A4A3F] tracking-tight mb-4 text-center">
           Price Price Baby
         </h1>
-        <p className="text-xl text-gray-600 max-w-md mx-auto text-center mb-12">
+        <p className="text-xl text-[#6B6B5F] max-w-md mx-auto text-center mb-12">
           Simplifying pricing strategy
         </p>
       </motion.div>
