@@ -42,7 +42,7 @@ export const LTVCalculator = () => {
   const form = useForm<LTVData>({
     defaultValues: {
       averageRevenue: undefined,
-      customerLifespan: undefined,
+      churnRate: undefined,
       profitMargin: undefined,
       revenueGrowth: undefined,
       crossSellRevenue: undefined,
@@ -56,9 +56,12 @@ export const LTVCalculator = () => {
       ? data.averageRevenue * 12 
       : data.averageRevenue;
 
-    const basicLTV = annualRevenue * data.customerLifespan;
+    // Calculate customer lifespan in years based on churn rate
+    const customerLifespan = 1 / (data.churnRate / 100);
     
-    const crossSellValue = data.crossSellRevenue * data.customerLifespan;
+    const basicLTV = annualRevenue * customerLifespan;
+    
+    const crossSellValue = data.crossSellRevenue * customerLifespan;
     const adjustedLTV = basicLTV + crossSellValue;
     
     const netProfitLTV = adjustedLTV * (data.profitMargin / 100);
@@ -158,24 +161,24 @@ export const LTVCalculator = () => {
 
                 <FormField
                   control={form.control}
-                  name="customerLifespan"
+                  name="churnRate"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="flex items-center gap-2">
-                        Customer Lifespan (Years)
+                        Annual Churn Rate (%)
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
                           </TooltipTrigger>
                           <TooltipContent className="max-w-xs">
-                            Average number of years a customer stays with your business
+                            Percentage of customers who leave annually
                           </TooltipContent>
                         </Tooltip>
                       </FormLabel>
                       <FormControl>
                         <Input
                           type="number"
-                          placeholder="Enter lifespan in years"
+                          placeholder="Enter churn rate"
                           {...field}
                           onChange={(e) =>
                             field.onChange(e.target.value ? Number(e.target.value) : undefined)

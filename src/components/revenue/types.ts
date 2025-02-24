@@ -44,7 +44,7 @@ export interface ChurnResults {
 
 export interface LTVData {
   averageRevenue: number;
-  customerLifespan: number;
+  churnRate: number;
   profitMargin: number;
   revenueGrowth: number;
   crossSellRevenue: number;
