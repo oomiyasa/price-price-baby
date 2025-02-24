@@ -164,6 +164,11 @@ export const RecommendationsForm = ({
         currentPrice={currentPrice}
         trend={trend}
         volatility={volatility}
+        historicalPrices={historicalPrices.map((price, index) => ({
+          price,
+          timeAgo: 1,
+          timeUnit: 'months'
+        }))}
       />
 
       <div className="space-y-6">
