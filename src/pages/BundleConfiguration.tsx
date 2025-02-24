@@ -65,8 +65,15 @@ const BundleConfiguration = () => {
     }, 0);
     setDiscountedTotalAnnual(discountedTotal);
 
-    setBlendedMargin(calculateBlendedMargin(products, discounts, false));
-    setDiscountedBlendedMargin(calculateBlendedMargin(products, discounts, true));
+    // Calculate original blended margin
+    setBlendedMargin(calculateBlendedMargin(products));
+
+    // Calculate discounted blended margin by applying discounts to the annual values
+    const discountedProducts = products.map(product => ({
+      ...product,
+      price: (parseFloat(product.price) * (1 - getDiscountForProduct(product.id) / 100)).toString()
+    }));
+    setDiscountedBlendedMargin(calculateBlendedMargin(discountedProducts));
   }, [products, discounts]);
 
   const savingsAmount = originalTotalAnnual - discountedTotalAnnual;

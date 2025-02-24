@@ -1,4 +1,3 @@
-
 import { ProductItem } from "@/types/bundle";
 
 export const calculateMRR = (products: ProductItem[]): number => {
@@ -83,6 +82,59 @@ export const calculateARR = (products: ProductItem[]): number => {
         return total;
     }
   }, 0);
+};
+
+export const calculateAnnualValue = (product: ProductItem): number => {
+  const price = parseFloat(product.price);
+  
+  switch (product.chargeModel) {
+    case "one-time":
+      return price;
+    
+    case "subscription":
+      if (product.billingPeriod === "annually") {
+        return price;
+      } else if (product.billingPeriod === "monthly") {
+        return price * 12;
+      }
+      return 0;
+    
+    case "usage":
+      const units = parseInt(product.usageUnits || "0");
+      let yearlyUnits;
+      
+      switch (product.usagePeriod) {
+        case "day":
+          yearlyUnits = units * 365;
+          break;
+        case "month":
+          yearlyUnits = units * 12;
+          break;
+        case "year":
+          yearlyUnits = units;
+          break;
+        default:
+          yearlyUnits = 0;
+      }
+      
+      return price * yearlyUnits;
+    
+    default:
+      return 0;
+  }
+};
+
+export const formatPriceWithFrequency = (product: ProductItem): string => {
+  switch (product.chargeModel) {
+    case "one-time":
+      return " one-time";
+    case "subscription":
+      return product.billingPeriod === "monthly" ? "/month" : "/year";
+    case "usage":
+      return `/${product.usagePeriod || 'unit'}`;
+    default:
+      return "";
+  }
 };
 
 export const calculateBlendedMargin = (products: ProductItem[]): number | null => {
