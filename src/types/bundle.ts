@@ -10,4 +10,5 @@ export interface ProductItem {
   billingPeriod?: BillingPeriod;
   usageUnits?: string;
   usagePeriod?: string;
+  grossMargin?: string;
 }

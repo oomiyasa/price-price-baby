@@ -11,7 +11,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Trash2, GripVertical } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Plus, Trash2, GripVertical, Info } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 interface ProductItemsFormProps {
@@ -128,7 +134,33 @@ export const ProductItemsForm = ({
                 placeholder="Enter price"
               />
             </div>
-            {newProduct.chargeModel === "subscription" && (
+            <div>
+              <div className="flex items-center gap-2">
+                <Label htmlFor="grossMargin">Gross Margin %</Label>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="h-4 w-4 text-gray-400" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Optional: Enter the gross margin percentage for this product</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+              <Input
+                id="grossMargin"
+                type="number"
+                min="0"
+                max="100"
+                value={newProduct.grossMargin || ""}
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, grossMargin: e.target.value })
+                }
+                placeholder="Enter margin % (optional)"
+              />
+            </div>
+          </div>
+          {newProduct.chargeModel === "subscription" && (
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="billingPeriod">Billing Period</Label>
                 <Select
@@ -146,8 +178,8 @@ export const ProductItemsForm = ({
                   </SelectContent>
                 </Select>
               </div>
-            )}
-          </div>
+            </div>
+          )}
           {newProduct.chargeModel === "usage" && (
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -216,7 +248,7 @@ export const ProductItemsForm = ({
                       <div {...provided.dragHandleProps}>
                         <GripVertical className="h-5 w-5 text-gray-400" />
                       </div>
-                      <div className="flex-1 grid grid-cols-2 gap-4">
+                      <div className="flex-1 grid grid-cols-3 gap-4">
                         <div>
                           <span className="block text-sm font-medium text-gray-700">
                             {product.name}
@@ -225,6 +257,11 @@ export const ProductItemsForm = ({
                         <div>
                           <span className="block text-sm font-medium text-gray-700">
                             {formatPriceWithFrequency(product)}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="block text-sm font-medium text-gray-700">
+                            {product.grossMargin ? `${product.grossMargin}% margin` : ''}
                           </span>
                         </div>
                       </div>

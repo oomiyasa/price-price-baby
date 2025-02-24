@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
@@ -129,6 +130,40 @@ const BundlePricing = () => {
     }, 0);
   };
 
+  const calculateBlendedMargin = (products: ProductItem[]) => {
+    const totalRevenue = calculateARR(products);
+    if (totalRevenue === 0) return null;
+
+    const weightedMargins = products.reduce((total, product) => {
+      if (!product.grossMargin) return total;
+      
+      const price = parseFloat(product.price);
+      const margin = parseFloat(product.grossMargin);
+      let annualRevenue;
+
+      switch (product.chargeModel) {
+        case "one-time":
+          annualRevenue = price;
+          break;
+        case "subscription":
+          annualRevenue = product.billingPeriod === "annually" ? price : price * 12;
+          break;
+        case "usage":
+          const units = parseInt(product.usageUnits || "0");
+          const yearlyUnits = product.usagePeriod === "day" ? units * 365 :
+                             product.usagePeriod === "month" ? units * 12 : units;
+          annualRevenue = price * yearlyUnits;
+          break;
+        default:
+          annualRevenue = 0;
+      }
+
+      return total + (margin * (annualRevenue / totalRevenue));
+    }, 0);
+
+    return weightedMargins;
+  };
+
   return (
     <TooltipProvider>
       <div className="min-h-screen flex flex-col bg-[#FAFAFA]">
@@ -151,7 +186,7 @@ const BundlePricing = () => {
                 
                 {products.length > 0 && (
                   <div className="mt-8 pt-6 border-t border-gray-100">
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-3 gap-4">
                       <div className="p-4 bg-gray-50 rounded-md">
                         <div className="text-sm text-gray-600">Monthly Recurring Revenue (MRR)</div>
                         <div className="text-2xl font-semibold text-[#4A4A3F]">
@@ -162,6 +197,12 @@ const BundlePricing = () => {
                         <div className="text-sm text-gray-600">Annual Recurring Revenue (ARR)</div>
                         <div className="text-2xl font-semibold text-[#4A4A3F]">
                           ${calculateARR(products).toLocaleString('en-US', { maximumFractionDigits: 2 })}
+                        </div>
+                      </div>
+                      <div className="p-4 bg-gray-50 rounded-md">
+                        <div className="text-sm text-gray-600">Blended Gross Margin</div>
+                        <div className="text-2xl font-semibold text-[#4A4A3F]">
+                          {calculateBlendedMargin(products)?.toFixed(1)}%
                         </div>
                       </div>
                     </div>
