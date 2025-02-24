@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronRight, DollarSign, RefreshCw, Calculator, Box, Percent, LineChart } from "lucide-react";
+import { ChevronRight, DollarSign, RefreshCw, Calculator, Box, Percent, ChartBar } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const pricingTools = [
@@ -41,11 +41,11 @@ const pricingTools = [
     icon: Percent
   },
   {
-    id: "metrics",
-    title: "Business Metrics Calculators",
-    description: "Essential calculators for recurring revenue businesses",
-    route: "/metrics",
-    icon: LineChart
+    id: "market-size",
+    title: "Market Sizing",
+    description: "Calculate total addressable market and segment size",
+    route: "/market-size",
+    icon: ChartBar
   }
 ];
 
@@ -99,7 +99,7 @@ const Index = () => {
         </motion.div>
       </div>
 
-      <footer className="py-4 px-6 text-center text-gray-400 text-sm">
+      <footer className="py-4 px-6 text-center text-gray-400 text-sm mt-auto">
         Price Price Baby | Oomiyasa LLC
       </footer>
     </div>
