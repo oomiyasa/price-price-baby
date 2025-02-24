@@ -29,30 +29,8 @@ const MainNav = () => {
               Home
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/cogs" className="cursor-pointer">
-              COGS Calculator
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/new-offer" className="cursor-pointer">
-              New Offer
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/repricing" className="cursor-pointer">
-              Repricing
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/bundle-pricing" className="cursor-pointer">
-              Bundle Pricing
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/bundle-configuration" className="cursor-pointer">
-              Bundle Configuration
-            </Link>
+          <DropdownMenuItem>
+            Login
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
