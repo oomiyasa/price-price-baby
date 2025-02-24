@@ -2,13 +2,13 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
-import { CACResults } from "../types";
+import type { CACResults as CACResultsType } from "../types";
 
 interface CACResultsProps {
-  results: CACResults;
+  results: CACResultsType;
 }
 
-export const CACResults: React.FC<CACResultsProps> = ({ results }) => {
+export const CACResultsDisplay: React.FC<CACResultsProps> = ({ results }) => {
   const pieData = [
     { name: "Marketing", value: results.marketingSplit },
     { name: "Sales", value: results.salesSplit },
@@ -16,7 +16,7 @@ export const CACResults: React.FC<CACResultsProps> = ({ results }) => {
 
   const COLORS = ["#8B8B73", "#4A4A3F"];
 
-  const getEfficiencyColor = (efficiency: CACResults["efficiency"]) => {
+  const getEfficiencyColor = (efficiency: CACResultsType["efficiency"]) => {
     switch (efficiency) {
       case "excellent":
         return "text-green-600";

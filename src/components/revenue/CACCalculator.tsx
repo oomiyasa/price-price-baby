@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { CACData, CACResults } from "./types";
 import { CACForm } from "./components/CACForm";
-import { CACResults as CACResultsComponent } from "./components/CACResults";
+import { CACResultsDisplay } from "./components/CACResults";
 
 export const CACCalculator = () => {
   const [results, setResults] = useState<CACResults | null>(null);
@@ -42,7 +42,7 @@ export const CACCalculator = () => {
       </h1>
 
       <CACForm onSubmit={onSubmit} />
-      {results && <CACResultsComponent results={results} />}
+      {results && <CACResultsDisplay results={results} />}
 
       <footer className="text-center p-4 text-sm text-gray-600 border-t">
         Price Price Baby | Oomiyasa LLC
