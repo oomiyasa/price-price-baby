@@ -25,7 +25,7 @@ export const PerformanceForm = ({
   const getSalesPerformanceLabel = (value: number) => {
     if (value <= -30) return "Significantly Decreased";
     if (value <= -10) return "Decreased";
-    if (value <= 10) return "Stable";
+    if (value <= 10) return "No Change";
     if (value <= 30) return "Increased";
     return "Significantly Increased";
   };
@@ -80,7 +80,7 @@ export const PerformanceForm = ({
         <div className="space-y-6">
           <div className="flex justify-between text-sm text-[#6B6B5F]">
             <span>Decreased</span>
-            <span>Stable</span>
+            <span></span>
             <span>Increased</span>
           </div>
           
@@ -103,14 +103,14 @@ export const PerformanceForm = ({
             <h3 className="text-lg font-medium text-[#4A4A3F] mb-3">Performance Summary</h3>
             <div className="space-y-2 text-sm text-[#6B6B5F]">
               <p>
-                • Sales have {getSalesPerformanceLabel(salesPerformance).toLowerCase()} 
+                • Sales have {getSalesPerformanceLabel(salesPerformance).toLowerCase()} {' '}
                 {Math.abs(salesPerformance)}% since last price change
               </p>
               <p>
                 • This suggests {
                   salesPerformance <= -30 ? "significant pricing pressure - consider price reduction"
                   : salesPerformance <= -10 ? "some pricing pressure - review competitive position"
-                  : salesPerformance <= 10 ? "stable market position - minor adjustments may be needed"
+                  : salesPerformance <= 10 ? "neutral market position - minor adjustments may be needed"
                   : salesPerformance <= 30 ? "strong market position - consider strategic price increase"
                   : "excellent market position - significant room for price optimization"
                 }
