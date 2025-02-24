@@ -86,21 +86,6 @@ const NewOffer = () => {
   const [competitorHigh, setCompetitorHigh] = useState("");
   const [demandTrend, setDemandTrend] = useState("stable");
 
-  const marketPriceRef = useRef<HTMLInputElement>(null);
-  const competitorLowRef = useRef<HTMLInputElement>(null);
-  const competitorHighRef = useRef<HTMLInputElement>(null);
-
-  const handleEnterKey = (e: KeyboardEvent<HTMLInputElement>, nextRef?: React.RefObject<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      if (nextRef?.current) {
-        nextRef.current.focus();
-      } else {
-        setStep(step + 1);
-      }
-    }
-  };
-
   const handleCompanySelect = (type: CompanyType) => {
     setCompanyType(type);
     setStep(2);
@@ -149,18 +134,9 @@ const NewOffer = () => {
               setCostPerUnit(value);
             }
           }}
-          onKeyDown={(e) => handleEnterKey(e)}
           className="border-[#8B8B73]"
           placeholder="0.00"
         />
-      </div>
-      <div className="flex justify-end">
-        <Button 
-          className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
-          onClick={() => setStep(4)}
-        >
-          Next
-        </Button>
       </div>
     </div>
   );
@@ -183,14 +159,12 @@ const NewOffer = () => {
           id="marketPrice"
           type="text"
           value={marketPrice}
-          ref={marketPriceRef}
           onChange={(e) => {
             const value = e.target.value.replace(/[^\d.]/g, '');
             if (value === '' || /^\d*\.?\d*$/.test(value)) {
               setMarketPrice(value);
             }
           }}
-          onKeyDown={(e) => handleEnterKey(e, competitorLowRef)}
           className="border-[#8B8B73]"
           placeholder="0.00"
         />
@@ -203,14 +177,12 @@ const NewOffer = () => {
             id="competitorLow"
             type="text"
             value={competitorLow}
-            ref={competitorLowRef}
             onChange={(e) => {
               const value = e.target.value.replace(/[^\d.]/g, '');
               if (value === '' || /^\d*\.?\d*$/.test(value)) {
                 setCompetitorLow(value);
               }
             }}
-            onKeyDown={(e) => handleEnterKey(e, competitorHighRef)}
             className="border-[#8B8B73]"
             placeholder="0.00"
           />
@@ -221,26 +193,16 @@ const NewOffer = () => {
             id="competitorHigh"
             type="text"
             value={competitorHigh}
-            ref={competitorHighRef}
             onChange={(e) => {
               const value = e.target.value.replace(/[^\d.]/g, '');
               if (value === '' || /^\d*\.?\d*$/.test(value)) {
                 setCompetitorHigh(value);
               }
             }}
-            onKeyDown={(e) => handleEnterKey(e)}
             className="border-[#8B8B73]"
             placeholder="0.00"
           />
         </div>
-      </div>
-      <div className="flex justify-end">
-        <Button 
-          className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
-          onClick={() => setStep(4)}
-        >
-          Next
-        </Button>
       </div>
     </div>
   );
@@ -386,9 +348,9 @@ const NewOffer = () => {
                     Previous
                   </Button>
                 )}
-                {(step === 3) && (
-                  <Button
-                    className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
+                {step === 3 && (
+                  <Button 
+                    className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F] ml-auto"
                     onClick={() => setStep(4)}
                   >
                     Next
