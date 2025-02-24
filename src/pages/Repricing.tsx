@@ -126,6 +126,7 @@ const Repricing = () => {
                 {step === 5 && (
                   <RecommendationsForm
                     currentPrice={currentPrice}
+                    historicalPrices={historicalPrices}
                     salesPerformance={salesPerformance}
                     competitorPrices={competitorPrices}
                     marketDemand={marketDemand}

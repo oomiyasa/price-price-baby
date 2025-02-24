@@ -5,13 +5,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Label } from "@/components/ui/label";
-import { HelpCircle, Edit2 } from "lucide-react";
+import { HelpCircle, Edit2, TrendingDown, TrendingUp, Minus } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface RecommendationsFormProps {
   currentPrice: string;
+  historicalPrices?: string[];
   salesPerformance: number;
   competitorPrices: "increased" | "decreased" | "mixed" | "unchanged" | null;
   marketDemand: "growing" | "shrinking" | "stable" | null;
@@ -32,6 +33,7 @@ interface RecommendationsFormProps {
 
 export const RecommendationsForm = ({
   currentPrice,
+  historicalPrices = [],
   salesPerformance,
   competitorPrices,
   marketDemand,
@@ -45,38 +47,83 @@ export const RecommendationsForm = ({
   },
   onWeightsChange = () => {},
 }: RecommendationsFormProps) => {
+  const analyzePriceTrend = () => {
+    if (historicalPrices.length < 2) return { trend: 0, volatility: 0 };
+    
+    const validPrices = [...historicalPrices.map(p => parseFloat(p)), parseFloat(currentPrice)]
+      .filter(p => !isNaN(p));
+    
+    if (validPrices.length < 2) return { trend: 0, volatility: 0 };
+
+    // Calculate percentage changes between consecutive prices
+    const changes = validPrices.slice(1).map((price, i) => 
+      ((price - validPrices[i]) / validPrices[i]) * 100
+    );
+
+    // Calculate average trend
+    const trend = changes.reduce((sum, change) => sum + change, 0) / changes.length;
+    
+    // Calculate volatility (standard deviation of changes)
+    const meanChange = trend;
+    const squaredDiffs = changes.map(change => Math.pow(change - meanChange, 2));
+    const volatility = Math.sqrt(squaredDiffs.reduce((sum, diff) => sum + diff, 0) / changes.length);
+
+    return { trend, volatility };
+  };
+
   const calculateSalesImpact = () => {
     // Returns a percentage adjustment based on sales performance
     if (salesPerformance <= -30) return -10;
     if (salesPerformance <= -10) return -5;
     if (salesPerformance >= 30) return 10;
     if (salesPerformance >= 10) return 5;
-    return 0;
+    return (salesPerformance / 10); // Linear impact for small changes
   };
 
   const calculateMarketImpact = () => {
     let impact = 0;
+    const { trend, volatility } = analyzePriceTrend();
     
-    // Competitor prices impact
+    // Base market impact
     if (competitorPrices === "increased") impact += 5;
     if (competitorPrices === "decreased") impact -= 5;
-    
-    // Market demand impact
     if (marketDemand === "growing") impact += 5;
     if (marketDemand === "shrinking") impact -= 5;
+    
+    // Adjust impact based on price trend correlation
+    if (Math.abs(trend) > 2) {
+      // If prices have been trending up/down, adjust market impact
+      const trendFactor = Math.min(Math.abs(trend), 5) / 5; // Normalize to max ±1
+      impact *= (1 + trendFactor);
+    }
+
+    // Reduce confidence (impact) if price history is volatile
+    if (volatility > 5) {
+      impact *= (1 - Math.min(volatility, 10) / 20); // Reduce impact by up to 50% for high volatility
+    }
     
     return impact;
   };
 
   const calculatePositioningImpact = () => {
     let impact = 0;
+    const { trend } = analyzePriceTrend();
     
-    // Uniqueness impact
+    // Base positioning impact
     if (uniqueness === "high") impact += 5;
     if (uniqueness === "low") impact -= 5;
     
     // Value perception impact (converts 0-100 scale to -5 to +5)
-    impact += ((valuePerception - 50) / 10);
+    const perceptionImpact = ((valuePerception - 50) / 10);
+    
+    // Adjust perception based on price trend
+    // If prices have been rising but perception is high, or vice versa, strengthen the impact
+    if (Math.abs(trend) > 2) {
+      const trendAlignment = trend * perceptionImpact > 0 ? 1.2 : 0.8;
+      impact = (impact + perceptionImpact) * trendAlignment;
+    } else {
+      impact = impact + perceptionImpact;
+    }
     
     return impact;
   };
@@ -85,19 +132,31 @@ export const RecommendationsForm = ({
     const basePrice = parseFloat(currentPrice);
     if (isNaN(basePrice)) return { min: 0, max: 0 };
 
+    const { volatility } = analyzePriceTrend();
+    
     const salesImpact = calculateSalesImpact() * (weights.salesPerformance / 100);
     const marketImpact = calculateMarketImpact() * (weights.marketConditions / 100);
     const positioningImpact = calculatePositioningImpact() * (weights.positioning / 100);
     
     const totalImpact = salesImpact + marketImpact + positioningImpact;
     
+    // Adjust range based on price history volatility
+    const baseRange = 2 + (volatility / 4); // Increase range if prices have been volatile
+    
     return {
-      min: basePrice * (1 + (totalImpact - 2) / 100),
-      max: basePrice * (1 + (totalImpact + 2) / 100),
+      min: basePrice * (1 + (totalImpact - baseRange) / 100),
+      max: basePrice * (1 + (totalImpact + baseRange) / 100),
+      impacts: {
+        sales: salesImpact,
+        market: marketImpact,
+        positioning: positioningImpact,
+        total: totalImpact
+      }
     };
   };
 
   const recommendation = calculateRecommendation();
+  const { trend, volatility } = analyzePriceTrend();
 
   const formatPrice = (price: number) => {
     return price.toFixed(2);
@@ -111,6 +170,12 @@ export const RecommendationsForm = ({
     return "neutral";
   };
 
+  const getTrendIcon = () => {
+    if (trend > 2) return <TrendingUp className="h-4 w-4 text-green-500" />;
+    if (trend < -2) return <TrendingDown className="h-4 w-4 text-red-500" />;
+    return <Minus className="h-4 w-4 text-[#8B8B73]" />;
+  };
+
   return (
     <div className="space-y-8 max-w-2xl mx-auto">
       {/* Recommendations Summary */}
@@ -118,6 +183,21 @@ export const RecommendationsForm = ({
         <h3 className="text-xl font-medium text-[#4A4A3F] mb-4">Recommended Price Range</h3>
         <div className="text-2xl font-semibold text-center mb-6 text-[#4A4A3F]">
           ${formatPrice(recommendation.min)} - ${formatPrice(recommendation.max)}
+        </div>
+        <div className="text-sm text-[#6B6B5F] space-y-2">
+          <div className="flex items-center gap-2">
+            <span>Historical trend:</span>
+            {getTrendIcon()}
+            <span>{Math.abs(trend) < 2 ? "Stable" : 
+              `${trend > 0 ? "Upward" : "Downward"} (${Math.abs(trend).toFixed(1)}%)`}
+            </span>
+          </div>
+          {volatility > 2 && (
+            <p className="text-orange-600">
+              Note: Price history shows {volatility > 5 ? "high" : "moderate"} volatility 
+              ({volatility.toFixed(1)}% variation)
+            </p>
+          )}
         </div>
       </div>
 
@@ -149,7 +229,11 @@ export const RecommendationsForm = ({
             </Button>
           </div>
           <div className="text-sm text-[#6B6B5F] mb-3">
-            Impact: {getImpactDescription(calculateSalesImpact())}
+            Impact: {getImpactDescription(recommendation.impacts.sales)}
+            <span className="text-xs ml-2">
+              ({recommendation.impacts.sales > 0 ? "+" : ""}
+              {recommendation.impacts.sales.toFixed(1)}%)
+            </span>
           </div>
           <Slider
             value={[weights.salesPerformance]}
@@ -183,7 +267,11 @@ export const RecommendationsForm = ({
             </Button>
           </div>
           <div className="text-sm text-[#6B6B5F] mb-3">
-            Impact: {getImpactDescription(calculateMarketImpact())}
+            Impact: {getImpactDescription(recommendation.impacts.market)}
+            <span className="text-xs ml-2">
+              ({recommendation.impacts.market > 0 ? "+" : ""}
+              {recommendation.impacts.market.toFixed(1)}%)
+            </span>
           </div>
           <Slider
             value={[weights.marketConditions]}
@@ -217,7 +305,11 @@ export const RecommendationsForm = ({
             </Button>
           </div>
           <div className="text-sm text-[#6B6B5F] mb-3">
-            Impact: {getImpactDescription(calculatePositioningImpact())}
+            Impact: {getImpactDescription(recommendation.impacts.positioning)}
+            <span className="text-xs ml-2">
+              ({recommendation.impacts.positioning > 0 ? "+" : ""}
+              {recommendation.impacts.positioning.toFixed(1)}%)
+            </span>
           </div>
           <Slider
             value={[weights.positioning]}
