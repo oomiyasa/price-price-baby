@@ -111,3 +111,17 @@ export interface CACResults {
   efficiencyRatio: number;
   benchmarkComparison: "good" | "average" | "poor";
 }
+
+export interface QuickRatioData {
+  newMRR: number;
+  expansionMRR: number;
+  churnMRR: number;
+  contractionMRR: number;
+  timePeriod: "monthly" | "quarterly" | "annually";
+}
+
+export interface QuickRatioResult {
+  quickRatio: number;
+  growthEfficiency: "Poor" | "Good" | "Excellent";
+  netMRR: number;
+}

@@ -19,6 +19,7 @@ import NRRCalculator from "@/pages/NRRCalculator";
 import ChurnCalculator from "@/pages/ChurnCalculator";
 import LTVCalculator from "@/pages/LTVCalculator";
 import CACCalculator from "@/pages/CACCalculator";
+import QuickRatioCalculator from "@/pages/QuickRatioCalculator";
 import MainNav from "@/components/MainNav";
 
 const App = () => {
@@ -43,6 +44,7 @@ const App = () => {
               <Route path="/churn" element={<ChurnCalculator />} />
               <Route path="/ltv" element={<LTVCalculator />} />
               <Route path="/cac" element={<CACCalculator />} />
+              <Route path="/quick-ratio" element={<QuickRatioCalculator />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
