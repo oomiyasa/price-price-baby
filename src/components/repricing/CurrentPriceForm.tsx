@@ -1,3 +1,4 @@
+
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
@@ -120,7 +121,7 @@ export const CurrentPriceForm = ({
                 <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
               </TooltipTrigger>
               <TooltipContent>
-                Add your previous selling prices to help analyze pricing trends
+                Add your previous selling prices and when they were changed
               </TooltipContent>
             </Tooltip>
           </div>
@@ -148,7 +149,7 @@ export const CurrentPriceForm = ({
                 className="max-w-[200px]"
                 placeholder="0.00"
               />
-              <span className="text-sm text-[#6B6B5F]">from</span>
+              <span className="text-sm text-[#6B6B5F]">changed</span>
               <Input
                 type="number"
                 min="1"
