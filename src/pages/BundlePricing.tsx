@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
@@ -42,8 +41,12 @@ const BundlePricing = () => {
       toast.error("Please add at least 2 products to create a bundle");
       return;
     }
-    navigate("/bundle-discount");
-    toast.success("Proceeding to bundle discount");
+    navigate("/bundle-configuration", { 
+      state: { 
+        products
+      } 
+    });
+    toast.success("Proceeding to bundle configuration");
   };
 
   const calculateMRR = (products: ProductItem[]) => {

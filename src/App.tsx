@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import {
@@ -13,7 +14,6 @@ import { Toaster } from "sonner"
 import Index from "@/pages/Index";
 import NewOffer from "@/pages/NewOffer";
 import BundlePricing from "@/pages/BundlePricing";
-import BundleDiscount from "@/pages/BundleDiscount";
 import NotFound from "@/pages/NotFound";
 import Repricing from "@/pages/Repricing";
 import BundleConfiguration from "@/pages/BundleConfiguration";
@@ -44,7 +44,6 @@ function App() {
             <Route path="/" element={<Index />} />
             <Route path="/new-offer" element={<NewOffer />} />
             <Route path="/bundle-pricing" element={<BundlePricing />} />
-            <Route path="/bundle-discount" element={<BundleDiscount />} />
             <Route path="/bundle-configuration" element={<BundleConfiguration />} />
             <Route path="/repricing" element={<Repricing />} />
             <Route path="*" element={<NotFound />} />
