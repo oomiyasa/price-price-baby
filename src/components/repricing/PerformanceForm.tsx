@@ -24,7 +24,8 @@ export const PerformanceForm = ({
 
   const getSalesPerformanceLabel = (value: number) => {
     if (value <= -30) return "Significantly Decreased";
-    if (value <= -10) return "Decreased";
+    if (value < 0) return "Decreased";
+    if (value === 0) return "Unchanged";
     if (value <= 30) return "Increased";
     return "Significantly Increased";
   };
@@ -108,7 +109,7 @@ export const PerformanceForm = ({
               <p>
                 • This suggests {
                   salesPerformance <= -30 ? "significant pricing pressure - consider price reduction"
-                  : salesPerformance <= -10 ? "some pricing pressure - review competitive position"
+                  : salesPerformance < 0 ? "some pricing pressure - review competitive position"
                   : salesPerformance <= 10 ? "neutral market position - minor adjustments may be needed"
                   : salesPerformance <= 30 ? "strong market position - consider strategic price increase"
                   : "excellent market position - significant room for price optimization"
