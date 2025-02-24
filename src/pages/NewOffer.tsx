@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -11,6 +10,7 @@ import { PricingPathSelector } from "@/components/pricing/PricingPathSelector";
 import { PricingStrategySelector } from "@/components/pricing/PricingStrategySelector";
 import { MarginSelector } from "@/components/pricing/MarginSelector";
 import { CostBasedForm, MarketBasedForm } from "@/components/pricing/PricingForms";
+import { PricingRecommendation } from "@/components/pricing/PricingRecommendation";
 
 const NewOffer = () => {
   const [step, setStep] = useState(1);
@@ -60,17 +60,7 @@ const NewOffer = () => {
   };
 
   const handleMarginNext = () => {
-    // Here you would typically handle the final submission
-    console.log('Final data:', {
-      companyType,
-      pricingPath,
-      pricingStrategy,
-      costPerUnit,
-      marketPrice,
-      competitorLow,
-      competitorHigh,
-      desiredMargin
-    });
+    setStep(6);
   };
 
   return (
@@ -86,14 +76,16 @@ const NewOffer = () => {
             <Card className="bg-white border-gray-100 shadow-sm">
               <CardHeader className="text-center border-b border-gray-100">
                 <CardTitle className="text-[#4A4A3F] text-2xl">
-                  {step === 5 ? "Target Gross Profit Margin" : 
+                  {step === 6 ? "Your Pricing Recommendation" :
+                   step === 5 ? "Target Gross Profit Margin" : 
                    step === 1 ? "Select Your Company Type" : 
                    step === 2 ? "Choose Your Pricing Path" :
                    step === 3 ? (pricingPath === "cost" ? "Cost-Based Pricing Details" : "Market-Based Pricing Details") :
                    "Select Your Pricing Strategy"}
                 </CardTitle>
                 <CardDescription className="text-[#6B6B5F]">
-                  {step === 5 ? "Set your target margin based on your business goals and industry benchmarks" : 
+                  {step === 6 ? "Based on your inputs, here's our recommended pricing strategy" :
+                   step === 5 ? "Set your target margin based on your business goals and industry benchmarks" : 
                    step === 1 ? "Choose the option that best describes your business" : 
                    step === 2 ? "Select the pricing strategy that aligns with your goals" :
                    step === 3 ? (pricingPath === "cost" ? "Enter your costs to calculate optimal pricing" : "Enter market research data to determine competitive pricing") :
@@ -132,15 +124,26 @@ const NewOffer = () => {
                     selectedStrategy={pricingStrategy}
                     onSelect={handlePricingStrategySelect}
                   />
-                ) : (
+                ) : step === 5 ? (
                   <MarginSelector 
                     value={desiredMargin}
                     onChange={setDesiredMargin}
                   />
+                ) : (
+                  <PricingRecommendation 
+                    companyType={companyType}
+                    pricingPath={pricingPath}
+                    pricingStrategy={pricingStrategy}
+                    costPerUnit={costPerUnit}
+                    marketPrice={marketPrice}
+                    competitorLow={competitorLow}
+                    competitorHigh={competitorHigh}
+                    desiredMargin={desiredMargin}
+                  />
                 )}
                 
                 <div className="mt-6 flex justify-between">
-                  {step > 1 && (
+                  {step > 1 && step < 6 && (
                     <Button
                       variant="outline"
                       className="border-[#8B8B73] text-[#4A4A3F] hover:bg-gray-50"
@@ -159,7 +162,7 @@ const NewOffer = () => {
                         handleMarginNext
                       }
                     >
-                      {step === 5 ? "Finish" : "Next"}
+                      {step === 5 ? "View Recommendation" : "Next"}
                       <ArrowRight className="h-4 w-4 ml-2" />
                     </Button>
                   )}
