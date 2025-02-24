@@ -7,9 +7,10 @@ import { ProductItem } from "@/types/bundle";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const BundlePricing = () => {
-  const [step, setStep] = useState(1);
+  const navigate = useNavigate();
   const [products, setProducts] = useState<ProductItem[]>([]);
 
   const handleAddProduct = (product: ProductItem) => {
@@ -31,15 +32,13 @@ const BundlePricing = () => {
   };
 
   const handlePrevStep = () => {
-    if (step > 1) {
-      setStep(prev => prev - 1);
-      toast.success("Moved to previous step");
-    }
+    navigate(-1);
+    toast.success("Returning to previous page");
   };
 
   const handleNextStep = () => {
-    setStep(prev => prev + 1);
-    toast.success("Moved to next step");
+    toast.success("Changes saved");
+    // Navigate to next step/page when implemented
   };
 
   const calculateMRR = (products: ProductItem[]) => {
@@ -138,10 +137,6 @@ const BundlePricing = () => {
           >
             <Card className="bg-white border-gray-100 shadow-sm">
               <CardContent className="p-6">
-                <div className="mb-6">
-                  <div className="text-sm font-medium text-gray-500">Step {step}</div>
-                </div>
-
                 <ProductItemsForm
                   products={products}
                   onAddProduct={handleAddProduct}
@@ -173,8 +168,7 @@ const BundlePricing = () => {
                   <Button
                     variant="outline"
                     onClick={handlePrevStep}
-                    disabled={step === 1}
-                    className="border-[#8B8B73] text-[#4A4A3F] hover:bg-gray-50 disabled:opacity-50"
+                    className="border-[#8B8B73] text-[#4A4A3F] hover:bg-gray-50"
                   >
                     <ArrowLeft className="h-4 w-4 mr-2" />
                     Previous
