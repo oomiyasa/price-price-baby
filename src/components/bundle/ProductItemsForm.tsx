@@ -119,48 +119,50 @@ export const ProductItemsForm = ({
               </Select>
             </div>
           </div>
+
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="price">Price</Label>
-              <Input
-                id="price"
-                type="number"
-                min="0"
-                step="0.01"
-                value={newProduct.price}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, price: e.target.value })
-                }
-                placeholder="Enter price"
-              />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <Label htmlFor="grossMargin">Gross Margin %</Label>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Info className="h-4 w-4 text-gray-400" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Optional: Enter the gross margin percentage for this product</p>
-                  </TooltipContent>
-                </Tooltip>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="price">Price</Label>
+                <Input
+                  id="price"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={newProduct.price}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, price: e.target.value })
+                  }
+                  placeholder="Enter price"
+                />
               </div>
-              <Input
-                id="grossMargin"
-                type="number"
-                min="0"
-                max="100"
-                value={newProduct.grossMargin || ""}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, grossMargin: e.target.value })
-                }
-                placeholder="Enter margin % (optional)"
-              />
+              <div>
+                <div className="flex items-center gap-2">
+                  <Label htmlFor="grossMargin">Gross Margin %</Label>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info className="h-4 w-4 text-gray-400" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Optional: Enter the gross margin percentage for this product</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+                <Input
+                  id="grossMargin"
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={newProduct.grossMargin || ""}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, grossMargin: e.target.value })
+                  }
+                  placeholder="Enter margin % (optional)"
+                />
+              </div>
             </div>
-          </div>
-          {newProduct.chargeModel === "subscription" && (
-            <div className="grid grid-cols-2 gap-4">
+
+            {newProduct.chargeModel === "subscription" && (
               <div>
                 <Label htmlFor="billingPeriod">Billing Period</Label>
                 <Select
@@ -178,43 +180,45 @@ export const ProductItemsForm = ({
                   </SelectContent>
                 </Select>
               </div>
-            </div>
-          )}
-          {newProduct.chargeModel === "usage" && (
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="usageUnits">Estimated Units</Label>
-                <Input
-                  id="usageUnits"
-                  type="number"
-                  min="0"
-                  value={newProduct.usageUnits || ""}
-                  onChange={(e) =>
-                    setNewProduct({ ...newProduct, usageUnits: e.target.value })
-                  }
-                  placeholder="Enter estimated units"
-                />
+            )}
+
+            {newProduct.chargeModel === "usage" && (
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="usageUnits">Estimated Units</Label>
+                  <Input
+                    id="usageUnits"
+                    type="number"
+                    min="0"
+                    value={newProduct.usageUnits || ""}
+                    onChange={(e) =>
+                      setNewProduct({ ...newProduct, usageUnits: e.target.value })
+                    }
+                    placeholder="Enter estimated units"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="usagePeriod">Usage Period</Label>
+                  <Select
+                    value={newProduct.usagePeriod}
+                    onValueChange={(value: string) =>
+                      setNewProduct({ ...newProduct, usagePeriod: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select usage period" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="day">Per Day</SelectItem>
+                      <SelectItem value="month">Per Month</SelectItem>
+                      <SelectItem value="year">Per Year</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-              <div>
-                <Label htmlFor="usagePeriod">Usage Period</Label>
-                <Select
-                  value={newProduct.usagePeriod}
-                  onValueChange={(value: string) =>
-                    setNewProduct({ ...newProduct, usagePeriod: value })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select usage period" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="day">Per Day</SelectItem>
-                    <SelectItem value="month">Per Month</SelectItem>
-                    <SelectItem value="year">Per Year</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          )}
+            )}
+          </div>
+
           <Button
             type="submit"
             className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
