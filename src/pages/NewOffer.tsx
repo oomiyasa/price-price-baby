@@ -191,23 +191,6 @@ const NewOffer = () => {
           <span>Hover over or tap an industry for detailed cost guidance</span>
         </div>
       </div>
-
-      <div className="mt-8 flex justify-between">
-        <Button
-          variant="outline"
-          className="border-[#8B8B73] text-[#4A4A3F] hover:bg-[#8B8B73] hover:text-white"
-          onClick={handlePreviousStep}
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Previous
-        </Button>
-        <Button 
-          className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
-          onClick={() => setStep(4)}
-        >
-          Next
-        </Button>
-      </div>
     </div>
   );
 
