@@ -25,7 +25,6 @@ export const PerformanceForm = ({
   const getSalesPerformanceLabel = (value: number) => {
     if (value <= -30) return "Significantly Decreased";
     if (value <= -10) return "Decreased";
-    if (value <= 10) return "No Change";
     if (value <= 30) return "Increased";
     return "Significantly Increased";
   };
@@ -95,7 +94,7 @@ export const PerformanceForm = ({
 
           <div className="text-center">
             <span className="text-lg font-medium" style={{ color: getSliderColor(salesPerformance) }}>
-              {getSalesPerformanceLabel(salesPerformance)}
+              {salesPerformance === 0 ? "Unchanged" : getSalesPerformanceLabel(salesPerformance)}
             </span>
           </div>
 
@@ -103,8 +102,8 @@ export const PerformanceForm = ({
             <h3 className="text-lg font-medium text-[#4A4A3F] mb-3">Performance Summary</h3>
             <div className="space-y-2 text-sm text-[#6B6B5F]">
               <p>
-                • Sales have {getSalesPerformanceLabel(salesPerformance).toLowerCase()} {' '}
-                {Math.abs(salesPerformance)}% since last price change
+                • Sales have {salesPerformance === 0 ? "remained unchanged" : 
+                  `${getSalesPerformanceLabel(salesPerformance).toLowerCase()} ${Math.abs(salesPerformance)}%`} since last price change
               </p>
               <p>
                 • This suggests {
