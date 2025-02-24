@@ -115,7 +115,7 @@ const NewOffer = () => {
 
   const handlePricingStrategySelect = (strategy: PricingStrategy) => {
     setPricingStrategy(strategy);
-    setStep(4);
+    setStep(5);
   };
 
   const handlePreviousStep = () => {
