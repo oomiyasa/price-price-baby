@@ -135,6 +135,12 @@ const NewOffer = () => {
     }
   };
 
+  const handleMarketFormSubmit = () => {
+    if (marketPrice && competitorLow && competitorHigh) {
+      setStep(4);
+    }
+  };
+
   const renderCostBasedForm = () => (
     <div className="space-y-8 max-w-2xl mx-auto">
       <div>
@@ -268,6 +274,24 @@ const NewOffer = () => {
           />
         </div>
       </div>
+
+      <div className="mt-8 flex justify-between">
+        <Button
+          variant="outline"
+          className="border-[#8B8B73] text-[#4A4A3F] hover:bg-[#8B8B73] hover:text-white"
+          onClick={handlePreviousStep}
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Previous
+        </Button>
+        <Button 
+          className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
+          onClick={handleMarketFormSubmit}
+          disabled={!marketPrice || !competitorLow || !competitorHigh}
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 
@@ -305,6 +329,17 @@ const NewOffer = () => {
           </Card>
         </motion.div>
       ))}
+      
+      <div className="mt-8">
+        <Button
+          variant="outline"
+          className="border-[#8B8B73] text-[#4A4A3F] hover:bg-[#8B8B73] hover:text-white"
+          onClick={handlePreviousStep}
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Previous
+        </Button>
+      </div>
     </div>
   );
 
