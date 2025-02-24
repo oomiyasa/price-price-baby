@@ -84,3 +84,18 @@ export interface LTVResults {
   growthAdjustedLTV: number;
   referralValue: number;
 }
+
+export interface CACData {
+  marketingCosts: number;
+  salesCosts: number;
+  newCustomers: number;
+  timePeriod: "monthly" | "quarterly" | "annually";
+}
+
+export interface CACResults {
+  cac: number;
+  marketingSplit: number;
+  salesSplit: number;
+  customersPerPeriod: number;
+  efficiency: "excellent" | "good" | "average" | "poor";
+}
