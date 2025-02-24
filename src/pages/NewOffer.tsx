@@ -190,10 +190,6 @@ const NewOffer = () => {
             </Card>
           </motion.div>
         </div>
-
-        <footer className="py-4 px-6 text-center text-gray-400 text-sm">
-          Price Price Baby | Oomiyasa LLC
-        </footer>
       </div>
     </TooltipProvider>
   );

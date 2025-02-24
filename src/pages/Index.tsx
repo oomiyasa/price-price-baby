@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight, DollarSign, RefreshCw, Calculator, Box, Percent, ChartBar } from "lucide-react";
@@ -98,10 +97,6 @@ const Index = () => {
           })}
         </motion.div>
       </div>
-
-      <footer className="py-4 px-6 text-center text-gray-400 text-sm mt-auto">
-        Price Price Baby | Oomiyasa LLC
-      </footer>
     </div>
   );
 };
