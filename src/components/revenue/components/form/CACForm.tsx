@@ -4,11 +4,7 @@ import { useForm } from "react-hook-form";
 import { CACData } from "../../types";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { NumericInput } from "./NumericInput";
 import { SelectField } from "./SelectField";
 
@@ -22,7 +18,7 @@ interface CACFormProps {
   onSubmit: (data: CACData) => void;
 }
 
-export function CACForm({ onSubmit }: CACFormProps) {
+export default function CACForm({ onSubmit }: CACFormProps) {
   const form = useForm<CACData>({
     defaultValues: {
       marketingCosts: undefined,
