@@ -15,17 +15,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { HelpCircle } from "lucide-react";
 import { CurrentPricingForm } from "@/types/usage-based";
 import { OfferingTypeSelector } from "./OfferingTypeSelector";
 import { SubscriptionDetails } from "./SubscriptionDetails";
+import { PerpetualDetails } from "./PerpetualDetails";
 
 export const UsageBasedForm = () => {
   const [step, setStep] = useState(1);
@@ -80,29 +74,9 @@ export const UsageBasedForm = () => {
             <SubscriptionDetails form={form} />
           )}
 
-          <FormField
-            control={form.control}
-            name="customerCount"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="flex items-center gap-2">
-                  Number of Current Customers
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      Total number of active customers
-                    </TooltipContent>
-                  </Tooltip>
-                </FormLabel>
-                <FormControl>
-                  <Input type="number" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {form.watch("pricingModel") === "perpetual" && (
+            <PerpetualDetails form={form} />
+          )}
         </div>
       )}
 
