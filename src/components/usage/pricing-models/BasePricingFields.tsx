@@ -55,7 +55,8 @@ export const BasePricingFields = ({ form }: BasePricingFieldsProps) => {
               <div className="flex items-center gap-2">
                 <Input 
                   type="number" 
-                  {...field} 
+                  {...field}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                   placeholder={`Suggested: $${calculateSuggestedSetupFee()}`}
                 />
                 <span className="text-sm text-muted-foreground">
@@ -88,7 +89,8 @@ export const BasePricingFields = ({ form }: BasePricingFieldsProps) => {
               <div className="flex items-center gap-2">
                 <Input 
                   type="number" 
-                  {...field} 
+                  {...field}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                   placeholder={`Suggested: $${calculateSuggestedMonthlyBase()}`}
                 />
                 <span className="text-sm text-muted-foreground">
@@ -121,7 +123,8 @@ export const BasePricingFields = ({ form }: BasePricingFieldsProps) => {
               <div className="flex items-center gap-2">
                 <Input 
                   type="number" 
-                  {...field} 
+                  {...field}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                   placeholder={`Suggested: ${calculateSuggestedIncludedUnits()}`}
                 />
                 <span className="text-sm text-muted-foreground">

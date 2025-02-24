@@ -36,7 +36,12 @@ export const FixedPricing = ({ form }: FixedPricingProps) => {
             </Tooltip>
           </FormLabel>
           <FormControl>
-            <Input type="number" {...field} placeholder="Enter price per additional unit" />
+            <Input 
+              type="number"
+              {...field}
+              onChange={e => field.onChange(e.target.valueAsNumber)}
+              placeholder="Enter price per additional unit" 
+            />
           </FormControl>
           <FormMessage />
         </FormItem>

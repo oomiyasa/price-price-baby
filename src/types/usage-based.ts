@@ -18,6 +18,8 @@ export type PricingComponentsConfig = {
   additionalUnitPrice?: number;
   volumeCommitTiers?: VolumeCommitTier[];
   usageTiers?: UsageTier[];
+  overage?: number;
+  minimumCommitment?: number;
 };
 
 export type CurrentPricingForm = {
