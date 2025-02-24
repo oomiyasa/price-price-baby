@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight, DollarSign, RefreshCw, Calculator, Box, Percent, ChartBar } from "lucide-react";
@@ -15,7 +16,7 @@ const pricingTools = [
     id: "reprice",
     title: "Reprice Existing Offering",
     description: "Optimize pricing for your current products",
-    route: "/reprice",
+    route: "/repricing",
     icon: RefreshCw
   },
   {
@@ -29,7 +30,7 @@ const pricingTools = [
     id: "bundle",
     title: "Price a Bundle",
     description: "Create attractive package pricing",
-    route: "/bundle",
+    route: "/bundle-pricing",
     icon: Box
   },
   {
