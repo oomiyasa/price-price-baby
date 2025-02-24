@@ -92,6 +92,14 @@ const industryBenchmarks = {
   },
 };
 
+const industryMargins = {
+  'Software/SaaS': '70-85%',
+  'Professional Services': '50-70%',
+  'Manufacturing': '20-35%',
+  'Retail': '25-35%',
+  'Food Service': '15-30%'
+};
+
 const NewOffer = () => {
   const [step, setStep] = useState(1);
   const [companyType, setCompanyType] = useState<CompanyType>(null);
@@ -124,6 +132,18 @@ const NewOffer = () => {
       if (step === 4) setPricingStrategy(null);
       if (step === 3) setPricingPath(null);
       if (step === 2) setCompanyType(null);
+    }
+  };
+
+  const handleCostBasedNext = () => {
+    if (costPerUnit) {
+      setStep(5);
+    }
+  };
+
+  const handleMarketBasedNext = () => {
+    if (marketPrice) {
+      setStep(5);
     }
   };
 
@@ -226,60 +246,52 @@ const NewOffer = () => {
   };
 
   const renderMarginSelector = () => {
-    const benchmarks = companyType ? industryBenchmarks[companyType] : { low: 20, average: 35, high: 45 };
-    const recommendedPrice = calculateRecommendedPrice();
-
     return (
-      <div className="space-y-8 max-w-2xl mx-auto">
-        <div>
-          <h3 className="text-xl font-medium text-[#4A4A3F] mb-4">Set Your Target Margin</h3>
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <Label>Target Margin: {desiredMargin}%</Label>
-                <span className="text-sm text-[#6B6B5F]">Recommended Price: ${recommendedPrice}</span>
-              </div>
-              <Slider
-                value={[desiredMargin]}
-                onValueChange={(value) => setDesiredMargin(value[0])}
-                max={100}
-                step={1}
-                className="w-full"
-              />
-            </div>
+      <div className="space-y-8 max-w-2xl mx-auto text-center">
+        <div className="space-y-4">
+          <h2 className="text-2xl font-semibold text-[#4A4A3F]">What's your target gross profit margin?</h2>
+          <p className="text-lg text-[#4A4A3F]">{desiredMargin}%</p>
+          <p className="text-sm text-[#6B6B5F]">Target Gross Profit Margin</p>
+          <p className="text-xs text-[#6B6B5F]">(Revenue - Cost of Goods Sold) ÷ Revenue × 100</p>
+        </div>
 
-            <div className="bg-gray-50 p-4 rounded-lg space-y-3">
-              <h4 className="font-medium text-[#4A4A3F]">Industry Benchmarks</h4>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="text-center">
-                  <div className="text-sm text-[#6B6B5F]">Low</div>
-                  <div className="font-medium text-[#4A4A3F]">{benchmarks.low}%</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-sm text-[#6B6B5F]">Average</div>
-                  <div className="font-medium text-[#4A4A3F]">{benchmarks.average}%</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-sm text-[#6B6B5F]">High</div>
-                  <div className="font-medium text-[#4A4A3F]">{benchmarks.high}%</div>
-                </div>
-              </div>
-            </div>
+        <div className="space-y-8">
+          <div className="w-full px-4">
+            <Slider
+              value={[desiredMargin]}
+              onValueChange={(value) => setDesiredMargin(value[0])}
+              max={100}
+              step={1}
+              className="w-full"
+            />
+          </div>
 
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="flex items-center gap-2 cursor-help">
-                    <HelpCircle className="h-4 w-4 text-[#8B8B73]" />
-                    <span className="text-sm text-[#6B6B5F]">What's a good margin?</span>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="max-w-xs">Industry benchmarks are based on historical data and market research. Your optimal margin may vary based on your specific costs, market position, and growth strategy.</p>
-                </TooltipContent>
-              </Tooltip>
+          <div className="flex justify-between text-sm text-[#6B6B5F] px-4">
+            <div>
+              <p>Conservative</p>
+              <p>15-30%</p>
+            </div>
+            <div>
+              <p>Balanced</p>
+              <p>30-60%</p>
+            </div>
+            <div>
+              <p>Aggressive</p>
+              <p>60-90%+</p>
             </div>
           </div>
+        </div>
+
+        <div className="mt-12 space-y-4">
+          <p className="text-sm text-[#6B6B5F]">Note: Gross profit margins vary significantly by industry. For reference:</p>
+          <div className="space-y-2 text-sm text-[#6B6B5F]">
+            {Object.entries(industryMargins).map(([industry, margin]) => (
+              <p key={industry}>• {industry}: {margin}</p>
+            ))}
+          </div>
+          <p className="text-xs text-[#6B6B5F] mt-4">
+            Sources: NYU Stern School of Business (2023), KPMG Industry Margins Report, S&P Capital IQ
+          </p>
         </div>
       </div>
     );
@@ -298,14 +310,16 @@ const NewOffer = () => {
             <Card className="bg-white border-gray-100 shadow-sm">
               <CardHeader className="text-center border-b border-gray-100">
                 <CardTitle className="text-[#4A4A3F] text-2xl">
-                  {step === 1 ? "Select Your Company Type" : 
+                  {step === 5 ? "Target Gross Profit Margin" : 
+                   step === 1 ? "Select Your Company Type" : 
                    step === 2 ? "Choose Your Pricing Path" :
                    step === 3 ? (pricingPath === "cost" ? "Cost-Based Pricing Details" : "Market-Based Pricing Details") :
                    step === 4 ? "Select Your Pricing Strategy" :
                    "Set Your Target Margin"}
                 </CardTitle>
                 <CardDescription className="text-[#6B6B5F]">
-                  {step === 1 ? "Choose the option that best describes your business" : 
+                  {step === 5 ? "Set your target margin based on your business goals and industry benchmarks" : 
+                   step === 1 ? "Choose the option that best describes your business" : 
                    step === 2 ? "Select the pricing strategy that aligns with your goals" :
                    step === 3 ? (pricingPath === "cost" ? "Enter your costs to calculate optimal pricing" : "Enter market research data to determine competitive pricing") :
                    step === 4 ? "Choose how you want to position your pricing relative to the market" :
@@ -412,10 +426,19 @@ const NewOffer = () => {
                       Previous
                     </Button>
                   )}
-                  {(step === 3 || step === 4) && (
+                  {step === 3 && (
                     <Button 
                       className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F] ml-auto"
-                      onClick={() => setStep(step + 1)}
+                      onClick={pricingPath === "cost" ? handleCostBasedNext : handleMarketBasedNext}
+                    >
+                      Next
+                      <ArrowRight className="h-4 w-4 ml-2" />
+                    </Button>
+                  )}
+                  {step === 4 && (
+                    <Button 
+                      className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F] ml-auto"
+                      onClick={() => setStep(5)}
                     >
                       Next
                       <ArrowRight className="h-4 w-4 ml-2" />
@@ -427,7 +450,7 @@ const NewOffer = () => {
           </motion.div>
         </div>
 
-        <footer className="py-4 px-6 text-center text-gray-400 text-sm mt-auto">
+        <footer className="py-4 px-6 text-center text-gray-400 text-sm">
           Price Price Baby | Oomiyasa LLC
         </footer>
       </div>
