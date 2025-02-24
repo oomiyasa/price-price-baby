@@ -13,13 +13,13 @@ interface FormFieldWrapperProps<T extends Record<string, any>> {
   children: React.ReactNode;
 }
 
-export const FormFieldWrapper = <T extends Record<string, any>>({
+export function FormFieldWrapper<T extends Record<string, any>>({
   control,
   name,
   label,
   tooltip,
   children,
-}: FormFieldWrapperProps<T>) => {
+}: FormFieldWrapperProps<T>) {
   return (
     <FormField
       control={control}
@@ -45,4 +45,4 @@ export const FormFieldWrapper = <T extends Record<string, any>>({
       )}
     />
   );
-};
+}
