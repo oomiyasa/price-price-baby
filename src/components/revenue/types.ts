@@ -84,3 +84,30 @@ export interface LTVResults {
   growthAdjustedLTV: number;
   referralValue: number;
 }
+
+export interface MarketingCost {
+  channel: string;
+  cost: number;
+}
+
+export interface SalesCost {
+  category: string;
+  cost: number;
+}
+
+export interface CACData {
+  marketingCosts: MarketingCost[];
+  salesCosts: SalesCost[];
+  timePeriod: "monthly" | "quarterly" | "annually";
+  newCustomers: number;
+  avgContractValue?: number;
+}
+
+export interface CACResults {
+  cacPerCustomer: number;
+  marketingCAC: number;
+  salesCAC: number;
+  paybackPeriod: number;
+  efficiencyRatio: number;
+  benchmarkComparison: "good" | "average" | "poor";
+}
