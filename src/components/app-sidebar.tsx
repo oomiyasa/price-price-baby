@@ -1,40 +1,22 @@
-
 import { Home, Settings, UserPlus, GripVertical } from "lucide-react";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarRail,
-  SidebarHeader,
-} from "@/components/ui/sidebar";
-
-const items = [
-  {
-    title: "Home",
-    url: "/",
-    icon: Home,
-  },
-  {
-    title: "Login / Sign Up",
-    url: "/auth",
-    icon: UserPlus,
-  },
-  {
-    title: "Settings",
-    url: "/settings",
-    icon: Settings,
-  },
-];
-
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarRail, SidebarHeader } from "@/components/ui/sidebar";
+const items = [{
+  title: "Home",
+  url: "/",
+  icon: Home
+}, {
+  title: "Login / Sign Up",
+  url: "/auth",
+  icon: UserPlus
+}, {
+  title: "Settings",
+  url: "/settings",
+  icon: Settings
+}];
 export function AppSidebar() {
-  return (
-    <Sidebar>
+  return <Sidebar>
       <SidebarRail className="cursor-ew-resize hover:bg-gray-300 after:bg-gray-400 after:w-[3px] after:opacity-100 relative">
-        <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-gray-300 hover:bg-gray-400 rounded-md p-1 transition-colors">
+        <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-gray-300 hover:bg-gray-400 rounded-md p-1 transition-colors mx-[221px] my-[240px]">
           <GripVertical className="h-6 w-6 text-gray-600" />
         </div>
       </SidebarRail>
@@ -45,20 +27,17 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+              {items.map(item => <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <a href={item.url} className="flex items-center gap-2">
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
                     </a>
                   </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                </SidebarMenuItem>)}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-    </Sidebar>
-  );
+    </Sidebar>;
 }
