@@ -15,18 +15,20 @@ import { OfferingTypeSelector } from "./OfferingTypeSelector";
 import { SubscriptionDetails } from "./SubscriptionDetails";
 import { PerpetualDetails } from "./PerpetualDetails";
 import { UsageMetricsForm } from "./UsageMetricsForm";
+import { PricingTiersForm } from "./PricingTiersForm";
 
 export const UsageBasedForm = () => {
   const [step, setStep] = useState(1);
   const form = useForm<CurrentPricingForm>({
     defaultValues: {
       offerType: "new",
+      pricingTiers: [],
     },
   });
 
   const onSubmit = (data: CurrentPricingForm) => {
     console.log(data);
-    if (step < 2) {
+    if (step < 3) {
       setStep(step + 1);
     }
   };
@@ -82,6 +84,29 @@ export const UsageBasedForm = () => {
           Previous Step
         </Button>
         <Button
+          type="button"
+          onClick={form.handleSubmit(onSubmit)}
+          className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
+        >
+          Next Step
+        </Button>
+      </div>
+    </div>
+  );
+
+  const renderStep3 = () => (
+    <div className="space-y-6">
+      <PricingTiersForm form={form} />
+      <div className="flex justify-between">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => setStep(2)}
+          className="border-[#8B8B73] text-[#8B8B73] hover:bg-[#8B8B73] hover:text-white"
+        >
+          Previous Step
+        </Button>
+        <Button
           type="submit"
           onClick={form.handleSubmit(onSubmit)}
           className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
@@ -97,6 +122,7 @@ export const UsageBasedForm = () => {
       <form className="space-y-6">
         {step === 1 && renderStep1()}
         {step === 2 && renderStep2()}
+        {step === 3 && renderStep3()}
       </form>
     </Form>
   );

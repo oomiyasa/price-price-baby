@@ -1,4 +1,10 @@
 
+export type PricingTier = {
+  minUsage: number;
+  maxUsage: number;
+  pricePerUnit: number;
+};
+
 export type CurrentPricingForm = {
   offerType: "new" | "existing";
   pricingModel?: "subscription" | "perpetual";
@@ -13,4 +19,7 @@ export type CurrentPricingForm = {
   averageMonthlyUsage?: string;
   usageVariance?: string;
   customMetricName?: string;
+  pricingTiers?: PricingTier[];
+  overage?: number;
+  minimumCommitment?: number;
 };
