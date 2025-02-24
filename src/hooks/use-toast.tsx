@@ -1,7 +1,6 @@
 
 import * as React from "react"
-
-import type {
+import {
   ToastActionElement,
   ToastProps,
 } from "@/components/ui/toast"
@@ -72,7 +71,7 @@ const addToRemoveQueue = (toastId: string) => {
   toastTimeouts.set(toastId, timeout)
 }
 
-export const reducer = (state: State, action: Action): State => {
+const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "ADD_TOAST":
       return {
@@ -131,7 +130,20 @@ const ToastContext = React.createContext<{
   dismiss: (toastId?: string) => void
 } | null>(null)
 
-export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const listeners: Array<(state: State) => void> = []
+
+function dispatch(action: Action) {
+  const newState = reducer({ toasts: [] }, action)
+  listeners.forEach((listener) => {
+    listener(newState)
+  })
+}
+
+export function ToastProvider({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const [state, setState] = React.useState<State>({ toasts: [] })
 
   React.useEffect(() => {
@@ -142,7 +154,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         listeners.splice(index, 1)
       }
     }
-  }, [])
+  }, [setState])
 
   return (
     <ToastContext.Provider
@@ -150,11 +162,13 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         toasts: state.toasts,
         toast: (props) => {
           const id = genId()
+
           const update = (props: ToasterToast) =>
             dispatch({
               type: "UPDATE_TOAST",
               toast: { ...props, id },
             })
+
           const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id })
 
           dispatch({
@@ -183,24 +197,16 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   )
 }
 
-const listeners: Array<(state: State) => void> = []
-
-function dispatch(action: Action) {
-  const state = reducer({ toasts: [] }, action)
-  listeners.forEach((listener) => {
-    listener(state)
-  })
-}
-
 export function useToast() {
   const context = React.useContext(ToastContext)
+
   if (!context) {
     throw new Error("useToast must be used within a ToastProvider")
   }
+
   return context
 }
 
-// Add toast function export
 export const toast = (props: Omit<ToasterToast, "id">) => {
   const context = React.useContext(ToastContext)
   if (!context) {
