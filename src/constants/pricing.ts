@@ -81,7 +81,7 @@ export const industryMargins: IndustryMargins = {
   'Services': '50-70%',
   'Manufacturing': '20-35%',
   'Retail': '25-35%',
-  'Food Service': '15-30%',
-  'Construction': '20-40%',
+  'Content/Media': '40-60%',
+  'Other': '25-45%',
   'Healthcare': '30-45%'
 };

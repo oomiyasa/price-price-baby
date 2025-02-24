@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { IndustrySelector } from "@/components/cogs/IndustrySelector";
 import { CostsCalculator } from "@/components/cogs/CostsCalculator";
 import { MarginAnalysis } from "@/components/cogs/MarginAnalysis";
@@ -13,10 +12,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 const COGS = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [data, setData] = useState<COGSData>({
-    industry: "Software/SaaS",
+    industry: "",
     revenue: 0,
     directCosts: {},
-    indirectCosts: 0,
     targetMargin: 60
   });
 

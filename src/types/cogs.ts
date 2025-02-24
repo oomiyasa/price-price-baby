@@ -4,8 +4,8 @@ export type Industry =
   | "Services"
   | "Manufacturing"
   | "Retail"
-  | "Food Service"
-  | "Construction"
+  | "Content/Media"
+  | "Other"
   | "Healthcare";
 
 export type DirectCostField = {
@@ -17,13 +17,11 @@ export type DirectCostField = {
 export interface IndustryConfig {
   name: Industry;
   directCosts: DirectCostField[];
-  hasIndirectCosts: boolean;
 }
 
 export interface COGSData {
   industry: Industry;
   revenue: number;
   directCosts: Record<string, number>;
-  indirectCosts: number;
   targetMargin: number;
 }

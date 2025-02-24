@@ -1,4 +1,3 @@
-
 import { IndustryConfig } from "@/types/cogs";
 
 export const industryConfigs: IndustryConfig[] = [
@@ -8,8 +7,7 @@ export const industryConfigs: IndustryConfig[] = [
       { id: "hosting", label: "Hosting & Infrastructure", placeholder: "AWS, Azure, etc." },
       { id: "support", label: "Customer Support", placeholder: "Support staff costs" },
       { id: "licensing", label: "Third-party Licensing", placeholder: "Software licenses" }
-    ],
-    hasIndirectCosts: true
+    ]
   },
   {
     name: "Services",
@@ -17,8 +15,7 @@ export const industryConfigs: IndustryConfig[] = [
       { id: "labor", label: "Direct Labor", placeholder: "Staff costs" },
       { id: "contractors", label: "Contractor Costs", placeholder: "External contractors" },
       { id: "materials", label: "Project Materials", placeholder: "Direct materials" }
-    ],
-    hasIndirectCosts: true
+    ]
   },
   {
     name: "Manufacturing",
@@ -27,8 +24,7 @@ export const industryConfigs: IndustryConfig[] = [
       { id: "labor", label: "Direct Labor", placeholder: "Production staff" },
       { id: "equipment", label: "Equipment Costs", placeholder: "Machine costs" },
       { id: "packaging", label: "Packaging", placeholder: "Packaging materials" }
-    ],
-    hasIndirectCosts: true
+    ]
   },
   {
     name: "Retail",
@@ -36,27 +32,24 @@ export const industryConfigs: IndustryConfig[] = [
       { id: "inventory", label: "Inventory Cost", placeholder: "Cost of goods" },
       { id: "freight", label: "Freight & Shipping", placeholder: "Shipping costs" },
       { id: "packaging", label: "Packaging", placeholder: "Packaging materials" }
-    ],
-    hasIndirectCosts: true
+    ]
   },
   {
-    name: "Food Service",
+    name: "Content/Media",
     directCosts: [
-      { id: "ingredients", label: "Food Ingredients", placeholder: "Raw ingredients" },
-      { id: "labor", label: "Kitchen Labor", placeholder: "Staff costs" },
-      { id: "packaging", label: "Packaging", placeholder: "To-go containers, etc." }
-    ],
-    hasIndirectCosts: true
+      { id: "production", label: "Production Costs", placeholder: "Direct production expenses" },
+      { id: "talent", label: "Talent & Creative", placeholder: "Creative staff/contractors" },
+      { id: "licensing", label: "Content Licensing", placeholder: "Rights and permissions" }
+    ]
   },
   {
-    name: "Construction",
+    name: "Other",
     directCosts: [
-      { id: "materials", label: "Building Materials", placeholder: "Raw materials" },
-      { id: "labor", label: "Labor", placeholder: "Worker costs" },
-      { id: "equipment", label: "Equipment", placeholder: "Tools and machinery" },
-      { id: "permits", label: "Permits & Licenses", placeholder: "Legal requirements" }
-    ],
-    hasIndirectCosts: true
+      { id: "materials", label: "Direct Materials", placeholder: "Raw materials, supplies" },
+      { id: "labor", label: "Direct Labor", placeholder: "Staff directly involved" },
+      { id: "equipment", label: "Equipment", placeholder: "Machinery, tools" },
+      { id: "other", label: "Other Direct Costs", placeholder: "Any other direct costs" }
+    ]
   },
   {
     name: "Healthcare",
@@ -65,8 +58,7 @@ export const industryConfigs: IndustryConfig[] = [
       { id: "labor", label: "Medical Staff", placeholder: "Healthcare workers" },
       { id: "equipment", label: "Equipment", placeholder: "Medical equipment" },
       { id: "billing", label: "Billing Services", placeholder: "Insurance processing" }
-    ],
-    hasIndirectCosts: true
+    ]
   }
 ];
 
