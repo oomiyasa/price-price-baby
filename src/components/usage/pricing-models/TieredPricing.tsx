@@ -10,12 +10,15 @@ import { Button } from "@/components/ui/button";
 import { Plus, Minus } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { CurrentPricingForm, UsageTier } from "@/types/usage-based";
+import { Switch } from "@/components/ui/switch";
 
 interface TieredPricingProps {
   form: UseFormReturn<CurrentPricingForm>;
 }
 
 export const TieredPricing = ({ form }: TieredPricingProps) => {
+  const [isInfiniteTier, setIsInfiniteTier] = React.useState(false);
+
   const addUsageTier = () => {
     const currentTiers = form.watch("pricingComponents.usageTiers") || [];
     const lastTier = currentTiers[currentTiers.length - 1];
@@ -33,6 +36,9 @@ export const TieredPricing = ({ form }: TieredPricingProps) => {
       "pricingComponents.usageTiers",
       currentTiers.filter((_, i) => i !== index)
     );
+    if (index === currentTiers.length - 1) {
+      setIsInfiniteTier(false);
+    }
   };
 
   return (
@@ -43,6 +49,7 @@ export const TieredPricing = ({ form }: TieredPricingProps) => {
           type="button"
           onClick={addUsageTier}
           className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
+          disabled={isInfiniteTier}
         >
           <Plus className="mr-1 h-4 w-4" />
           Add Tier
@@ -84,6 +91,8 @@ export const TieredPricing = ({ form }: TieredPricingProps) => {
                   }
                   form.setValue("pricingComponents.usageTiers", newTiers);
                 }}
+                disabled={index === (form.watch("pricingComponents.usageTiers") || []).length - 1 && isInfiniteTier}
+                placeholder={index === (form.watch("pricingComponents.usageTiers") || []).length - 1 && isInfiniteTier ? "Unlimited" : "Enter max usage"}
               />
             </FormControl>
           </FormItem>
@@ -103,6 +112,18 @@ export const TieredPricing = ({ form }: TieredPricingProps) => {
                 />
               </FormControl>
             </FormItem>
+
+            {index === (form.watch("pricingComponents.usageTiers") || []).length - 1 && (
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="text-sm">Infinite</FormLabel>
+                <FormControl>
+                  <Switch
+                    checked={isInfiniteTier}
+                    onCheckedChange={setIsInfiniteTier}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
 
             <Button
               type="button"

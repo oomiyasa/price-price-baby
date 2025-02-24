@@ -18,6 +18,15 @@ interface FixedPricingProps {
 }
 
 export const FixedPricing = ({ form }: FixedPricingProps) => {
+  const calculateSuggestedPrice = () => {
+    const monthlyUsage = Number(form.watch("averageMonthlyUsage")) || 0;
+    const includedUnits = Number(form.watch("pricingComponents.includedUnits")) || 0;
+    // Suggest a slightly lower price per unit for additional usage
+    return monthlyUsage > 0 ? 
+      ((Number(form.watch("pricingComponents.monthlyBase")) || 0) / includedUnits * 0.8).toFixed(2) : 
+      0;
+  };
+
   return (
     <FormField
       control={form.control}
@@ -36,12 +45,17 @@ export const FixedPricing = ({ form }: FixedPricingProps) => {
             </Tooltip>
           </FormLabel>
           <FormControl>
-            <Input 
-              type="number"
-              {...field}
-              onChange={e => field.onChange(e.target.valueAsNumber)}
-              placeholder="Enter price per additional unit" 
-            />
+            <div className="flex items-center gap-2">
+              <Input 
+                type="number"
+                {...field}
+                onChange={e => field.onChange(e.target.valueAsNumber)}
+                placeholder={`Suggested: $${calculateSuggestedPrice()}`} 
+              />
+              <span className="text-sm text-muted-foreground">
+                Suggested: ${calculateSuggestedPrice()}
+              </span>
+            </div>
           </FormControl>
           <FormMessage />
         </FormItem>

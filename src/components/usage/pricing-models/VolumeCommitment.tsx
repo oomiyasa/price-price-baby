@@ -7,15 +7,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus, Infinity } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { CurrentPricingForm, VolumeCommitTier } from "@/types/usage-based";
+import { Switch } from "@/components/ui/switch";
 
 interface VolumeCommitmentProps {
   form: UseFormReturn<CurrentPricingForm>;
 }
 
 export const VolumeCommitment = ({ form }: VolumeCommitmentProps) => {
+  const [isTopTier, setIsTopTier] = React.useState(false);
+  
   const addVolumeTier = () => {
     const currentTiers = form.watch("pricingComponents.volumeCommitTiers") || [];
     const lastTier = currentTiers[currentTiers.length - 1];
@@ -32,6 +35,9 @@ export const VolumeCommitment = ({ form }: VolumeCommitmentProps) => {
       "pricingComponents.volumeCommitTiers",
       currentTiers.filter((_, i) => i !== index)
     );
+    if (index === currentTiers.length - 1) {
+      setIsTopTier(false);
+    }
   };
 
   return (
@@ -42,6 +48,7 @@ export const VolumeCommitment = ({ form }: VolumeCommitmentProps) => {
           type="button"
           onClick={addVolumeTier}
           className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
+          disabled={isTopTier}
         >
           <Plus className="mr-1 h-4 w-4" />
           Add Tier
@@ -61,6 +68,8 @@ export const VolumeCommitment = ({ form }: VolumeCommitmentProps) => {
                   newTiers[index] = { ...tier, commitmentAmount: Number(e.target.value) };
                   form.setValue("pricingComponents.volumeCommitTiers", newTiers);
                 }}
+                disabled={index === (form.watch("pricingComponents.volumeCommitTiers") || []).length - 1 && isTopTier}
+                placeholder={index === (form.watch("pricingComponents.volumeCommitTiers") || []).length - 1 && isTopTier ? "Unlimited" : "Enter amount"}
               />
             </FormControl>
           </FormItem>
@@ -79,6 +88,18 @@ export const VolumeCommitment = ({ form }: VolumeCommitmentProps) => {
               />
             </FormControl>
           </FormItem>
+
+          {index === (form.watch("pricingComponents.volumeCommitTiers") || []).length - 1 && (
+            <FormItem className="flex items-center gap-2">
+              <FormLabel className="text-sm">Top Tier</FormLabel>
+              <FormControl>
+                <Switch
+                  checked={isTopTier}
+                  onCheckedChange={setIsTopTier}
+                />
+              </FormControl>
+            </FormItem>
+          )}
 
           <Button
             type="button"
