@@ -15,7 +15,6 @@ interface Feature {
   id: string;
   name: string;
   checked: boolean;
-  weight: number;
 }
 
 interface DifferentiationFormProps {
@@ -53,12 +52,6 @@ export const DifferentiationForm = ({
       default:
         return "";
     }
-  };
-
-  const calculateCompetitiveScore = () => {
-    return selectedFeatures
-      .filter(f => f.checked)
-      .reduce((sum, feature) => sum + feature.weight, 0) * 100;
   };
 
   return (
@@ -149,7 +142,7 @@ export const DifferentiationForm = ({
               <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
             </TooltipTrigger>
             <TooltipContent>
-              Select features that give you pricing power (each feature adds to your competitive score)
+              Select features that differentiate your offering
             </TooltipContent>
           </Tooltip>
         </div>
@@ -164,7 +157,7 @@ export const DifferentiationForm = ({
                 className="border-[#8B8B73] data-[state=checked]:bg-[#8B8B73] data-[state=checked]:text-white"
               />
               <Label htmlFor={feature.id} className="text-[#4A4A3F]">
-                {feature.name} (+{feature.weight * 100}%)
+                {feature.name}
               </Label>
             </div>
           ))}
@@ -185,7 +178,7 @@ export const DifferentiationForm = ({
             </p>
             {selectedFeatures.some(f => f.checked) && (
               <p>
-                • Total competitive advantage: +{calculateCompetitiveScore().toFixed(1)}% pricing power
+                • Competitive features: {selectedFeatures.filter(f => f.checked).length} selected
               </p>
             )}
           </div>
