@@ -21,14 +21,19 @@ const App = () => (
         <SidebarProvider>
           <div className="min-h-screen flex w-full">
             <AppSidebar />
-            <main className="flex-1">
+            <main className="flex-1 flex flex-col">
               <SidebarTrigger className="fixed top-4 left-4 z-50">
                 <Menu className="h-6 w-6 text-gray-600 hover:text-gray-900 transition-colors" />
               </SidebarTrigger>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+              <div className="flex-1">
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </div>
+              <footer className="py-4 px-6 text-center text-gray-400 text-sm">
+                Price Price Baby | Oomiyasa LLC
+              </footer>
             </main>
           </div>
         </SidebarProvider>
