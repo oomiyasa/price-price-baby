@@ -62,6 +62,19 @@ export const ProductItemsForm = ({
     onReorderProducts(items);
   };
 
+  const getFrequencyText = (product: ProductItem) => {
+    switch (product.chargeModel) {
+      case "one-time":
+        return "One-time payment";
+      case "subscription":
+        return `${product.billingPeriod?.charAt(0).toUpperCase()}${product.billingPeriod?.slice(1)} subscription`;
+      case "usage":
+        return `Usage-based (${product.usageUnits} units ${product.usagePeriod})`;
+      default:
+        return "";
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="space-y-4">
@@ -194,7 +207,7 @@ export const ProductItemsForm = ({
                       <div {...provided.dragHandleProps}>
                         <GripVertical className="h-5 w-5 text-gray-400" />
                       </div>
-                      <div className="flex-1 grid grid-cols-2 gap-4">
+                      <div className="flex-1 grid grid-cols-3 gap-4">
                         <div>
                           <span className="block text-sm font-medium text-gray-700">
                             {product.name}
@@ -203,6 +216,11 @@ export const ProductItemsForm = ({
                         <div>
                           <span className="block text-sm font-medium text-gray-700">
                             ${product.price}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="block text-sm text-gray-600">
+                            {getFrequencyText(product)}
                           </span>
                         </div>
                       </div>
