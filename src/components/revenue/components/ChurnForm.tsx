@@ -38,7 +38,6 @@ export const ChurnForm: React.FC<ChurnFormProps> = ({ onSubmit }) => {
       churnedMRR: undefined,
       expansionMRR: undefined,
       customerAcquisitionCost: undefined,
-      renewalRate: undefined,
       timePeriod: "monthly",
       churnType: "both",
       industry: "saas",
@@ -257,37 +256,6 @@ export const ChurnForm: React.FC<ChurnFormProps> = ({ onSubmit }) => {
                       <Input
                         type="number"
                         placeholder="Enter CAC (optional)"
-                        {...field}
-                        onChange={(e) =>
-                          field.onChange(e.target.value ? Number(e.target.value) : undefined)
-                        }
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="renewalRate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center gap-2">
-                      Renewal Rate (%)
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
-                        </TooltipTrigger>
-                        <TooltipContent className="max-w-xs">
-                          Percentage of customers who renew (optional)
-                        </TooltipContent>
-                      </Tooltip>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="Enter renewal rate (optional)"
                         {...field}
                         onChange={(e) =>
                           field.onChange(e.target.value ? Number(e.target.value) : undefined)

@@ -33,7 +33,6 @@ export interface ChurnData {
   churnedMRR: number;
   expansionMRR?: number;
   customerAcquisitionCost?: number;
-  renewalRate?: number;
   timePeriod: "monthly" | "quarterly" | "annually";
   churnType: "voluntary" | "involuntary" | "both";
   industry: Industry;
