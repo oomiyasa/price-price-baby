@@ -13,6 +13,13 @@ const pricingTools = [
     icon: Calculator
   },
   {
+    id: "nrr",
+    title: "Net Revenue Retention",
+    description: "Track cohort performance and revenue retention",
+    route: "/nrr",
+    icon: ChartBar
+  },
+  {
     id: "new-offer",
     title: "Price a New Offering",
     description: "Get strategic pricing for your new product or service",

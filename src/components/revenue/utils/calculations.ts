@@ -1,5 +1,5 @@
 
-export const calculateRevenueProjections = (
+export const calculateProjections = (
   monthlyRevenue: number,
   growthRate: number,
   months: number
@@ -16,6 +16,15 @@ export const calculateRevenueProjections = (
       arr: projectedMRR * 12
     };
   });
+};
+
+export const calculateNRR = (
+  initialRevenue: number,
+  expansionRevenue: number,
+  churnedRevenue: number
+): number => {
+  const endingRevenue = initialRevenue + expansionRevenue - churnedRevenue;
+  return (endingRevenue / initialRevenue) * 100;
 };
 
 export const formatCurrency = (value: number) => {

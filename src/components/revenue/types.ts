@@ -10,3 +10,17 @@ export interface RevenueProjection {
   mrr: number;
   arr: number;
 }
+
+export interface CohortData {
+  startDate: string;
+  initialRevenue: number;
+  expansionRevenue: number;
+  churnedRevenue: number;
+}
+
+export interface NRRResults {
+  nrrPercentage: number;
+  endingRevenue: number;
+  netRevenue: number;
+  cohorts: CohortData[];
+}

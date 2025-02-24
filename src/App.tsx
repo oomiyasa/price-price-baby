@@ -15,6 +15,7 @@ import UsageBasedPricing from "@/pages/UsageBasedPricing";
 import UsagePricingImpact from "@/pages/UsagePricingImpact";
 import MarketSizing from "@/pages/MarketSizing";
 import RevenueCalculator from "@/pages/RevenueCalculator";
+import NRRCalculator from "@/pages/NRRCalculator";
 import MainNav from "@/components/MainNav";
 
 const App = () => {
@@ -35,6 +36,7 @@ const App = () => {
               <Route path="/usage-pricing-impact" element={<UsagePricingImpact />} />
               <Route path="/market-size" element={<MarketSizing />} />
               <Route path="/revenue" element={<RevenueCalculator />} />
+              <Route path="/nrr" element={<NRRCalculator />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
