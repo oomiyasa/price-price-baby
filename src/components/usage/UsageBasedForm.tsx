@@ -33,8 +33,10 @@ type CurrentPricingForm = {
   subscriptionPrice?: string;
   billingFrequency?: "monthly" | "annually" | "quarterly";
   customerCount?: string;
-  averageRevenue?: string;
-  mainLimitation?: string;
+  listPrice?: string;
+  billingPeriod?: "monthly" | "annually" | "quarterly";
+  averageDiscount?: string;
+  annualChurnRate?: string;
 };
 
 export const UsageBasedForm = () => {
@@ -119,17 +121,17 @@ export const UsageBasedForm = () => {
             <>
               <FormField
                 control={form.control}
-                name="subscriptionPrice"
+                name="listPrice"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="flex items-center gap-2">
-                      Current Subscription Price
+                      Current List Price
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
                         </TooltipTrigger>
                         <TooltipContent>
-                          Enter your current base subscription price
+                          Enter your current list price before any discounts
                         </TooltipContent>
                       </Tooltip>
                     </FormLabel>
@@ -143,17 +145,17 @@ export const UsageBasedForm = () => {
 
               <FormField
                 control={form.control}
-                name="billingFrequency"
+                name="billingPeriod"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Billing Frequency</FormLabel>
+                    <FormLabel>Billing Period</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select billing frequency" />
+                          <SelectValue placeholder="Select billing period" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -162,6 +164,54 @@ export const UsageBasedForm = () => {
                         <SelectItem value="annually">Annually</SelectItem>
                       </SelectContent>
                     </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="averageDiscount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      Average Discount (%)
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          Average discount offered to customers as a percentage
+                        </TooltipContent>
+                      </Tooltip>
+                    </FormLabel>
+                    <FormControl>
+                      <Input type="number" min="0" max="100" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="annualChurnRate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      Annual Churn Rate (%)
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          Percentage of customers that cancel annually
+                        </TooltipContent>
+                      </Tooltip>
+                    </FormLabel>
+                    <FormControl>
+                      <Input type="number" min="0" max="100" {...field} />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -187,54 +237,6 @@ export const UsageBasedForm = () => {
                 </FormLabel>
                 <FormControl>
                   <Input type="number" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="averageRevenue"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="flex items-center gap-2">
-                  Average Revenue per Customer
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      Average monthly revenue per customer
-                    </TooltipContent>
-                  </Tooltip>
-                </FormLabel>
-                <FormControl>
-                  <Input type="number" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="mainLimitation"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="flex items-center gap-2">
-                  Main Limitation of Current Model
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      What's the biggest drawback of your current pricing model?
-                    </TooltipContent>
-                  </Tooltip>
-                </FormLabel>
-                <FormControl>
-                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
