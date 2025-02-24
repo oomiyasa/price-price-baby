@@ -28,7 +28,7 @@ const items = [
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarRail />
+      <SidebarRail className="cursor-ew-resize hover:bg-gray-200/50 after:bg-gray-200" />
       <SidebarHeader className="px-2 py-2">
         <span className="text-sm font-medium text-sidebar-foreground/70">Navigation</span>
       </SidebarHeader>
