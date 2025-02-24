@@ -2,6 +2,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { CopyIcon } from "lucide-react";
 import { CompanyType, PricingPath, PricingStrategy } from "@/types/pricing";
+import { toast } from "sonner";
 
 interface PricingRecommendationProps {
   companyType: CompanyType;
@@ -65,6 +66,14 @@ export const PricingRecommendation = ({
     return `Based on market positioning, you can expect margins around ${desiredMargin}%.`;
   };
 
+  const handleCopy = (text: string, label: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast.success(`${label} copied to clipboard`);
+    }).catch(() => {
+      toast.error("Failed to copy to clipboard");
+    });
+  };
+
   return (
     <div className="space-y-6">
       <div className="text-center">
@@ -85,7 +94,10 @@ export const PricingRecommendation = ({
                   Based on your market research and pricing strategy, this range {getMarketPositionText()}.
                 </p>
               </div>
-              <CopyIcon className="w-4 h-4 text-gray-400 cursor-pointer ml-auto flex-shrink-0" />
+              <CopyIcon 
+                className="w-4 h-4 text-gray-400 cursor-pointer ml-auto flex-shrink-0 hover:text-gray-600" 
+                onClick={() => handleCopy(`Based on your market research and pricing strategy, this range ${getMarketPositionText()}.`, "Market position")}
+              />
             </div>
           </CardContent>
         </Card>
@@ -100,7 +112,10 @@ export const PricingRecommendation = ({
                   {getProfitPotentialText()}
                 </p>
               </div>
-              <CopyIcon className="w-4 h-4 text-gray-400 cursor-pointer ml-auto flex-shrink-0" />
+              <CopyIcon 
+                className="w-4 h-4 text-gray-400 cursor-pointer ml-auto flex-shrink-0 hover:text-gray-600" 
+                onClick={() => handleCopy(getProfitPotentialText(), "Profit potential")}
+              />
             </div>
           </CardContent>
         </Card>
@@ -112,15 +127,24 @@ export const PricingRecommendation = ({
               <ul className="space-y-2 text-sm text-[#6B6B5F]">
                 <li className="flex items-center justify-between">
                   • Pricing approach: {pricingPath === "market" ? "Market-based pricing" : "Cost-based pricing"}
-                  <CopyIcon className="w-4 h-4 text-gray-400 cursor-pointer" />
+                  <CopyIcon 
+                    className="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-600" 
+                    onClick={() => handleCopy(`Pricing approach: ${pricingPath === "market" ? "Market-based pricing" : "Cost-based pricing"}`, "Pricing approach")}
+                  />
                 </li>
                 <li className="flex items-center justify-between">
                   • Market position: {pricingStrategy === "lower" ? "lower" : pricingStrategy === "premium" ? "premium" : "similar"} than competitors
-                  <CopyIcon className="w-4 h-4 text-gray-400 cursor-pointer" />
+                  <CopyIcon 
+                    className="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-600" 
+                    onClick={() => handleCopy(`Market position: ${pricingStrategy === "lower" ? "lower" : pricingStrategy === "premium" ? "premium" : "similar"} than competitors`, "Market position")}
+                  />
                 </li>
                 <li className="flex items-center justify-between">
                   • Target profit margin: {desiredMargin}%
-                  <CopyIcon className="w-4 h-4 text-gray-400 cursor-pointer" />
+                  <CopyIcon 
+                    className="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-600" 
+                    onClick={() => handleCopy(`Target profit margin: ${desiredMargin}%`, "Target profit margin")}
+                  />
                 </li>
               </ul>
             </div>
