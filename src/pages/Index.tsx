@@ -1,7 +1,24 @@
 
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronRight, DollarSign, RefreshCw, Calculator, Box, Percent, ChartBar, UserMinus, TrendingUp } from "lucide-react";
+import { 
+  ChevronRight, 
+  DollarSign, 
+  RefreshCw, 
+  Calculator, 
+  Box, 
+  Percent, 
+  ChartBar, 
+  UserMinus, 
+  TrendingUp,
+  DollarSign as CACIcon,
+  ArrowUpRight,
+  Gauge,
+  Flame,
+  TrendingDown,
+  Tags,
+  BarChart3
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 const pricingTools = [
@@ -32,6 +49,55 @@ const pricingTools = [
     description: "Calculate and optimize customer lifetime value",
     route: "/ltv",
     icon: TrendingUp
+  },
+  {
+    id: "cac",
+    title: "CAC Calculator",
+    description: "Analyze customer acquisition costs and efficiency",
+    route: "/cac",
+    icon: CACIcon
+  },
+  {
+    id: "quick-ratio",
+    title: "Quick Ratio Calculator",
+    description: "Measure growth efficiency and revenue health",
+    route: "/quick-ratio",
+    icon: ArrowUpRight
+  },
+  {
+    id: "magic-number",
+    title: "Magic Number Calculator",
+    description: "Calculate sales efficiency metrics",
+    route: "/magic-number",
+    icon: Gauge
+  },
+  {
+    id: "burn-multiple",
+    title: "Burn Multiple Calculator",
+    description: "Analyze burn rate efficiency",
+    route: "/burn-multiple",
+    icon: Flame
+  },
+  {
+    id: "price-elasticity",
+    title: "Price Elasticity",
+    description: "Measure price sensitivity and market impact",
+    route: "/price-elasticity",
+    icon: TrendingDown
+  },
+  {
+    id: "discount-strategy",
+    title: "Discount Strategy",
+    description: "Optimize discount levels and analyze impact",
+    route: "/discount-strategy",
+    icon: Tags
+  },
+  {
+    id: "value-based-pricing",
+    title: "Value-Based Pricing",
+    description: "Develop pricing based on customer value",
+    route: "/value-based-pricing",
+    icon: BarChart3
   },
   {
     id: "new-offer",
