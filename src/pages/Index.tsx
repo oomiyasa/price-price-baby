@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight, DollarSign, RefreshCw, Calculator, Box, Percent, ChartBar } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const pricingTools = [
   {
@@ -50,8 +50,6 @@ const pricingTools = [
 ];
 
 const Index = () => {
-  const navigate = useNavigate();
-
   return (
     <div className="min-h-screen flex flex-col bg-[#FAFAFA]">
       <motion.div
@@ -78,10 +76,10 @@ const Index = () => {
           {pricingTools.map((tool) => {
             const Icon = tool.icon;
             return (
-              <div
+              <Link
                 key={tool.id}
-                onClick={() => navigate(tool.route)}
-                className="cursor-pointer"
+                to={tool.route}
+                className="block no-underline"
               >
                 <Card className="h-full group bg-white hover:bg-gray-50 transition-colors border border-gray-100 shadow-sm">
                   <CardContent className="p-6 flex items-start gap-4">
@@ -95,7 +93,7 @@ const Index = () => {
                     <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-gray-600 transition-colors shrink-0" />
                   </CardContent>
                 </Card>
-              </div>
+              </Link>
             )
           })}
         </motion.div>
