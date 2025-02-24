@@ -18,6 +18,7 @@ import RevenueCalculator from "@/pages/RevenueCalculator";
 import NRRCalculator from "@/pages/NRRCalculator";
 import ChurnCalculator from "@/pages/ChurnCalculator";
 import LTVCalculator from "@/pages/LTVCalculator";
+import CACCalculator from "@/pages/CACCalculator";
 import MainNav from "@/components/MainNav";
 
 const App = () => {
@@ -41,6 +42,7 @@ const App = () => {
               <Route path="/nrr" element={<NRRCalculator />} />
               <Route path="/churn" element={<ChurnCalculator />} />
               <Route path="/ltv" element={<LTVCalculator />} />
+              <Route path="/cac" element={<CACCalculator />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
