@@ -2,9 +2,8 @@
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Upload, Download, Database } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const pricingTools = [
   {
@@ -26,21 +25,6 @@ const pricingTools = [
     route: "/competitor",
   },
 ];
-
-const PremiumFeatureButton = ({ icon: Icon, label }: { icon: any; label: string }) => (
-  <TooltipProvider>
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button variant="outline" size="icon" className="text-[#8B8B73] hover:text-[#4A4A3F] hover:bg-[#F2FCE2]">
-          <Icon className="h-4 w-4" />
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>
-        <p>{label} (Premium Feature)</p>
-      </TooltipContent>
-    </Tooltip>
-  </TooltipProvider>
-);
 
 const Index = () => {
   return (
@@ -75,12 +59,7 @@ const Index = () => {
                 <CardDescription className="text-[#6B6B5F]">{tool.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex justify-between items-center">
-                  <div className="space-x-2">
-                    <PremiumFeatureButton icon={Upload} label="Import Data" />
-                    <PremiumFeatureButton icon={Download} label="Export Results" />
-                    <PremiumFeatureButton icon={Database} label="Connect Data Source" />
-                  </div>
+                <div className="flex justify-end">
                   <Button 
                     asChild
                     className="bg-[#8B8B73] hover:bg-[#6B6B5F] text-white"

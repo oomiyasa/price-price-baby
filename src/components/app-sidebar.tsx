@@ -1,5 +1,5 @@
 
-import { Home, Settings } from "lucide-react";
+import { Home, Settings, UserPlus } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -17,6 +17,11 @@ const items = [
     title: "Home",
     url: "/",
     icon: Home,
+  },
+  {
+    title: "Login / Sign Up",
+    url: "/auth",
+    icon: UserPlus,
   },
   {
     title: "Settings",
