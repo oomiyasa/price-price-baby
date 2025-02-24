@@ -11,31 +11,64 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { HelpCircle } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LabelList } from 'recharts';
+import { useLocation } from 'react-router-dom';
 
 export const PricingImpactGraph = () => {
-  const metrics = [
-    {
-      name: "MRR",
-      current: 10000,
-      projected: 15000,
-      percentChange: 50,
-      tooltip: "Monthly Recurring Revenue based on current usage patterns and pricing",
-    },
-    {
-      name: "ARR",
-      current: 120000,
-      projected: 180000,
-      percentChange: 50,
-      tooltip: "Annual Recurring Revenue calculated as MRR × 12",
-    },
-    {
-      name: "CLTV",
-      current: 360000,
-      projected: 540000,
-      percentChange: 50,
-      tooltip: "Customer Lifetime Value calculated as ARR × Average Customer Lifetime (years)",
-    },
-  ];
+  const location = useLocation();
+  const formData = location.state?.formData;
+
+  // Calculate metrics based on form data
+  const calculateMetrics = () => {
+    const baseMonthlyRevenue = formData?.pricingComponents?.monthlyBase || 0;
+    const avgUsage = Number(formData?.averageMonthlyUsage) || 0;
+    const additionalUnitPrice = Number(formData?.pricingComponents?.additionalUnitPrice) || 0;
+    const includedUnits = Number(formData?.pricingComponents?.includedUnits) || 0;
+    const customerLifetime = Number(formData?.customerLifetime) || 3;
+    const growthRate = Number(formData?.growthRate) || 15;
+
+    // Calculate additional usage revenue
+    const additionalUsageRevenue = Math.max(0, avgUsage - includedUnits) * additionalUnitPrice;
+    
+    // Calculate current MRR
+    const currentMRR = baseMonthlyRevenue + additionalUsageRevenue;
+    
+    // Calculate projected MRR with growth rate
+    const projectedMRR = currentMRR * (1 + (growthRate / 100));
+    
+    // Calculate ARR
+    const currentARR = currentMRR * 12;
+    const projectedARR = projectedMRR * 12;
+    
+    // Calculate CLTV
+    const currentCLTV = currentARR * customerLifetime;
+    const projectedCLTV = projectedARR * customerLifetime;
+
+    return [
+      {
+        name: "MRR",
+        current: currentMRR,
+        projected: projectedMRR,
+        percentChange: ((projectedMRR - currentMRR) / currentMRR * 100).toFixed(1),
+        tooltip: "Monthly Recurring Revenue based on current usage patterns and pricing",
+      },
+      {
+        name: "ARR",
+        current: currentARR,
+        projected: projectedARR,
+        percentChange: ((projectedARR - currentARR) / currentARR * 100).toFixed(1),
+        tooltip: "Annual Recurring Revenue calculated as MRR × 12",
+      },
+      {
+        name: "CLTV",
+        current: currentCLTV,
+        projected: projectedCLTV,
+        percentChange: ((projectedCLTV - currentCLTV) / currentCLTV * 100).toFixed(1),
+        tooltip: "Customer Lifetime Value calculated as ARR × Average Customer Lifetime (years)",
+      },
+    ];
+  };
+
+  const metrics = calculateMetrics();
 
   const chartData = metrics.map(metric => ({
     name: metric.name,
