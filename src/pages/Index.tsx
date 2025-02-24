@@ -1,42 +1,65 @@
 
 import { motion } from "framer-motion";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { ChevronRight, DollarSign, RefreshCw, Calculator, Box, Percent, LineChart } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const pricingTools = [
   {
     id: "new-offer",
-    title: "New Offer Pricing",
-    description: "Create and price a new offer for your business",
+    title: "Price a New Offering",
+    description: "Get strategic pricing for your new product or service",
     route: "/new-offer",
+    icon: DollarSign
   },
   {
-    id: "value-based",
-    title: "Value Based Pricing",
-    description: "Set prices based on perceived value to customers",
-    route: "/value-based",
+    id: "reprice",
+    title: "Reprice Existing Offering",
+    description: "Optimize pricing for your current products",
+    route: "/reprice",
+    icon: RefreshCw
   },
   {
-    id: "competitor",
-    title: "Competitor Based Pricing",
-    description: "Analyze and set prices based on market competition",
-    route: "/competitor",
+    id: "cogs",
+    title: "Calculate COGS & Margins",
+    description: "Analyze costs and determine target margins by industry",
+    route: "/cogs",
+    icon: Calculator
   },
+  {
+    id: "bundle",
+    title: "Price a Bundle",
+    description: "Create attractive package pricing",
+    route: "/bundle",
+    icon: Box
+  },
+  {
+    id: "usage-based",
+    title: "Switch to Usage-Based Pricing",
+    description: "Move from subscriptions to consumption pricing",
+    route: "/usage-based",
+    icon: Percent
+  },
+  {
+    id: "metrics",
+    title: "Business Metrics Calculators",
+    description: "Essential calculators for recurring revenue businesses",
+    route: "/metrics",
+    icon: LineChart
+  }
 ];
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#F2FCE2] to-[#FEF7CD]/20">
+    <div className="min-h-screen flex flex-col bg-[#FAFAFA]">
       {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="flex flex-col items-center justify-center px-6 py-24"
+        className="flex flex-col items-center justify-center px-6 py-16"
       >
-        <h1 className="text-5xl md:text-6xl font-semibold text-[#4A4A3F] tracking-tight mb-4 text-center">
+        <h1 className="text-4xl md:text-5xl font-semibold text-[#4A4A3F] tracking-tight mb-4 text-center">
           Price Price Baby
         </h1>
         <p className="text-xl text-[#6B6B5F] max-w-md mx-auto text-center mb-12">
@@ -45,35 +68,40 @@ const Index = () => {
       </motion.div>
 
       {/* Tools Grid Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
         >
-          {pricingTools.map((tool) => (
-            <Card key={tool.id} className="bg-white/80 border-[#E8E8D8] hover:border-[#8B8B73] transition-colors">
-              <CardHeader>
-                <CardTitle className="text-[#4A4A3F]">{tool.title}</CardTitle>
-                <CardDescription className="text-[#6B6B5F]">{tool.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex justify-end">
-                  <Button 
-                    asChild
-                    className="bg-[#8B8B73] hover:bg-[#6B6B5F] text-white"
-                  >
-                    <Link to={tool.route}>
-                      Start <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+          {pricingTools.map((tool) => {
+            const Icon = tool.icon;
+            return (
+              <Link key={tool.id} to={tool.route}>
+                <Card className="group bg-white hover:bg-gray-50 transition-colors border border-gray-100 shadow-sm">
+                  <CardContent className="p-6 flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="bg-gray-100 p-3 rounded-lg">
+                        <Icon className="h-6 w-6 text-[#4A4A3F]" />
+                      </div>
+                      <div className="text-left">
+                        <h3 className="font-medium text-[#4A4A3F]">{tool.title}</h3>
+                        <p className="text-sm text-[#6B6B5F] mt-1">{tool.description}</p>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-gray-600 transition-colors" />
+                  </CardContent>
+                </Card>
+              </Link>
+            )
+          })}
         </motion.div>
       </div>
+
+      <footer className="py-4 px-6 text-center text-gray-400 text-sm">
+        Price Price Baby | Oomiyasa LLC
+      </footer>
     </div>
   );
 };
