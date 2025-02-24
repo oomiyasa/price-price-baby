@@ -53,7 +53,6 @@ export const UsageBasedForm = () => {
   const renderStep1 = () => (
     <div className="space-y-6">
       <div className="space-y-4">
-        <h2 className="text-xl font-medium text-[#4A4A3F]">Current Offering</h2>
         <FormField
           control={form.control}
           name="offerType"
