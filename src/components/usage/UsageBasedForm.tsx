@@ -32,8 +32,10 @@ export const UsageBasedForm = () => {
     if (step < 3) {
       setStep(step + 1);
     } else {
-      // Navigate to the impact analysis page
-      navigate("/usage-pricing-impact");
+      // Navigate to the impact analysis page with form data
+      navigate("/usage-pricing-impact", {
+        state: { formData: data }
+      });
     }
   };
 

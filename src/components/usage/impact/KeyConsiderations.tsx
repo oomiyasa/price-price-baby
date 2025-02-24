@@ -1,10 +1,11 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Edit2, Check } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { useLocation } from 'react-router-dom';
 
 interface Consideration {
   label: string;
@@ -14,12 +15,66 @@ interface Consideration {
 }
 
 export const KeyConsiderations = () => {
+  const location = useLocation();
+  const formData = location.state?.formData;
+
   const [considerations, setConsiderations] = React.useState<Consideration[]>([
-    { label: "Average Customer Lifetime", value: "3", unit: "years", editable: false },
-    { label: "Usage Growth Rate", value: "15", unit: "%/year", editable: false },
-    { label: "Customer Base Growth", value: "25", unit: "%/year", editable: false },
-    { label: "Churn Rate Impact", value: "-2", unit: "%", editable: false },
+    { 
+      label: "Average Customer Lifetime", 
+      value: formData?.customerLifetime || "3", 
+      unit: "years", 
+      editable: false 
+    },
+    { 
+      label: "Usage Growth Rate", 
+      value: formData?.growthRate || "15", 
+      unit: "%/year", 
+      editable: false 
+    },
+    { 
+      label: "Customer Base Growth", 
+      value: formData?.customerGrowth || "25", 
+      unit: "%/year", 
+      editable: false 
+    },
+    { 
+      label: "Churn Rate Impact", 
+      value: formData?.churnRate || "-2", 
+      unit: "%", 
+      editable: false 
+    },
   ]);
+
+  useEffect(() => {
+    if (formData) {
+      setConsiderations([
+        { 
+          label: "Average Customer Lifetime", 
+          value: formData.customerLifetime || "3", 
+          unit: "years", 
+          editable: false 
+        },
+        { 
+          label: "Usage Growth Rate", 
+          value: formData.growthRate || "15", 
+          unit: "%/year", 
+          editable: false 
+        },
+        { 
+          label: "Customer Base Growth", 
+          value: formData.customerGrowth || "25", 
+          unit: "%/year", 
+          editable: false 
+        },
+        { 
+          label: "Churn Rate Impact", 
+          value: formData.churnRate || "-2", 
+          unit: "%", 
+          editable: false 
+        },
+      ]);
+    }
+  }, [formData]);
 
   const handleEdit = (index: number) => {
     setConsiderations(prev => prev.map((c, i) => 

@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { HelpCircle } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LabelList } from 'recharts';
 
 export const PricingImpactGraph = () => {
   const metrics = [
@@ -36,6 +37,12 @@ export const PricingImpactGraph = () => {
     },
   ];
 
+  const chartData = metrics.map(metric => ({
+    name: metric.name,
+    Current: metric.current,
+    Projected: metric.projected,
+  }));
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -45,8 +52,41 @@ export const PricingImpactGraph = () => {
     }).format(amount);
   };
 
+  const formatYAxis = (value: number) => {
+    if (value >= 1000000) {
+      return `$${(value / 1000000).toFixed(1)}M`;
+    } else if (value >= 1000) {
+      return `$${(value / 1000).toFixed(0)}K`;
+    }
+    return `$${value}`;
+  };
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
+      <div className="h-[300px] w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={chartData}
+            margin={{
+              top: 20,
+              right: 30,
+              left: 40,
+              bottom: 5,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis tickFormatter={formatYAxis} />
+            <Bar dataKey="Current" fill="#8B8B73" radius={[4, 4, 0, 0]}>
+              <LabelList dataKey="Current" position="top" formatter={formatYAxis} />
+            </Bar>
+            <Bar dataKey="Projected" fill="#6B6B5F" radius={[4, 4, 0, 0]}>
+              <LabelList dataKey="Projected" position="top" formatter={formatYAxis} />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
       <Table>
         <TableHeader>
           <TableRow>
