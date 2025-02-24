@@ -4,11 +4,13 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ProductItemsForm } from "@/components/bundle/ProductItemsForm";
+import { BundleMetrics } from "@/components/bundle/BundleMetrics";
 import { ProductItem } from "@/types/bundle";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { calculateMRR, calculateARR, calculateBlendedMargin } from "@/utils/bundleCalculations";
 
 const BundlePricing = () => {
   const navigate = useNavigate();
@@ -43,130 +45,11 @@ const BundlePricing = () => {
       return;
     }
     
-    // Explicitly pass the state object to the next route
     navigate("/bundle-configuration", { 
       state: { products },
-      replace: false  // Ensure we're not replacing the current history entry
+      replace: false
     });
     toast.success("Proceeding to bundle configuration");
-  };
-
-  const calculateMRR = (products: ProductItem[]) => {
-    return products.reduce((total, product) => {
-      const price = parseFloat(product.price);
-      
-      switch (product.chargeModel) {
-        case "one-time":
-          return total + (price / 12); // One-time payments spread over a year for MRR
-        
-        case "subscription":
-          if (product.billingPeriod === "monthly") {
-            return total + price;
-          } else if (product.billingPeriod === "annually") {
-            return total + (price / 12);
-          }
-          return total;
-        
-        case "usage":
-          const units = parseInt(product.usageUnits || "0");
-          let monthlyUnits;
-          
-          switch (product.usagePeriod) {
-            case "day":
-              monthlyUnits = units * 30; // Approximate days in a month
-              break;
-            case "month":
-              monthlyUnits = units;
-              break;
-            case "year":
-              monthlyUnits = units / 12;
-              break;
-            default:
-              monthlyUnits = 0;
-          }
-          
-          return total + (price * monthlyUnits);
-        
-        default:
-          return total;
-      }
-    }, 0);
-  };
-
-  const calculateARR = (products: ProductItem[]) => {
-    return products.reduce((total, product) => {
-      const price = parseFloat(product.price);
-      
-      switch (product.chargeModel) {
-        case "one-time":
-          return total + price; // One-time payments count fully for ARR
-        
-        case "subscription":
-          if (product.billingPeriod === "annually") {
-            return total + price;
-          } else if (product.billingPeriod === "monthly") {
-            return total + (price * 12);
-          }
-          return total;
-        
-        case "usage":
-          const units = parseInt(product.usageUnits || "0");
-          let yearlyUnits;
-          
-          switch (product.usagePeriod) {
-            case "day":
-              yearlyUnits = units * 365;
-              break;
-            case "month":
-              yearlyUnits = units * 12;
-              break;
-            case "year":
-              yearlyUnits = units;
-              break;
-            default:
-              yearlyUnits = 0;
-          }
-          
-          return total + (price * yearlyUnits);
-        
-        default:
-          return total;
-      }
-    }, 0);
-  };
-
-  const calculateBlendedMargin = (products: ProductItem[]) => {
-    const totalRevenue = calculateARR(products);
-    if (totalRevenue === 0) return null;
-
-    const weightedMargins = products.reduce((total, product) => {
-      if (!product.grossMargin) return total;
-      
-      const price = parseFloat(product.price);
-      const margin = parseFloat(product.grossMargin);
-      let annualRevenue;
-
-      switch (product.chargeModel) {
-        case "one-time":
-          annualRevenue = price;
-          break;
-        case "subscription":
-          annualRevenue = product.billingPeriod === "annually" ? price : price * 12;
-          break;
-        case "usage":
-          const units = parseInt(product.usageUnits || "0");
-          const yearlyUnits = product.usagePeriod === "day" ? units * 365 :
-                             product.usagePeriod === "month" ? units * 12 : units;
-          annualRevenue = price * yearlyUnits;
-          break;
-        default:
-          annualRevenue = 0;
-      }
-
-      return total + (margin * (annualRevenue / totalRevenue));
-    }, 0);
-
-    return weightedMargins;
   };
 
   return (
@@ -189,30 +72,12 @@ const BundlePricing = () => {
                   onReorderProducts={handleReorderProducts}
                 />
                 
-                {products.length > 0 && (
-                  <div className="mt-8 pt-6 border-t border-gray-100">
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="p-4 bg-gray-50 rounded-md">
-                        <div className="text-sm text-gray-600">Monthly Recurring Revenue (MRR)</div>
-                        <div className="text-2xl font-semibold text-[#4A4A3F]">
-                          ${calculateMRR(products).toLocaleString('en-US', { maximumFractionDigits: 2 })}
-                        </div>
-                      </div>
-                      <div className="p-4 bg-gray-50 rounded-md">
-                        <div className="text-sm text-gray-600">Annual Recurring Revenue (ARR)</div>
-                        <div className="text-2xl font-semibold text-[#4A4A3F]">
-                          ${calculateARR(products).toLocaleString('en-US', { maximumFractionDigits: 2 })}
-                        </div>
-                      </div>
-                      <div className="p-4 bg-gray-50 rounded-md">
-                        <div className="text-sm text-gray-600">Blended Gross Margin</div>
-                        <div className="text-2xl font-semibold text-[#4A4A3F]">
-                          {calculateBlendedMargin(products)?.toFixed(1)}%
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                <BundleMetrics 
+                  products={products}
+                  calculateMRR={calculateMRR}
+                  calculateARR={calculateARR}
+                  calculateBlendedMargin={calculateBlendedMargin}
+                />
 
                 <div className="mt-6 flex justify-between gap-4">
                   <Button
