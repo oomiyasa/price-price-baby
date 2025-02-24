@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Form,
@@ -31,10 +30,10 @@ export const MarketCalculator = () => {
 
   const form = useForm<MarketSizeFormData>({
     defaultValues: {
-      totalPopulation: 0,
-      targetPercentage: 0,
-      averageRevenue: 0,
-      marketShare: 0,
+      totalPopulation: undefined,
+      targetPercentage: undefined,
+      averageRevenue: undefined,
+      marketShare: undefined,
     },
   });
 
@@ -77,13 +76,18 @@ export const MarketCalculator = () => {
                       <TooltipTrigger asChild>
                         <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
                       </TooltipTrigger>
-                      <TooltipContent>
-                        The total number of potential customers in your market
+                      <TooltipContent className="max-w-xs">
+                        The total number of potential customers globally, regardless of whether you can currently reach them. This includes customers in all geographic regions and market segments.
                       </TooltipContent>
                     </Tooltip>
                   </FormLabel>
                   <FormControl>
-                    <Input type="number" {...field} onChange={e => field.onChange(Number(e.target.value))} />
+                    <Input 
+                      type="number" 
+                      placeholder="Enter total population"
+                      {...field} 
+                      onChange={e => field.onChange(e.target.value ? Number(e.target.value) : undefined)} 
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -101,13 +105,18 @@ export const MarketCalculator = () => {
                       <TooltipTrigger asChild>
                         <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
                       </TooltipTrigger>
-                      <TooltipContent>
-                        Percentage of the total market you can realistically serve
+                      <TooltipContent className="max-w-xs">
+                        Percentage of the total market that you could theoretically serve based on your business model, geographic reach, and product capabilities
                       </TooltipContent>
                     </Tooltip>
                   </FormLabel>
                   <FormControl>
-                    <Input type="number" {...field} onChange={e => field.onChange(Number(e.target.value))} />
+                    <Input 
+                      type="number" 
+                      placeholder="Enter percentage"
+                      {...field} 
+                      onChange={e => field.onChange(e.target.value ? Number(e.target.value) : undefined)} 
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -125,13 +134,18 @@ export const MarketCalculator = () => {
                       <TooltipTrigger asChild>
                         <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
                       </TooltipTrigger>
-                      <TooltipContent>
-                        Expected annual revenue from each customer
+                      <TooltipContent className="max-w-xs">
+                        Expected annual revenue from each customer, considering your pricing strategy and typical customer usage patterns
                       </TooltipContent>
                     </Tooltip>
                   </FormLabel>
                   <FormControl>
-                    <Input type="number" {...field} onChange={e => field.onChange(Number(e.target.value))} />
+                    <Input 
+                      type="number" 
+                      placeholder="Enter annual revenue"
+                      {...field} 
+                      onChange={e => field.onChange(e.target.value ? Number(e.target.value) : undefined)} 
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -149,13 +163,18 @@ export const MarketCalculator = () => {
                       <TooltipTrigger asChild>
                         <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
                       </TooltipTrigger>
-                      <TooltipContent>
-                        Percentage of the serviceable market you expect to capture
+                      <TooltipContent className="max-w-xs">
+                        Realistic percentage of your serviceable market that you can capture, considering competition, resources, and market positioning
                       </TooltipContent>
                     </Tooltip>
                   </FormLabel>
                   <FormControl>
-                    <Input type="number" {...field} onChange={e => field.onChange(Number(e.target.value))} />
+                    <Input 
+                      type="number" 
+                      placeholder="Enter market share"
+                      {...field} 
+                      onChange={e => field.onChange(e.target.value ? Number(e.target.value) : undefined)} 
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
