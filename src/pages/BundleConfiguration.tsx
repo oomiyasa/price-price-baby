@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import { ProductItem } from "@/types/bundle";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,10 +18,8 @@ import {
 } from "@/utils/bundleCalculations";
 
 const BundleConfiguration = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   
-  // Initialize products directly from location state
   const initialProducts = location.state?.products || [];
   const [products, setProducts] = useState<ProductItem[]>(initialProducts);
   const [discounts, setDiscounts] = useState<ProductDiscount[]>(
@@ -74,6 +72,10 @@ const BundleConfiguration = () => {
   const savingsPercentage = originalTotalAnnual > 0 ? 
     (savingsAmount / originalTotalAnnual) * 100 : 0;
 
+  const handleSave = () => {
+    toast.success("Bundle configuration saved!");
+  };
+
   if (!products.length) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA]">
@@ -81,13 +83,14 @@ const BundleConfiguration = () => {
           <CardContent className="p-6">
             <h2 className="text-xl font-semibold text-[#4A4A3F] mb-4">No Products Selected</h2>
             <p className="text-[#6B6B5F] mb-6">Please add products to configure your bundle.</p>
-            <Button
-              onClick={() => navigate("/bundle-pricing")}
-              className="w-full bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Return to Products
-            </Button>
+            <Link to="/bundle-pricing">
+              <Button
+                className="w-full bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Return to Products
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
@@ -97,7 +100,7 @@ const BundleConfiguration = () => {
   return (
     <TooltipProvider>
       <div className="min-h-screen flex flex-col bg-[#FAFAFA]">
-        <div className="container max-w-3xl mx-auto px-4 py-8">
+        <div className="container max-w-2xl mx-auto px-4 py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -108,15 +111,15 @@ const BundleConfiguration = () => {
               <CardContent className="p-6">
                 <div className="space-y-6">
                   <div>
-                    <h2 className="text-2xl font-semibold text-[#4A4A3F] mb-2">
+                    <h2 className="text-2xl font-semibold text-[#4A4A3F]">
                       Set Bundle Price
                     </h2>
-                    <p className="text-[#6B6B5F]">
+                    <p className="text-[#6B6B5F] mt-1">
                       Adjust individual product discounts to create the bundle
                     </p>
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     <div className="bg-gray-50 rounded-lg p-4">
                       <h3 className="text-lg font-medium text-[#4A4A3F] mb-4">
                         Bundle Contents
@@ -147,23 +150,22 @@ const BundleConfiguration = () => {
                   </div>
 
                   <div className="flex justify-between gap-4">
-                    <Button
-                      variant="outline"
-                      onClick={() => navigate(-1)}
-                      className="border-[#8B8B73] text-[#4A4A3F] hover:bg-gray-50"
-                    >
-                      <ArrowLeft className="h-4 w-4 mr-2" />
-                      Previous
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        toast.success("Bundle configuration saved!");
-                        navigate("/");
-                      }}
-                      className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
-                    >
-                      Save Bundle
-                    </Button>
+                    <Link to="/bundle-pricing">
+                      <Button
+                        variant="outline"
+                        className="border-[#8B8B73] text-[#4A4A3F] hover:bg-gray-50"
+                      >
+                        <ArrowLeft className="h-4 w-4 mr-2" />
+                        Previous
+                      </Button>
+                    </Link>
+                    <Link to="/" onClick={handleSave}>
+                      <Button
+                        className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
+                      >
+                        Save Bundle
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </CardContent>
