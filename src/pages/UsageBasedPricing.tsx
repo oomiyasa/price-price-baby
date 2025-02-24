@@ -14,10 +14,12 @@ const UsageBasedPricing = () => {
         className="max-w-4xl mx-auto"
       >
         <h1 className="text-3xl font-semibold text-[#4A4A3F] mb-2 text-center">
-          Usage-Based Pricing Calculator
+          Deploy Usage-Based Pricing
         </h1>
-        <p className="text-[#6B6B5F] mb-8 text-center">
-          Transform your pricing model to usage-based pricing
+        <p className="text-[#6B6B5F] mb-8 text-center max-w-2xl mx-auto">
+          Whether you're launching a new product with usage-based pricing or 
+          transitioning from a traditional model, this tool will help you design 
+          and implement the right pricing strategy for your business.
         </p>
         <Card className="bg-white shadow-sm">
           <CardContent className="pt-6">
