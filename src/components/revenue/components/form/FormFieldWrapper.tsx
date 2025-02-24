@@ -3,11 +3,11 @@ import React from "react";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { HelpCircle } from "lucide-react";
-import { Control } from "react-hook-form";
+import { Control, Path } from "react-hook-form";
 
 interface FormFieldWrapperProps<T extends Record<string, any>> {
   control: Control<T>;
-  name: keyof T;
+  name: Path<T>;
   label: string;
   tooltip: string;
   children: React.ReactNode;
