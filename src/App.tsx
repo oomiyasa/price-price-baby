@@ -8,7 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import Index from "./pages/Index";
-import CostPlus from "./pages/CostPlus";
+import NewOffer from "./pages/NewOffer";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,7 +26,7 @@ const App = () => (
               <div className="flex-1">
                 <Routes>
                   <Route path="/" element={<Index />} />
-                  <Route path="/cost-plus" element={<CostPlus />} />
+                  <Route path="/new-offer" element={<NewOffer />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </div>

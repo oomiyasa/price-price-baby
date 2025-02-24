@@ -7,10 +7,10 @@ import { Link } from "react-router-dom";
 
 const pricingTools = [
   {
-    id: "cost-plus",
-    title: "Cost Plus Pricing",
-    description: "Calculate your pricing based on costs and desired profit margin",
-    route: "/cost-plus",
+    id: "new-offer",
+    title: "New Offer Pricing",
+    description: "Create and price a new offer for your business",
+    route: "/new-offer",
   },
   {
     id: "value-based",
