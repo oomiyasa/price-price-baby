@@ -6,6 +6,7 @@ import { ProductItemsForm } from "@/components/bundle/ProductItemsForm";
 import { ProductItem } from "@/types/bundle";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { toast } from "sonner";
 
 const BundlePricing = () => {
   const [step, setStep] = useState(1);
@@ -31,12 +32,14 @@ const BundlePricing = () => {
 
   const handlePrevStep = () => {
     if (step > 1) {
-      setStep(step - 1);
+      setStep(prev => prev - 1);
+      toast.success("Moved to previous step");
     }
   };
 
   const handleNextStep = () => {
-    setStep(step + 1);
+    setStep(prev => prev + 1);
+    toast.success("Moved to next step");
   };
 
   const calculateMRR = (products: ProductItem[]) => {
@@ -135,6 +138,10 @@ const BundlePricing = () => {
           >
             <Card className="bg-white border-gray-100 shadow-sm">
               <CardContent className="p-6">
+                <div className="mb-6">
+                  <div className="text-sm font-medium text-gray-500">Step {step}</div>
+                </div>
+
                 <ProductItemsForm
                   products={products}
                   onAddProduct={handleAddProduct}

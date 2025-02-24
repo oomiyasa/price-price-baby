@@ -52,7 +52,6 @@ const pricingTools = [
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col bg-[#FAFAFA]">
-      {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -67,7 +66,6 @@ const Index = () => {
         </p>
       </motion.div>
 
-      {/* Tools Grid Section */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -79,18 +77,16 @@ const Index = () => {
             const Icon = tool.icon;
             return (
               <Link key={tool.id} to={tool.route}>
-                <Card className="group bg-white hover:bg-gray-50 transition-colors border border-gray-100 shadow-sm">
-                  <CardContent className="p-6 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="bg-gray-100 p-3 rounded-lg">
-                        <Icon className="h-6 w-6 text-[#4A4A3F]" />
-                      </div>
-                      <div className="text-left">
-                        <h3 className="font-medium text-[#4A4A3F]">{tool.title}</h3>
-                        <p className="text-sm text-[#6B6B5F] mt-1">{tool.description}</p>
-                      </div>
+                <Card className="h-full group bg-white hover:bg-gray-50 transition-colors border border-gray-100 shadow-sm">
+                  <CardContent className="p-6 flex items-start gap-4">
+                    <div className="bg-gray-100 p-3 rounded-lg shrink-0">
+                      <Icon className="h-6 w-6 text-[#4A4A3F]" />
                     </div>
-                    <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-gray-600 transition-colors" />
+                    <div className="flex-1">
+                      <h3 className="font-medium text-[#4A4A3F]">{tool.title}</h3>
+                      <p className="text-sm text-[#6B6B5F] mt-1">{tool.description}</p>
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-gray-600 transition-colors shrink-0" />
                   </CardContent>
                 </Card>
               </Link>
