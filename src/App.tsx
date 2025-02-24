@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainNav from "./components/MainNav";
 import Index from "./pages/Index";
 import NewOffer from "./pages/NewOffer";
+import Repricing from "./pages/Repricing";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/new-offer" element={<NewOffer />} />
+                <Route path="/repricing" element={<Repricing />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
