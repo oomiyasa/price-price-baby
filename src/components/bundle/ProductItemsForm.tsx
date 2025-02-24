@@ -70,7 +70,8 @@ export const ProductItemsForm = ({
       case "subscription":
         return `${price}/${product.billingPeriod === 'monthly' ? 'mo' : 'yr'}`;
       case "usage":
-        return `${price}/${product.usagePeriod}`;
+        const units = product.usageUnits || '0';
+        return `${price}/unit (est. ${units} units/${product.usagePeriod})`;
       default:
         return price;
     }
@@ -94,22 +95,6 @@ export const ProductItemsForm = ({
               />
             </div>
             <div>
-              <Label htmlFor="price">Price</Label>
-              <Input
-                id="price"
-                type="number"
-                min="0"
-                step="0.01"
-                value={newProduct.price}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, price: e.target.value })
-                }
-                placeholder="Enter price"
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
               <Label htmlFor="chargeModel">Charge Model</Label>
               <Select
                 value={newProduct.chargeModel}
@@ -126,6 +111,22 @@ export const ProductItemsForm = ({
                   <SelectItem value="usage">Usage-based</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="price">Price</Label>
+              <Input
+                id="price"
+                type="number"
+                min="0"
+                step="0.01"
+                value={newProduct.price}
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, price: e.target.value })
+                }
+                placeholder="Enter price"
+              />
             </div>
             {newProduct.chargeModel === "subscription" && (
               <div>
