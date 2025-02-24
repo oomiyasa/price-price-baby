@@ -21,6 +21,7 @@ const BundleConfiguration = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
+  // Initialize products directly from location state
   const initialProducts = location.state?.products || [];
   const [products, setProducts] = useState<ProductItem[]>(initialProducts);
   const [discounts, setDiscounts] = useState<ProductDiscount[]>(
@@ -96,7 +97,7 @@ const BundleConfiguration = () => {
   return (
     <TooltipProvider>
       <div className="min-h-screen flex flex-col bg-[#FAFAFA]">
-        <div className="container max-w-2xl mx-auto px-4 py-8">
+        <div className="container max-w-3xl mx-auto px-4 py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -107,15 +108,15 @@ const BundleConfiguration = () => {
               <CardContent className="p-6">
                 <div className="space-y-6">
                   <div>
-                    <h2 className="text-2xl font-semibold text-[#4A4A3F]">
+                    <h2 className="text-2xl font-semibold text-[#4A4A3F] mb-2">
                       Set Bundle Price
                     </h2>
-                    <p className="text-[#6B6B5F] mt-1">
+                    <p className="text-[#6B6B5F]">
                       Adjust individual product discounts to create the bundle
                     </p>
                   </div>
 
-                  <div className="space-y-6">
+                  <div className="space-y-4">
                     <div className="bg-gray-50 rounded-lg p-4">
                       <h3 className="text-lg font-medium text-[#4A4A3F] mb-4">
                         Bundle Contents
