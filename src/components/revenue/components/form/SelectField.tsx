@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FormFieldWrapper } from "./FormFieldWrapper";
-import { Control } from "react-hook-form";
+import { Control, Path } from "react-hook-form";
 
 interface SelectOption {
   value: string;
@@ -17,7 +17,7 @@ interface SelectOption {
 
 interface SelectFieldProps<T extends Record<string, any>> {
   control: Control<T>;
-  name: keyof T;
+  name: Path<T>;
   label: string;
   tooltip: string;
   options: SelectOption[];

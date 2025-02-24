@@ -2,11 +2,11 @@
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { FormFieldWrapper } from "./FormFieldWrapper";
-import { Control } from "react-hook-form";
+import { Control, Path } from "react-hook-form";
 
 interface NumericInputProps<T extends Record<string, any>> {
   control: Control<T>;
-  name: keyof T;
+  name: Path<T>;
   label: string;
   tooltip: string;
   placeholder: string;
