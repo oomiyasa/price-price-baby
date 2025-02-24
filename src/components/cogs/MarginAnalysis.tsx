@@ -28,9 +28,7 @@ export const MarginAnalysis = ({
   onNext,
   onBack,
 }: MarginAnalysisProps) => {
-  const totalCosts = Object.values(data.directCosts).reduce((sum, cost) => sum + (cost || 0), 0) + 
-    (data.indirectCosts || 0);
-
+  const totalCosts = Object.values(data.directCosts).reduce((sum, cost) => sum + (cost || 0), 0);
   const currentMargin = calculateGrossMargin(data.revenue, totalCosts);
   const industryMarginRange = industryMargins[data.industry];
 
@@ -63,7 +61,7 @@ export const MarginAnalysis = ({
                     <Info className="h-4 w-4 text-gray-400" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Sum of all direct and indirect costs</p>
+                    <p>Sum of all direct costs</p>
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -78,7 +76,7 @@ export const MarginAnalysis = ({
                     <Info className="h-4 w-4 text-gray-400" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Revenue - COGS) / Revenue × 100</p>
+                    <p>(Revenue - COGS) / Revenue × 100</p>
                   </TooltipContent>
                 </Tooltip>
               </div>

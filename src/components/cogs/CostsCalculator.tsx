@@ -31,22 +31,17 @@ export const CostsCalculator = ({
     });
   };
 
-  const handleIndirectCostsChange = (value: string) => {
-    const numValue = value === "" ? 0 : parseFloat(value);
-    onUpdate({ indirectCosts: numValue });
-  };
-
   const isValid = () => {
     return config.directCosts.every(cost => 
       (data.directCosts[cost.id] || 0) >= 0
-    ) && (!config.hasIndirectCosts || data.indirectCosts >= 0);
+    );
   };
 
   return (
     <>
       <CardHeader className="text-center border-b border-gray-100">
         <h2 className="text-2xl font-semibold text-[#4A4A3F]">Cost Analysis</h2>
-        <p className="text-[#6B6B5F]">Enter your direct and indirect costs</p>
+        <p className="text-[#6B6B5F]">Enter your direct costs</p>
       </CardHeader>
 
       <CardContent className="p-6 space-y-6">
@@ -65,20 +60,6 @@ export const CostsCalculator = ({
             </div>
           ))}
         </div>
-
-        {config.hasIndirectCosts && (
-          <div className="space-y-2">
-            <h3 className="font-medium text-[#4A4A3F]">Indirect Costs</h3>
-            <Label htmlFor="indirectCosts">Overhead & Other Indirect Costs</Label>
-            <Input
-              id="indirectCosts"
-              type="number"
-              placeholder="Enter total indirect costs"
-              value={data.indirectCosts || ""}
-              onChange={(e) => handleIndirectCostsChange(e.target.value)}
-            />
-          </div>
-        )}
       </CardContent>
 
       <CardFooter className="p-6 flex justify-between">
