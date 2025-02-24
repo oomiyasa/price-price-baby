@@ -7,6 +7,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { HelpCircle } from "lucide-react";
 import { SalesPerformance } from "@/types/repricing";
+import { cn } from "@/lib/utils";
 
 interface PerformanceFormProps {
   salesPerformance: SalesPerformance;
@@ -35,6 +36,28 @@ export const PerformanceForm = ({
     if (value <= 10) return "#8B8B73";
     if (value <= 30) return "#84cc16";
     return "#22c55e";
+  };
+
+  const getSliderClass = (value: number) => {
+    return cn(
+      "w-full h-2 rounded-lg appearance-none cursor-pointer",
+      "bg-gradient-to-r from-red-500 via-orange-500 via-[#8B8B73] via-lime-500 to-green-500",
+      "[&::-webkit-slider-thumb]:appearance-none",
+      "[&::-webkit-slider-thumb]:w-4",
+      "[&::-webkit-slider-thumb]:h-4",
+      "[&::-webkit-slider-thumb]:rounded-full",
+      "[&::-webkit-slider-thumb]:cursor-pointer",
+      "[&::-moz-range-thumb]:w-4",
+      "[&::-moz-range-thumb]:h-4",
+      "[&::-moz-range-thumb]:rounded-full",
+      "[&::-moz-range-thumb]:border-0",
+      "[&::-moz-range-thumb]:cursor-pointer",
+      value <= -30 ? "[&::-webkit-slider-thumb]:bg-red-500 [&::-moz-range-thumb]:bg-red-500" :
+      value <= -10 ? "[&::-webkit-slider-thumb]:bg-orange-500 [&::-moz-range-thumb]:bg-orange-500" :
+      value <= 10 ? "[&::-webkit-slider-thumb]:bg-[#8B8B73] [&::-moz-range-thumb]:bg-[#8B8B73]" :
+      value <= 30 ? "[&::-webkit-slider-thumb]:bg-lime-500 [&::-moz-range-thumb]:bg-lime-500" :
+      "[&::-webkit-slider-thumb]:bg-green-500 [&::-moz-range-thumb]:bg-green-500"
+    );
   };
 
   return (
@@ -67,19 +90,7 @@ export const PerformanceForm = ({
             max="50"
             value={salesPerformance}
             onChange={handleSliderChange}
-            className="w-full h-2 rounded-lg appearance-none cursor-pointer"
-            style={{
-              background: `linear-gradient(to right, 
-                #ef4444 0%, 
-                #f97316 30%, 
-                #8B8B73 50%, 
-                #84cc16 70%, 
-                #22c55e 100%
-              )`,
-              '::-webkit-slider-thumb': {
-                backgroundColor: getSliderColor(salesPerformance),
-              }
-            }}
+            className={getSliderClass(salesPerformance)}
           />
 
           <div className="text-center">
