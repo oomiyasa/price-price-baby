@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,6 +45,7 @@ function App() {
             <Route path="/new-offer" element={<NewOffer />} />
             <Route path="/bundle-pricing" element={<BundlePricing />} />
             <Route path="/bundle-configuration" element={<BundleConfiguration />} />
+            <Route path="/bundle-discount" element={<Navigate to="/bundle-configuration" replace />} />
             <Route path="/repricing" element={<Repricing />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
