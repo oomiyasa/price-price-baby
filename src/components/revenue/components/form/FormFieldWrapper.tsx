@@ -4,23 +4,22 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/comp
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { HelpCircle } from "lucide-react";
 import { Control } from "react-hook-form";
-import { ChurnData } from "../../types";
 
-interface FormFieldWrapperProps {
-  control: Control<ChurnData>;
-  name: keyof ChurnData;
+interface FormFieldWrapperProps<T extends Record<string, any>> {
+  control: Control<T>;
+  name: keyof T;
   label: string;
   tooltip: string;
   children: React.ReactNode;
 }
 
-export const FormFieldWrapper: React.FC<FormFieldWrapperProps> = ({
+export const FormFieldWrapper = <T extends Record<string, any>>({
   control,
   name,
   label,
   tooltip,
   children,
-}) => {
+}: FormFieldWrapperProps<T>) => {
   return (
     <FormField
       control={control}

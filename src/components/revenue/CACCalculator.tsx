@@ -92,7 +92,7 @@ export const CACCalculator = () => {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <NumericInput
+                <NumericInput<CACData>
                   control={form.control}
                   name="marketingCosts"
                   label="Marketing Costs ($)"
@@ -100,7 +100,7 @@ export const CACCalculator = () => {
                   placeholder="Enter marketing costs"
                 />
 
-                <NumericInput
+                <NumericInput<CACData>
                   control={form.control}
                   name="salesCosts"
                   label="Sales Costs ($)"
@@ -108,7 +108,7 @@ export const CACCalculator = () => {
                   placeholder="Enter sales costs"
                 />
 
-                <NumericInput
+                <NumericInput<CACData>
                   control={form.control}
                   name="newCustomers"
                   label="New Customers"
@@ -116,7 +116,7 @@ export const CACCalculator = () => {
                   placeholder="Enter number of new customers"
                 />
 
-                <SelectField
+                <SelectField<CACData>
                   control={form.control}
                   name="timePeriod"
                   label="Time Period"

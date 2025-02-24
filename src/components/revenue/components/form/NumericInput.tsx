@@ -3,27 +3,26 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import { FormFieldWrapper } from "./FormFieldWrapper";
 import { Control } from "react-hook-form";
-import { ChurnData } from "../../types";
 
-interface NumericInputProps {
-  control: Control<ChurnData>;
-  name: keyof ChurnData;
+interface NumericInputProps<T extends Record<string, any>> {
+  control: Control<T>;
+  name: keyof T;
   label: string;
   tooltip: string;
   placeholder: string;
   optional?: boolean;
 }
 
-export const NumericInput: React.FC<NumericInputProps> = ({
+export const NumericInput = <T extends Record<string, any>>({
   control,
   name,
   label,
   tooltip,
   placeholder,
   optional = false,
-}) => {
+}: NumericInputProps<T>) => {
   return (
-    <FormFieldWrapper
+    <FormFieldWrapper<T>
       control={control}
       name={name}
       label={label}

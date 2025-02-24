@@ -9,30 +9,29 @@ import {
 } from "@/components/ui/select";
 import { FormFieldWrapper } from "./FormFieldWrapper";
 import { Control } from "react-hook-form";
-import { ChurnData } from "../../types";
 
 interface SelectOption {
   value: string;
   label: string;
 }
 
-interface SelectFieldProps {
-  control: Control<ChurnData>;
-  name: keyof ChurnData;
+interface SelectFieldProps<T extends Record<string, any>> {
+  control: Control<T>;
+  name: keyof T;
   label: string;
   tooltip: string;
   options: SelectOption[];
 }
 
-export const SelectField: React.FC<SelectFieldProps> = ({
+export const SelectField = <T extends Record<string, any>>({
   control,
   name,
   label,
   tooltip,
   options,
-}) => {
+}: SelectFieldProps<T>) => {
   return (
-    <FormFieldWrapper
+    <FormFieldWrapper<T>
       control={control}
       name={name}
       label={label}
