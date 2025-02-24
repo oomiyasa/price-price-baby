@@ -21,8 +21,8 @@ const App = () => {
             <Route path="/cogs" element={<COGS />} />
             <Route path="/new-offer" element={<NewOffer />} />
             <Route path="/repricing" element={<Repricing />} />
-            <Route path="/bundle" element={<BundlePricing />} />
-            <Route path="/bundle/configure" element={<BundleConfiguration />} />
+            <Route path="/bundle-pricing" element={<BundlePricing />} />
+            <Route path="/bundle-configuration" element={<BundleConfiguration />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Toaster />
