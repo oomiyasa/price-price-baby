@@ -45,9 +45,10 @@ const BundlePricing = () => {
       return;
     }
     
+    // Use replace: true to prevent back-button issues
     navigate("/bundle-configuration", { 
       state: { products },
-      replace: false
+      replace: true
     });
     toast.success("Proceeding to bundle configuration");
   };
