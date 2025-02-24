@@ -19,7 +19,7 @@ export const BundleProduct = ({
 }: BundleProductProps) => {
   // Calculate gross margin impact
   const originalMargin = product.grossMargin ? parseFloat(product.grossMargin) : 0;
-  const discountedMargin = originalMargin - (discount / 100);
+  const discountedMargin = (originalMargin - discount) / (100 - discount) * 100;
   const marginImpact = originalMargin - discountedMargin;
 
   return (
@@ -54,7 +54,7 @@ export const BundleProduct = ({
           type="number"
           min="0"
           max="100"
-          value={discount}
+          value={discount || ''}
           onChange={(e) => onDiscountChange(product.id, e.target.value)}
           className="text-right"
           placeholder="0%"
@@ -88,4 +88,3 @@ export const BundleProduct = ({
     </div>
   );
 };
-
