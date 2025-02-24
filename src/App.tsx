@@ -1,4 +1,3 @@
-
 import { Menu } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -9,11 +8,8 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-
 const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+const App = () => <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
@@ -22,9 +18,7 @@ const App = () => (
           <div className="min-h-screen flex w-full">
             <AppSidebar />
             <main className="flex-1 flex flex-col">
-              <SidebarTrigger className="fixed top-4 left-4 z-50">
-                <Menu className="h-6 w-6 text-gray-600 hover:text-gray-900 transition-colors" />
-              </SidebarTrigger>
+              
               <div className="flex-1">
                 <Routes>
                   <Route path="/" element={<Index />} />
@@ -39,7 +33,5 @@ const App = () => (
         </SidebarProvider>
       </BrowserRouter>
     </TooltipProvider>
-  </QueryClientProvider>
-);
-
+  </QueryClientProvider>;
 export default App;
