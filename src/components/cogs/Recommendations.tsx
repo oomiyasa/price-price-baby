@@ -22,8 +22,7 @@ export const Recommendations = ({
   onBack,
 }: RecommendationsProps) => {
   const navigate = useNavigate();
-  const totalCosts = Object.values(data.directCosts).reduce((sum, cost) => sum + (cost || 0), 0) + 
-    (data.indirectCosts || 0);
+  const totalCosts = Object.values(data.directCosts).reduce((sum, cost) => sum + (cost || 0), 0);
   
   const currentMargin = calculateGrossMargin(data.revenue, totalCosts);
   const requiredRevenue = calculateRequiredRevenue(totalCosts, data.targetMargin);
