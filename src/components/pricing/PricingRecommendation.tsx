@@ -60,14 +60,34 @@ export const PricingRecommendation = ({
     return null;
   };
 
-  const getProfitPotentialText = () => {
+  const getProfitAnalysis = () => {
     if (pricingPath === "cost") {
       const cost = parseFloat(costPerUnit);
       const avgPrice = (parseFloat(priceRange.low) + parseFloat(priceRange.high)) / 2;
       const actualMargin = ((avgPrice - cost) / avgPrice) * 100;
       return `Based on your cost of ${costPerUnit}, this price will achieve your target profit margin of ${desiredMargin}%.`;
     }
-    return `Based on market positioning, you can expect margins around ${desiredMargin}%.`;
+
+    // For market-based pricing, calculate recommended COGS ranges
+    const lowPrice = parseFloat(priceRange.low);
+    const highPrice = parseFloat(priceRange.high);
+    
+    // Calculate maximum allowable COGS to achieve desired margin
+    const maxCogsLow = lowPrice * (1 - (desiredMargin / 100));
+    const maxCogsHigh = highPrice * (1 - (desiredMargin / 100));
+
+    return (
+      <div className="space-y-2">
+        <p>To achieve your target margin of {desiredMargin}%, your COGS should be:</p>
+        <ul className="list-disc pl-4 space-y-1 text-sm">
+          <li>No more than ${maxCogsLow.toFixed(2)} for the lower price point (${priceRange.low})</li>
+          <li>No more than ${maxCogsHigh.toFixed(2)} for the higher price point (${priceRange.high})</li>
+        </ul>
+        <p className="text-sm mt-2 text-[#8B8B73]">
+          Tip: If your costs exceed these thresholds, consider ways to reduce production costs or reassess your margin expectations.
+        </p>
+      </div>
+    );
   };
 
   return (
@@ -93,7 +113,7 @@ export const PricingRecommendation = ({
                 </div>
                 <PenLine 
                   className="w-4 h-4 text-gray-400 cursor-pointer ml-auto flex-shrink-0 hover:text-gray-600" 
-                  onClick={() => onEditStep(4)} // Navigate to pricing strategy step
+                  onClick={() => onEditStep(4)}
                 />
               </div>
             </CardContent>
@@ -105,14 +125,14 @@ export const PricingRecommendation = ({
             <div className="flex items-start gap-2">
               <div className="w-4 h-4 mt-1 rounded-full bg-[#8B8B73]" />
               <div>
-                <h3 className="font-medium text-[#4A4A3F] mb-1">Profit Potential</h3>
-                <p className="text-[#6B6B5F] text-sm">
-                  {getProfitPotentialText()}
-                </p>
+                <h3 className="font-medium text-[#4A4A3F] mb-1">Profit Analysis</h3>
+                <div className="text-[#6B6B5F] text-sm">
+                  {getProfitAnalysis()}
+                </div>
               </div>
               <PenLine 
                 className="w-4 h-4 text-gray-400 cursor-pointer ml-auto flex-shrink-0 hover:text-gray-600" 
-                onClick={() => onEditStep(5)} // Navigate to margin step
+                onClick={() => onEditStep(5)}
               />
             </div>
           </CardContent>
@@ -127,7 +147,7 @@ export const PricingRecommendation = ({
                   • Pricing approach: {pricingPath === "market" ? "Market-based pricing" : "Cost-based pricing"}
                   <PenLine 
                     className="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-600" 
-                    onClick={() => onEditStep(2)} // Navigate to pricing path step
+                    onClick={() => onEditStep(2)}
                   />
                 </li>
                 {pricingPath === "market" && (
@@ -135,7 +155,7 @@ export const PricingRecommendation = ({
                     • Market position: {pricingStrategy === "lower" ? "lower" : pricingStrategy === "premium" ? "premium" : "similar"} than competitors
                     <PenLine 
                       className="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-600" 
-                      onClick={() => onEditStep(4)} // Navigate to pricing strategy step
+                      onClick={() => onEditStep(4)}
                     />
                   </li>
                 )}
@@ -143,7 +163,7 @@ export const PricingRecommendation = ({
                   • Target profit margin: {desiredMargin}%
                   <PenLine 
                     className="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-600" 
-                    onClick={() => onEditStep(5)} // Navigate to margin step
+                    onClick={() => onEditStep(5)}
                   />
                 </li>
               </ul>
