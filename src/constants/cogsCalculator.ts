@@ -12,7 +12,7 @@ export const industryConfigs: IndustryConfig[] = [
     hasIndirectCosts: true
   },
   {
-    name: "Professional Services",
+    name: "Services",
     directCosts: [
       { id: "labor", label: "Direct Labor", placeholder: "Staff costs" },
       { id: "contractors", label: "Contractor Costs", placeholder: "External contractors" },
@@ -45,6 +45,26 @@ export const industryConfigs: IndustryConfig[] = [
       { id: "ingredients", label: "Food Ingredients", placeholder: "Raw ingredients" },
       { id: "labor", label: "Kitchen Labor", placeholder: "Staff costs" },
       { id: "packaging", label: "Packaging", placeholder: "To-go containers, etc." }
+    ],
+    hasIndirectCosts: true
+  },
+  {
+    name: "Construction",
+    directCosts: [
+      { id: "materials", label: "Building Materials", placeholder: "Raw materials" },
+      { id: "labor", label: "Labor", placeholder: "Worker costs" },
+      { id: "equipment", label: "Equipment", placeholder: "Tools and machinery" },
+      { id: "permits", label: "Permits & Licenses", placeholder: "Legal requirements" }
+    ],
+    hasIndirectCosts: true
+  },
+  {
+    name: "Healthcare",
+    directCosts: [
+      { id: "supplies", label: "Medical Supplies", placeholder: "Disposables, medicines, etc." },
+      { id: "labor", label: "Medical Staff", placeholder: "Healthcare workers" },
+      { id: "equipment", label: "Equipment", placeholder: "Medical equipment" },
+      { id: "billing", label: "Billing Services", placeholder: "Insurance processing" }
     ],
     hasIndirectCosts: true
   }

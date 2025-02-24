@@ -1,4 +1,3 @@
-
 import { IndustryBenchmarks, IndustryMargins } from "../types/pricing";
 import { Building, Users, User, DollarSign, ChartBar, ArrowDown, ArrowRight, ArrowUp } from "lucide-react";
 
@@ -79,8 +78,10 @@ export const industryBenchmarks: IndustryBenchmarks = {
 
 export const industryMargins: IndustryMargins = {
   'Software/SaaS': '70-85%',
-  'Professional Services': '50-70%',
+  'Services': '50-70%',
   'Manufacturing': '20-35%',
   'Retail': '25-35%',
-  'Food Service': '15-30%'
+  'Food Service': '15-30%',
+  'Construction': '20-40%',
+  'Healthcare': '30-45%'
 };

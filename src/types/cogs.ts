@@ -1,10 +1,12 @@
 
 export type Industry = 
   | "Software/SaaS"
-  | "Professional Services"
+  | "Services"
   | "Manufacturing"
   | "Retail"
-  | "Food Service";
+  | "Food Service"
+  | "Construction"
+  | "Healthcare";
 
 export type DirectCostField = {
   id: string;
