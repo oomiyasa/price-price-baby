@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -40,7 +41,7 @@ const NewOffer = () => {
   const handlePreviousStep = () => {
     if (step > 1) {
       setStep(step - 1);
-      if (step === 4) setPricingStrategy(null);
+      if (step === 5) setPricingStrategy(null);
       if (step === 3) setPricingPath(null);
       if (step === 2) setCompanyType(null);
     }
@@ -48,13 +49,13 @@ const NewOffer = () => {
 
   const handleCostBasedNext = () => {
     if (costPerUnit) {
-      setStep(5);
+      setStep(4);
     }
   };
 
   const handleMarketBasedNext = () => {
     if (marketPrice) {
-      setStep(5);
+      setStep(4);
     }
   };
 
@@ -79,14 +80,16 @@ const NewOffer = () => {
                    step === 1 ? "Select Your Company Type" : 
                    step === 2 ? "Choose Your Pricing Path" :
                    step === 3 ? (pricingPath === "cost" ? "Cost-Based Pricing Details" : "Market-Based Pricing Details") :
-                   "Select Your Pricing Strategy"}
+                   step === 4 ? "Select Your Pricing Strategy" :
+                   "Review Your Pricing Strategy"}
                 </CardTitle>
                 <CardDescription className="text-[#6B6B5F]">
                   {step === 5 ? "Set your target margin based on your business goals and industry benchmarks" : 
                    step === 1 ? "Choose the option that best describes your business" : 
                    step === 2 ? "Select the pricing strategy that aligns with your goals" :
                    step === 3 ? (pricingPath === "cost" ? "Enter your costs to calculate optimal pricing" : "Enter market research data to determine competitive pricing") :
-                   "Choose how you want to position your pricing relative to the market"}
+                   step === 4 ? "Choose how you want to position your pricing relative to the market" :
+                   "Review and confirm your pricing strategy"}
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-6">
