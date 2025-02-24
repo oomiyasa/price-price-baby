@@ -1,43 +1,34 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import MainNav from "./components/MainNav";
-import Index from "./pages/Index";
-import NewOffer from "./pages/NewOffer";
-import Repricing from "./pages/Repricing";
-import NotFound from "./pages/NotFound";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from "@/components/ui/sonner";
+import NotFound from "@/pages/NotFound";
+import Index from "@/pages/Index";
+import NewOffer from "@/pages/NewOffer";
+import Repricing from "@/pages/Repricing";
+import BundlePricing from "@/pages/BundlePricing";
+import { AppSidebar } from "@/components/app-sidebar";
 
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
+function App() {
+  return (
+    <Router>
+      <div className="flex">
+        <AppSidebar />
+        <main className="flex-1">
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/new-offer" element={<NewOffer />} />
+            <Route path="/bundle-pricing" element={<BundlePricing />} />
+            <Route path="/repricing" element={<Repricing />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
+      </div>
+      <footer className="text-center p-4 text-sm text-gray-600 border-t">
+        Price Price Baby | Oomiyasa LLC
+      </footer>
       <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <div className="min-h-screen flex flex-col">
-          <main className="flex-1 flex flex-col">
-            <MainNav />
-            <div className="flex-1">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/new-offer" element={<NewOffer />} />
-                <Route path="/repricing" element={<Repricing />} />
-                <Route path="/reprice" element={<Navigate to="/repricing" replace />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </div>
-            <footer className="py-4 px-6 text-center text-gray-400 text-sm">
-              Price Price Baby | Oomiyasa LLC
-            </footer>
-          </main>
-        </div>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+    </Router>
+  );
+};
 
 export default App;
