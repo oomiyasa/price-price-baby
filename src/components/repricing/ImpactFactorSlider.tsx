@@ -7,7 +7,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Edit2, HelpCircle } from "lucide-react";
+import { HelpCircle } from "lucide-react";
 
 interface ImpactFactorSliderProps {
   label: string;
@@ -15,7 +15,6 @@ interface ImpactFactorSliderProps {
   impact: number;
   weight: number;
   onWeightChange: (value: number) => void;
-  onEdit: () => void;
 }
 
 const getImpactDescription = (impact: number) => {
@@ -32,10 +31,9 @@ export const ImpactFactorSlider = ({
   impact,
   weight,
   onWeightChange,
-  onEdit,
 }: ImpactFactorSliderProps) => {
   return (
-    <div className="p-4 bg-white rounded-lg border border-[#E5E5E0]">
+    <div className="p-4 bg-white rounded-lg border border-[#E5E5E0] cursor-pointer hover:border-[#8B8B73] transition-colors">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <Label className="text-[#4A4A3F]">{label}</Label>
@@ -46,14 +44,6 @@ export const ImpactFactorSlider = ({
             <TooltipContent>{tooltipContent}</TooltipContent>
           </Tooltip>
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="text-[#8B8B73] hover:text-[#4A4A3F]"
-          onClick={onEdit}
-        >
-          <Edit2 className="h-4 w-4" />
-        </Button>
       </div>
       <div className="text-sm text-[#6B6B5F] mb-3">
         Impact: {getImpactDescription(impact)}

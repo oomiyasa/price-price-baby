@@ -1,12 +1,16 @@
-
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 import { HelpCircle } from "lucide-react";
 import { PriceRecommendationSummary } from "./PriceRecommendationSummary";
 import { ImpactFactorSlider } from "./ImpactFactorSlider";
+import { EditSalesDialog } from "./EditSalesDialog";
+import { EditMarketDialog } from "./EditMarketDialog";
+import { EditDifferentiationDialog } from "./EditDifferentiationDialog";
+import { SalesPerformance } from "@/types/repricing";
 
 interface RecommendationsFormProps {
   currentPrice: string;
@@ -156,6 +160,17 @@ export const RecommendationsForm = ({
     positioning: "Reflects your product's uniqueness and perceived value. High differentiation and strong value perception can support premium pricing."
   };
 
+  const renderEditButton = (onClick: () => void) => (
+    <Button
+      variant="ghost"
+      size="sm"
+      className="text-[#8B8B73] hover:text-[#4A4A3F]"
+      onClick={onClick}
+    >
+      <Edit2 className="h-4 w-4" />
+    </Button>
+  );
+
   return (
     <div className="space-y-8 max-w-2xl mx-auto">
       <PriceRecommendationSummary
@@ -184,37 +199,56 @@ export const RecommendationsForm = ({
           </Tooltip>
         </div>
 
-        <ImpactFactorSlider
-          label="Sales Performance"
-          tooltipContent={impactDescriptions.salesPerformance}
-          impact={recommendation.impacts.sales}
-          weight={weights.salesPerformance}
-          onWeightChange={(value) =>
-            onWeightsChange({ ...weights, salesPerformance: value })
+        <EditSalesDialog
+          salesPerformance={salesPerformance}
+          onSalesPerformanceChange={setSalesPerformance}
+          trigger={
+            <ImpactFactorSlider
+              label="Sales Performance"
+              tooltipContent={impactDescriptions.salesPerformance}
+              impact={recommendation.impacts.sales}
+              weight={weights.salesPerformance}
+              onWeightChange={(value) =>
+                onWeightsChange({ ...weights, salesPerformance: value })
+              }
+            />
           }
-          onEdit={() => onStepChange(2)}
         />
 
-        <ImpactFactorSlider
-          label="Market Conditions"
-          tooltipContent={impactDescriptions.marketConditions}
-          impact={recommendation.impacts.market}
-          weight={weights.marketConditions}
-          onWeightChange={(value) =>
-            onWeightsChange({ ...weights, marketConditions: value })
+        <EditMarketDialog
+          competitorPrices={competitorPrices}
+          onCompetitorPricesChange={onCompetitorPricesChange}
+          marketDemand={marketDemand}
+          onMarketDemandChange={onMarketDemandChange}
+          trigger={
+            <ImpactFactorSlider
+              label="Market Conditions"
+              tooltipContent={impactDescriptions.marketConditions}
+              impact={recommendation.impacts.market}
+              weight={weights.marketConditions}
+              onWeightChange={(value) =>
+                onWeightsChange({ ...weights, marketConditions: value })
+              }
+            />
           }
-          onEdit={() => onStepChange(3)}
         />
 
-        <ImpactFactorSlider
-          label="Market Positioning"
-          tooltipContent={impactDescriptions.positioning}
-          impact={recommendation.impacts.positioning}
-          weight={weights.positioning}
-          onWeightChange={(value) =>
-            onWeightsChange({ ...weights, positioning: value })
+        <EditDifferentiationDialog
+          uniqueness={uniqueness}
+          onUniquenessChange={onUniquenessChange}
+          valuePerception={valuePerception}
+          onValuePerceptionChange={onValuePerceptionChange}
+          trigger={
+            <ImpactFactorSlider
+              label="Market Positioning"
+              tooltipContent={impactDescriptions.positioning}
+              impact={recommendation.impacts.positioning}
+              weight={weights.positioning}
+              onWeightChange={(value) =>
+                onWeightsChange({ ...weights, positioning: value })
+              }
+            />
           }
-          onEdit={() => onStepChange(4)}
         />
       </div>
     </div>
