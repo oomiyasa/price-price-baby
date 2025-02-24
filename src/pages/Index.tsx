@@ -1,5 +1,46 @@
 
 import { motion } from "framer-motion";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, FileImport, FileExport, Database } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+
+const pricingTools = [
+  {
+    id: "cost-plus",
+    title: "Cost Plus Pricing",
+    description: "Calculate your pricing based on costs and desired profit margin",
+    route: "/cost-plus",
+  },
+  {
+    id: "value-based",
+    title: "Value Based Pricing",
+    description: "Set prices based on perceived value to customers",
+    route: "/value-based",
+  },
+  {
+    id: "competitor",
+    title: "Competitor Based Pricing",
+    description: "Analyze and set prices based on market competition",
+    route: "/competitor",
+  },
+];
+
+const PremiumFeatureButton = ({ icon: Icon, label }: { icon: any; label: string }) => (
+  <TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button variant="outline" size="icon" className="text-[#8B8B73] hover:text-[#4A4A3F] hover:bg-[#F2FCE2]">
+          <Icon className="h-4 w-4" />
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>{label} (Premium Feature)</p>
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+);
 
 const Index = () => {
   return (
@@ -27,8 +68,31 @@ const Index = () => {
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {/* Grid cards will be added here */}
-          {/* This is a placeholder for the upcoming tools grid */}
+          {pricingTools.map((tool) => (
+            <Card key={tool.id} className="bg-white/80 border-[#E8E8D8] hover:border-[#8B8B73] transition-colors">
+              <CardHeader>
+                <CardTitle className="text-[#4A4A3F]">{tool.title}</CardTitle>
+                <CardDescription className="text-[#6B6B5F]">{tool.description}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-between items-center">
+                  <div className="space-x-2">
+                    <PremiumFeatureButton icon={FileImport} label="Import Data" />
+                    <PremiumFeatureButton icon={FileExport} label="Export Results" />
+                    <PremiumFeatureButton icon={Database} label="Connect Data Source" />
+                  </div>
+                  <Button 
+                    asChild
+                    className="bg-[#8B8B73] hover:bg-[#6B6B5F] text-white"
+                  >
+                    <Link to={tool.route}>
+                      Start <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </motion.div>
       </div>
     </div>
