@@ -29,11 +29,6 @@ const MainNav = () => {
               Home
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/cac" className="cursor-pointer">
-              CAC Calculator
-            </Link>
-          </DropdownMenuItem>
           <DropdownMenuItem>
             Login
           </DropdownMenuItem>
