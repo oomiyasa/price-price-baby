@@ -13,14 +13,14 @@ interface NumericInputProps<T extends Record<string, any>> {
   optional?: boolean;
 }
 
-export const NumericInput = <T extends Record<string, any>>({
+export function NumericInput<T extends Record<string, any>>({
   control,
   name,
   label,
   tooltip,
   placeholder,
   optional = false,
-}: NumericInputProps<T>) => {
+}: NumericInputProps<T>) {
   return (
     <FormFieldWrapper<T>
       control={control}
@@ -38,4 +38,4 @@ export const NumericInput = <T extends Record<string, any>>({
       />
     </FormFieldWrapper>
   );
-};
+}

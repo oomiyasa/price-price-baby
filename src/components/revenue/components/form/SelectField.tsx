@@ -23,13 +23,13 @@ interface SelectFieldProps<T extends Record<string, any>> {
   options: SelectOption[];
 }
 
-export const SelectField = <T extends Record<string, any>>({
+export function SelectField<T extends Record<string, any>>({
   control,
   name,
   label,
   tooltip,
   options,
-}: SelectFieldProps<T>) => {
+}: SelectFieldProps<T>) {
   return (
     <FormFieldWrapper<T>
       control={control}
@@ -51,4 +51,4 @@ export const SelectField = <T extends Record<string, any>>({
       </Select>
     </FormFieldWrapper>
   );
-};
+}

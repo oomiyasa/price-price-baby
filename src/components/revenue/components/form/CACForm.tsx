@@ -18,7 +18,7 @@ interface CACFormProps {
   onSubmit: (data: CACData) => void;
 }
 
-export const CACForm: React.FC<CACFormProps> = ({ onSubmit }) => {
+export function CACForm({ onSubmit }: CACFormProps) {
   const form = useForm<CACData>({
     defaultValues: {
       marketingCosts: undefined,
@@ -89,4 +89,4 @@ export const CACForm: React.FC<CACFormProps> = ({ onSubmit }) => {
       </CardContent>
     </Card>
   );
-};
+}
