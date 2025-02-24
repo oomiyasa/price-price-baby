@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { HelpCircle } from "lucide-react";
+import { HelpCircle, TrendingDown, TrendingUp, AlertCircle } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -29,7 +29,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ChurnData, ChurnResults } from "./types";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip as RechartsTooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import { ChurnData, ChurnResults, Industry } from "./types";
+import { industryBenchmarks, getChurnRating } from "./utils/benchmarkData";
 
 const preventionStrategies = {
   voluntary: [
@@ -57,30 +68,60 @@ export const ChurnCalculator = () => {
       endingCustomers: undefined,
       churnedCustomers: undefined,
       newCustomers: undefined,
+      startingMRR: undefined,
+      churnedMRR: undefined,
+      expansionMRR: undefined,
+      customerAcquisitionCost: undefined,
+      renewalRate: undefined,
       timePeriod: "monthly",
       churnType: "both",
+      industry: "saas"
     },
   });
 
   const calculateChurnMetrics = (data: ChurnData): ChurnResults => {
-    const churnRate = (data.churnedCustomers / data.startingCustomers) * 100;
-    const retentionRate = 100 - churnRate;
-    const customerLifetimeMonths = 1 / (churnRate / 100);
+    // Calculate churned customers if not provided
+    const actualChurnedCustomers = data.churnedCustomers ?? 
+      (data.startingCustomers + data.newCustomers - data.endingCustomers);
+
+    const logoChurnRate = (actualChurnedCustomers / data.startingCustomers) * 100;
+    const revenueChurnRate = (data.churnedMRR / data.startingMRR) * 100;
+    const retentionRate = 100 - logoChurnRate;
+    const customerLifetimeMonths = 1 / (logoChurnRate / 100);
     const netCustomerChange = data.endingCustomers - data.startingCustomers;
     const growthRate = (netCustomerChange / data.startingCustomers) * 100;
+    const netRevenueLoss = data.churnedMRR - (data.expansionMRR || 0);
+
+    const benchmark = industryBenchmarks[data.industry];
+    const benchmarkComparison = getChurnRating(logoChurnRate, benchmark);
 
     return {
-      churnRate,
+      logoChurnRate,
+      revenueChurnRate,
       customerLifetimeMonths,
       retentionRate,
       netCustomerChange,
       growthRate,
+      netRevenueLoss,
+      benchmarkComparison,
+      industryData: benchmark,
     };
   };
 
   const onSubmit = (data: ChurnData) => {
     const results = calculateChurnMetrics(data);
     setResults(results);
+  };
+
+  const getBenchmarkColor = (rating: "good" | "average" | "risk") => {
+    switch (rating) {
+      case "good":
+        return "text-green-600";
+      case "average":
+        return "text-yellow-600";
+      case "risk":
+        return "text-red-600";
+    }
   };
 
   return (
@@ -158,37 +199,6 @@ export const ChurnCalculator = () => {
 
                 <FormField
                   control={form.control}
-                  name="churnedCustomers"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="flex items-center gap-2">
-                        Churned Customers
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
-                          </TooltipTrigger>
-                          <TooltipContent className="max-w-xs">
-                            Number of customers who left during the period
-                          </TooltipContent>
-                        </Tooltip>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="Enter churned count"
-                          {...field}
-                          onChange={(e) =>
-                            field.onChange(e.target.value ? Number(e.target.value) : undefined)
-                          }
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
                   name="newCustomers"
                   render={({ field }) => (
                     <FormItem>
@@ -207,6 +217,161 @@ export const ChurnCalculator = () => {
                         <Input
                           type="number"
                           placeholder="Enter new customers"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(e.target.value ? Number(e.target.value) : undefined)
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="startingMRR"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center gap-2">
+                        Starting MRR ($)
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-xs">
+                            Monthly Recurring Revenue at start
+                          </TooltipContent>
+                        </Tooltip>
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="Enter starting MRR"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(e.target.value ? Number(e.target.value) : undefined)
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="churnedMRR"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center gap-2">
+                        Churned MRR ($)
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-xs">
+                            MRR lost from churned customers
+                          </TooltipContent>
+                        </Tooltip>
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="Enter churned MRR"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(e.target.value ? Number(e.target.value) : undefined)
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="expansionMRR"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center gap-2">
+                        Expansion MRR ($)
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-xs">
+                            Additional MRR from upsells/cross-sells
+                          </TooltipContent>
+                        </Tooltip>
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="Enter expansion MRR (optional)"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(e.target.value ? Number(e.target.value) : undefined)
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="customerAcquisitionCost"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center gap-2">
+                        CAC ($)
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-xs">
+                            Customer Acquisition Cost (optional)
+                          </TooltipContent>
+                        </Tooltip>
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="Enter CAC (optional)"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(e.target.value ? Number(e.target.value) : undefined)
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="renewalRate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center gap-2">
+                        Renewal Rate (%)
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-xs">
+                            Percentage of customers who renew (optional)
+                          </TooltipContent>
+                        </Tooltip>
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="Enter renewal rate (optional)"
                           {...field}
                           onChange={(e) =>
                             field.onChange(e.target.value ? Number(e.target.value) : undefined)
@@ -247,6 +412,46 @@ export const ChurnCalculator = () => {
                           <SelectItem value="monthly">Monthly</SelectItem>
                           <SelectItem value="quarterly">Quarterly</SelectItem>
                           <SelectItem value="annually">Annually</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="industry"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center gap-2">
+                        Industry
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-xs">
+                            Select your industry for benchmarking
+                          </TooltipContent>
+                        </Tooltip>
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select industry" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="saas">SaaS</SelectItem>
+                          <SelectItem value="ecommerce">eCommerce</SelectItem>
+                          <SelectItem value="fintech">FinTech</SelectItem>
+                          <SelectItem value="healthcare">Healthcare</SelectItem>
+                          <SelectItem value="telecom">Telecom</SelectItem>
+                          <SelectItem value="media">Media</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -311,18 +516,18 @@ export const ChurnCalculator = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center">
                   <h3 className="text-lg font-semibold text-[#4A4A3F] mb-2">
-                    Churn Rate
+                    Logo Churn Rate
                   </h3>
-                  <p className="text-3xl font-bold text-[#4A4A3F]">
-                    {results.churnRate.toFixed(1)}%
+                  <p className={`text-3xl font-bold ${getBenchmarkColor(results.benchmarkComparison)}`}>
+                    {results.logoChurnRate.toFixed(1)}%
                   </p>
                 </div>
                 <div className="text-center">
                   <h3 className="text-lg font-semibold text-[#4A4A3F] mb-2">
-                    Retention Rate
+                    Revenue Churn Rate
                   </h3>
                   <p className="text-3xl font-bold text-[#4A4A3F]">
-                    {results.retentionRate.toFixed(1)}%
+                    {results.revenueChurnRate.toFixed(1)}%
                   </p>
                 </div>
                 <div className="text-center">
@@ -333,6 +538,49 @@ export const ChurnCalculator = () => {
                     {results.customerLifetimeMonths.toFixed(1)}
                   </p>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-[#FAFAFA]">
+            <CardContent className="pt-6">
+              <h3 className="text-lg font-semibold text-[#4A4A3F] mb-4">
+                Industry Benchmarks
+              </h3>
+              <div className="h-[300px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={[
+                      {
+                        name: "Top Performers",
+                        value: results.industryData.topQuartile,
+                        fill: "#4ade80"
+                      },
+                      {
+                        name: "Industry Average",
+                        value: results.industryData.average,
+                        fill: "#fbbf24"
+                      },
+                      {
+                        name: "Bottom Performers",
+                        value: results.industryData.bottomQuartile,
+                        fill: "#f87171"
+                      },
+                      {
+                        name: "Your Rate",
+                        value: results.logoChurnRate,
+                        fill: "#8B8B73"
+                      }
+                    ]}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis label={{ value: 'Churn Rate (%)', angle: -90, position: 'insideLeft' }} />
+                    <RechartsTooltip />
+                    <Bar dataKey="value" />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
             </CardContent>
           </Card>
@@ -352,11 +600,28 @@ export const ChurnCalculator = () => {
                 <TableBody>
                   <TableRow>
                     <TableCell>Net Customer Change</TableCell>
-                    <TableCell>{results.netCustomerChange}</TableCell>
+                    <TableCell>
+                      <span className="flex items-center gap-2">
+                        {results.netCustomerChange}
+                        {results.netCustomerChange > 0 ? (
+                          <TrendingUp className="text-green-600 h-4 w-4" />
+                        ) : (
+                          <TrendingDown className="text-red-600 h-4 w-4" />
+                        )}
+                      </span>
+                    </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>Growth Rate</TableCell>
                     <TableCell>{results.growthRate.toFixed(1)}%</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Net Revenue Loss</TableCell>
+                    <TableCell>${results.netRevenueLoss.toFixed(2)}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Retention Rate</TableCell>
+                    <TableCell>{results.retentionRate.toFixed(1)}%</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
