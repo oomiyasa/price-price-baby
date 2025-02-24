@@ -6,6 +6,13 @@ import { Link } from "react-router-dom";
 
 const pricingTools = [
   {
+    id: "revenue",
+    title: "MRR/ARR Calculator",
+    description: "Calculate and project your recurring revenue",
+    route: "/revenue",
+    icon: Calculator
+  },
+  {
     id: "new-offer",
     title: "Price a New Offering",
     description: "Get strategic pricing for your new product or service",
