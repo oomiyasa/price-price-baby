@@ -11,6 +11,7 @@ import NewOffer from "@/pages/NewOffer";
 import Repricing from "@/pages/Repricing";
 import BundlePricing from "@/pages/BundlePricing";
 import BundleConfiguration from "@/pages/BundleConfiguration";
+import UsageBasedPricing from "@/pages/UsageBasedPricing";
 import MainNav from "@/components/MainNav";
 
 const App = () => {
@@ -27,6 +28,7 @@ const App = () => {
               <Route path="/repricing" element={<Repricing />} />
               <Route path="/bundle-pricing" element={<BundlePricing />} />
               <Route path="/bundle-configuration" element={<BundleConfiguration />} />
+              <Route path="/usage-based" element={<UsageBasedPricing />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
