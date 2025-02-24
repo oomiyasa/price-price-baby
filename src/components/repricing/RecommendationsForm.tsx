@@ -1,13 +1,12 @@
+
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Label } from "@/components/ui/label";
-import { HelpCircle, Edit2, TrendingDown, TrendingUp, Minus } from "lucide-react";
-import { Slider } from "@/components/ui/slider";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { HelpCircle } from "lucide-react";
+import { PriceRecommendationSummary } from "./PriceRecommendationSummary";
+import { ImpactFactorSlider } from "./ImpactFactorSlider";
 
 interface RecommendationsFormProps {
   currentPrice: string;
@@ -121,24 +120,19 @@ export const RecommendationsForm = ({
 
     const { volatility } = analyzePriceTrend();
     
-    // Get individual impacts before weighting
     const rawSalesImpact = calculateSalesImpact();
     const rawMarketImpact = calculateMarketImpact();
     const rawPositioningImpact = calculatePositioningImpact();
     
-    // Calculate total weight for relative scaling
     const totalWeight = weights.salesPerformance + weights.marketConditions + weights.positioning;
     
-    // Scale impacts by relative weights
     const salesImpact = rawSalesImpact * (weights.salesPerformance / 100);
     const marketImpact = rawMarketImpact * (weights.marketConditions / 100);
     const positioningImpact = rawPositioningImpact * (weights.positioning / 100);
     
-    // Scale total impact based on weight intensity
-    const weightIntensityFactor = Math.min(totalWeight / 100, 2); // Cap at 2x
+    const weightIntensityFactor = Math.min(totalWeight / 100, 2);
     const totalImpact = (salesImpact + marketImpact + positioningImpact) * weightIntensityFactor;
     
-    // Adjust range based on price history volatility
     const baseRange = 2 + (volatility / 4);
     
     return {
@@ -153,11 +147,8 @@ export const RecommendationsForm = ({
     };
   };
 
-  const calculatePercentageDifference = (price: number) => {
-    const basePrice = parseFloat(currentPrice);
-    if (isNaN(basePrice) || basePrice === 0) return 0;
-    return ((price - basePrice) / basePrice) * 100;
-  };
+  const { trend, volatility } = analyzePriceTrend();
+  const recommendation = calculateRecommendation();
 
   const impactDescriptions = {
     salesPerformance: "Based on recent sales performance trends. Strong sales may suggest room for price increases, while declining sales might indicate pricing pressure.",
@@ -165,53 +156,15 @@ export const RecommendationsForm = ({
     positioning: "Reflects your product's uniqueness and perceived value. High differentiation and strong value perception can support premium pricing."
   };
 
-  const recommendation = calculateRecommendation();
-  const { trend, volatility } = analyzePriceTrend();
-
-  const formatPrice = (price: number) => {
-    return price.toFixed(2);
-  };
-
-  const getImpactDescription = (impact: number) => {
-    if (impact > 7) return "strongly positive";
-    if (impact > 3) return "positive";
-    if (impact < -7) return "strongly negative";
-    if (impact < -3) return "negative";
-    return "neutral";
-  };
-
-  const getTrendIcon = () => {
-    if (trend > 2) return <TrendingUp className="h-4 w-4 text-green-500" />;
-    if (trend < -2) return <TrendingDown className="h-4 w-4 text-red-500" />;
-    return <Minus className="h-4 w-4 text-[#8B8B73]" />;
-  };
-
   return (
     <div className="space-y-8 max-w-2xl mx-auto">
-      <div className="p-6 bg-[#FAFAFA] rounded-lg border border-[#E5E5E0]">
-        <h3 className="text-xl font-medium text-[#4A4A3F] mb-4">Recommended Price Range</h3>
-        <div className="text-2xl font-semibold text-center mb-2 text-[#4A4A3F]">
-          ${formatPrice(recommendation.min)} - ${formatPrice(recommendation.max)}
-        </div>
-        <div className="text-sm text-center text-[#6B6B5F] mb-4">
-          ({calculatePercentageDifference(recommendation.min).toFixed(1)}% to {calculatePercentageDifference(recommendation.max).toFixed(1)}% from current price)
-        </div>
-        <div className="text-sm text-[#6B6B5F] space-y-2">
-          <div className="flex items-center gap-2">
-            <span>Historical trend:</span>
-            {getTrendIcon()}
-            <span>{Math.abs(trend) < 2 ? "Stable" : 
-              `${trend > 0 ? "Upward" : "Downward"} (${Math.abs(trend).toFixed(1)}%)`}
-            </span>
-          </div>
-          {volatility > 2 && (
-            <p className="text-orange-600">
-              Note: Price history shows {volatility > 5 ? "high" : "moderate"} volatility 
-              ({volatility.toFixed(1)}% variation)
-            </p>
-          )}
-        </div>
-      </div>
+      <PriceRecommendationSummary
+        min={recommendation.min}
+        max={recommendation.max}
+        currentPrice={currentPrice}
+        trend={trend}
+        volatility={volatility}
+      />
 
       <div className="space-y-6">
         <div className="flex items-center justify-between mb-2">
@@ -226,140 +179,38 @@ export const RecommendationsForm = ({
           </Tooltip>
         </div>
 
-        <div className="p-4 bg-white rounded-lg border border-[#E5E5E0]">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <Label className="text-[#4A4A3F]">Sales Performance</Label>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
-                </TooltipTrigger>
-                <TooltipContent>{impactDescriptions.salesPerformance}</TooltipContent>
-              </Tooltip>
-            </div>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-[#8B8B73] hover:text-[#4A4A3F]"
-              onClick={() => onStepChange(2)}
-            >
-              <Edit2 className="h-4 w-4" />
-            </Button>
-          </div>
-          <div className="text-sm text-[#6B6B5F] mb-3">
-            Impact: {getImpactDescription(recommendation.impacts.sales)}
-            <span className="text-xs ml-2">
-              ({recommendation.impacts.sales > 0 ? "+" : ""}
-              {recommendation.impacts.sales.toFixed(1)}%)
-            </span>
-          </div>
-          <Slider
-            value={[weights.salesPerformance]}
-            min={0}
-            max={100}
-            step={1}
-            onValueChange={([value]) => {
-              onWeightsChange({
-                ...weights,
-                salesPerformance: value,
-              });
-            }}
-            className="w-full"
-          />
-          <div className="text-xs text-[#8B8B73] mt-2">
-            Weight: {weights.salesPerformance.toFixed(1)}
-          </div>
-        </div>
+        <ImpactFactorSlider
+          label="Sales Performance"
+          tooltipContent={impactDescriptions.salesPerformance}
+          impact={recommendation.impacts.sales}
+          weight={weights.salesPerformance}
+          onWeightChange={(value) =>
+            onWeightsChange({ ...weights, salesPerformance: value })
+          }
+          onEdit={() => onStepChange(2)}
+        />
 
-        <div className="p-4 bg-white rounded-lg border border-[#E5E5E0]">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <Label className="text-[#4A4A3F]">Market Conditions</Label>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
-                </TooltipTrigger>
-                <TooltipContent>{impactDescriptions.marketConditions}</TooltipContent>
-              </Tooltip>
-            </div>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-[#8B8B73] hover:text-[#4A4A3F]"
-              onClick={() => onStepChange(3)}
-            >
-              <Edit2 className="h-4 w-4" />
-            </Button>
-          </div>
-          <div className="text-sm text-[#6B6B5F] mb-3">
-            Impact: {getImpactDescription(recommendation.impacts.market)}
-            <span className="text-xs ml-2">
-              ({recommendation.impacts.market > 0 ? "+" : ""}
-              {recommendation.impacts.market.toFixed(1)}%)
-            </span>
-          </div>
-          <Slider
-            value={[weights.marketConditions]}
-            min={0}
-            max={100}
-            step={1}
-            onValueChange={([value]) => {
-              onWeightsChange({
-                ...weights,
-                marketConditions: value,
-              });
-            }}
-            className="w-full"
-          />
-          <div className="text-xs text-[#8B8B73] mt-2">
-            Weight: {weights.marketConditions.toFixed(1)}
-          </div>
-        </div>
+        <ImpactFactorSlider
+          label="Market Conditions"
+          tooltipContent={impactDescriptions.marketConditions}
+          impact={recommendation.impacts.market}
+          weight={weights.marketConditions}
+          onWeightChange={(value) =>
+            onWeightsChange({ ...weights, marketConditions: value })
+          }
+          onEdit={() => onStepChange(3)}
+        />
 
-        <div className="p-4 bg-white rounded-lg border border-[#E5E5E0]">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <Label className="text-[#4A4A3F]">Market Positioning</Label>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
-                </TooltipTrigger>
-                <TooltipContent>{impactDescriptions.positioning}</TooltipContent>
-              </Tooltip>
-            </div>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-[#8B8B73] hover:text-[#4A4A3F]"
-              onClick={() => onStepChange(4)}
-            >
-              <Edit2 className="h-4 w-4" />
-            </Button>
-          </div>
-          <div className="text-sm text-[#6B6B5F] mb-3">
-            Impact: {getImpactDescription(recommendation.impacts.positioning)}
-            <span className="text-xs ml-2">
-              ({recommendation.impacts.positioning > 0 ? "+" : ""}
-              {recommendation.impacts.positioning.toFixed(1)}%)
-            </span>
-          </div>
-          <Slider
-            value={[weights.positioning]}
-            min={0}
-            max={100}
-            step={1}
-            onValueChange={([value]) => {
-              onWeightsChange({
-                ...weights,
-                positioning: value,
-              });
-            }}
-            className="w-full"
-          />
-          <div className="text-xs text-[#8B8B73] mt-2">
-            Weight: {weights.positioning.toFixed(1)}
-          </div>
-        </div>
+        <ImpactFactorSlider
+          label="Market Positioning"
+          tooltipContent={impactDescriptions.positioning}
+          impact={recommendation.impacts.positioning}
+          weight={weights.positioning}
+          onWeightChange={(value) =>
+            onWeightsChange({ ...weights, positioning: value })
+          }
+          onEdit={() => onStepChange(4)}
+        />
       </div>
     </div>
   );
