@@ -36,7 +36,6 @@ const BundlePricing = () => {
 
   const handlePrevStep = () => {
     navigate(-1);
-    toast.success("Returning to previous page");
   };
 
   const handleNextStep = () => {
@@ -45,10 +44,7 @@ const BundlePricing = () => {
       return;
     }
     
-    // Navigate without replace, and ensure state is passed properly
-    navigate("/bundle-configuration", {
-      state: { products }
-    });
+    navigate("/bundle-configuration", { state: { products } });
   };
 
   return (
