@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -57,6 +56,10 @@ const NewOffer = () => {
     if (marketPrice) {
       setStep(5);
     }
+  };
+
+  const handleFinalNext = () => {
+    setStep(6);
   };
 
   return (
@@ -136,19 +139,14 @@ const NewOffer = () => {
                       Previous
                     </Button>
                   )}
-                  {step === 3 && (
+                  {(step === 3 || step === 4 || step === 5) && (
                     <Button 
                       className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F] ml-auto"
-                      onClick={pricingPath === "cost" ? handleCostBasedNext : handleMarketBasedNext}
-                    >
-                      Next
-                      <ArrowRight className="h-4 w-4 ml-2" />
-                    </Button>
-                  )}
-                  {step === 4 && (
-                    <Button 
-                      className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F] ml-auto"
-                      onClick={() => setStep(5)}
+                      onClick={
+                        step === 3 ? (pricingPath === "cost" ? handleCostBasedNext : handleMarketBasedNext) :
+                        step === 4 ? () => setStep(5) :
+                        handleFinalNext
+                      }
                     >
                       Next
                       <ArrowRight className="h-4 w-4 ml-2" />
