@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Link } from "react-router-dom";
 import { CurrentPriceForm } from "@/components/repricing/CurrentPriceForm";
 import { PerformanceForm } from "@/components/repricing/PerformanceForm";
 import { MarketChangesForm } from "@/components/repricing/MarketChangesForm";
@@ -144,7 +145,7 @@ const Repricing = () => {
                 )}
                 
                 <div className="mt-6 flex justify-between">
-                  {step > 1 && (
+                  {step > 1 ? (
                     <Button
                       variant="outline"
                       className="border-[#8B8B73] text-[#4A4A3F] hover:bg-gray-50"
@@ -153,6 +154,16 @@ const Repricing = () => {
                       <ArrowLeft className="h-4 w-4 mr-2" />
                       Previous
                     </Button>
+                  ) : (
+                    <Link to="/">
+                      <Button
+                        variant="outline"
+                        className="border-[#8B8B73] text-[#4A4A3F] hover:bg-gray-50"
+                      >
+                        <ArrowLeft className="h-4 w-4 mr-2" />
+                        Back to Home
+                      </Button>
+                    </Link>
                   )}
                   {step < 5 && (
                     <Button 
