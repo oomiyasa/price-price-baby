@@ -49,12 +49,15 @@ export const PricingRecommendation = ({
   const priceRange = calculatePriceRange();
 
   const getMarketPositionText = () => {
-    if (pricingStrategy === "lower") {
-      return "positions you below market average to gain market share";
-    } else if (pricingStrategy === "premium") {
-      return "positions you as a premium offering above market average";
+    if (pricingPath === "market") {
+      if (pricingStrategy === "lower") {
+        return "positions you below market average to gain market share";
+      } else if (pricingStrategy === "premium") {
+        return "positions you as a premium offering above market average";
+      }
+      return "positions you at market average";
     }
-    return "positions you at market average";
+    return null;
   };
 
   const getProfitPotentialText = () => {
@@ -62,7 +65,7 @@ export const PricingRecommendation = ({
       const cost = parseFloat(costPerUnit);
       const avgPrice = (parseFloat(priceRange.low) + parseFloat(priceRange.high)) / 2;
       const actualMargin = ((avgPrice - cost) / avgPrice) * 100;
-      return `If your costs are ${costPerUnit}, you'll achieve your target profit margin of ${desiredMargin}%.`;
+      return `Based on your cost of ${costPerUnit}, this price will achieve your target profit margin of ${desiredMargin}%.`;
     }
     return `Based on market positioning, you can expect margins around ${desiredMargin}%.`;
   };
@@ -77,23 +80,25 @@ export const PricingRecommendation = ({
       </div>
 
       <div className="space-y-4">
-        <Card className="border-gray-100">
-          <CardContent className="p-4">
-            <div className="flex items-start gap-2">
-              <div className="w-4 h-4 mt-1 rounded-full bg-[#8B8B73]" />
-              <div>
-                <h3 className="font-medium text-[#4A4A3F] mb-1">Market Position</h3>
-                <p className="text-[#6B6B5F] text-sm">
-                  Based on your market research and pricing strategy, this range {getMarketPositionText()}.
-                </p>
+        {pricingPath === "market" && (
+          <Card className="border-gray-100">
+            <CardContent className="p-4">
+              <div className="flex items-start gap-2">
+                <div className="w-4 h-4 mt-1 rounded-full bg-[#8B8B73]" />
+                <div>
+                  <h3 className="font-medium text-[#4A4A3F] mb-1">Market Position</h3>
+                  <p className="text-[#6B6B5F] text-sm">
+                    Based on your market research and pricing strategy, this range {getMarketPositionText()}.
+                  </p>
+                </div>
+                <PenLine 
+                  className="w-4 h-4 text-gray-400 cursor-pointer ml-auto flex-shrink-0 hover:text-gray-600" 
+                  onClick={() => onEditStep(4)} // Navigate to pricing strategy step
+                />
               </div>
-              <PenLine 
-                className="w-4 h-4 text-gray-400 cursor-pointer ml-auto flex-shrink-0 hover:text-gray-600" 
-                onClick={() => onEditStep(4)} // Navigate to pricing strategy step
-              />
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
 
         <Card className="border-gray-100">
           <CardContent className="p-4">
@@ -125,13 +130,15 @@ export const PricingRecommendation = ({
                     onClick={() => onEditStep(2)} // Navigate to pricing path step
                   />
                 </li>
-                <li className="flex items-center justify-between">
-                  • Market position: {pricingStrategy === "lower" ? "lower" : pricingStrategy === "premium" ? "premium" : "similar"} than competitors
-                  <PenLine 
-                    className="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-600" 
-                    onClick={() => onEditStep(4)} // Navigate to pricing strategy step
-                  />
-                </li>
+                {pricingPath === "market" && (
+                  <li className="flex items-center justify-between">
+                    • Market position: {pricingStrategy === "lower" ? "lower" : pricingStrategy === "premium" ? "premium" : "similar"} than competitors
+                    <PenLine 
+                      className="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-600" 
+                      onClick={() => onEditStep(4)} // Navigate to pricing strategy step
+                    />
+                  </li>
+                )}
                 <li className="flex items-center justify-between">
                   • Target profit margin: {desiredMargin}%
                   <PenLine 
