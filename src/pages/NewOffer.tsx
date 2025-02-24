@@ -329,17 +329,6 @@ const NewOffer = () => {
           </Card>
         </motion.div>
       ))}
-      
-      <div className="mt-8">
-        <Button
-          variant="outline"
-          className="border-[#8B8B73] text-[#4A4A3F] hover:bg-[#8B8B73] hover:text-white"
-          onClick={handlePreviousStep}
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Previous
-        </Button>
-      </div>
     </div>
   );
 
