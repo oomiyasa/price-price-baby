@@ -2,7 +2,7 @@ import { useState, KeyboardEvent, useRef } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Building, Users, User, DollarSign, ChartBar, HelpCircle, ArrowDown, ArrowRight, Crown, ArrowLeft } from "lucide-react";
+import { Building, Users, User, DollarSign, ChartBar, HelpCircle, ArrowDown, ArrowRight, ArrowUp, Crown, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -54,24 +54,21 @@ const pricingPaths = [
 const pricingStrategies = [
   {
     id: "lower",
-    title: "Lower Price Strategy",
-    description: "Compete on price by offering lower rates than the market average. Best for high-efficiency operations and volume-based business models.",
+    title: "Lower than competitors",
+    description: "Gain market share through competitive pricing",
     icon: ArrowDown,
-    impact: "Potentially higher sales volume but lower margins. May need to optimize operations for cost efficiency.",
   },
   {
     id: "similar",
-    title: "Market Match Strategy",
-    description: "Align with market rates to compete on value and features rather than price. Ideal for established markets with differentiated offerings.",
+    title: "Similar to competitors",
+    description: "Match market expectations and compete on value",
     icon: ArrowRight,
-    impact: "Balanced approach focusing on value proposition and service quality. Requires clear differentiation from competitors.",
   },
   {
     id: "premium",
-    title: "Premium Strategy",
-    description: "Position as a premium offering with higher prices than market average. Suitable for unique, high-value products or services.",
-    icon: Crown,
-    impact: "Higher margins but may require significant investment in quality, branding, and customer service.",
+    title: "Premium pricing",
+    description: "Position as a high-value, premium solution",
+    icon: ArrowUp,
   },
 ];
 
@@ -208,34 +205,34 @@ const NewOffer = () => {
   );
 
   const renderPricingStrategySelection = () => (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="space-y-4 max-w-xl mx-auto">
+      <h3 className="text-xl font-medium text-[#4A4A3F] mb-6">
+        How do you want to position your pricing?
+      </h3>
       {pricingStrategies.map((strategy) => (
         <motion.div
           key={strategy.id}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="h-full"
         >
           <Card 
-            className={`cursor-pointer transition-all hover:border-[#8B8B73] h-full ${
+            className={`cursor-pointer transition-all hover:border-[#8B8B73] ${
               pricingStrategy === strategy.id ? 'border-[#8B8B73] bg-[#F2FCE2]' : 'border-[#E8E8D8]'
             }`}
             onClick={() => handlePricingStrategySelect(strategy.id as PricingStrategy)}
           >
-            <CardContent className="p-8 flex flex-col h-full items-center justify-between">
-              <div className="flex flex-col items-center gap-6">
-                <div className="p-3 rounded-full bg-[#F2FCE2]">
-                  <strategy.icon className="h-8 w-8 text-[#8B8B73]" />
-                </div>
-                <h3 className="font-semibold text-[#4A4A3F] text-lg text-center">{strategy.title}</h3>
+            <CardContent className="p-6 flex items-center gap-4">
+              <div className={`p-2 rounded-full ${
+                pricingStrategy === strategy.id ? 'bg-[#8B8B73]' : 'bg-[#E8E8D8]'
+              }`}>
+                <strategy.icon className={`h-5 w-5 ${
+                  pricingStrategy === strategy.id ? 'text-white' : 'text-[#8B8B73]'
+                }`} />
               </div>
-              <div className="space-y-4 text-center">
+              <div className="flex-1">
+                <h4 className="font-medium text-[#4A4A3F] text-lg">{strategy.title}</h4>
                 <p className="text-sm text-[#6B6B5F]">{strategy.description}</p>
-                <div className="pt-4 border-t border-[#E8E8D8]">
-                  <p className="text-sm text-[#8B8B73] font-medium">Impact</p>
-                  <p className="text-sm text-[#6B6B5F]">{strategy.impact}</p>
-                </div>
               </div>
             </CardContent>
           </Card>
