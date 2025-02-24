@@ -25,7 +25,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { RevenueData, RevenueProjection } from "./types";
-import { calculateRevenueProjections, formatCurrency } from "./utils/calculations";
+import { calculateProjections, formatCurrency } from "./utils/calculations";
 
 export const RevenueCalculator = () => {
   const [projections, setProjections] = useState<RevenueProjection[] | null>(null);
@@ -39,7 +39,7 @@ export const RevenueCalculator = () => {
   });
 
   const onSubmit = (data: RevenueData) => {
-    const results = calculateRevenueProjections(
+    const results = calculateProjections(
       data.monthlyRevenue,
       data.growthRate,
       data.projectionMonths
