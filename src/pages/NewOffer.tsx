@@ -98,18 +98,19 @@ const NewOffer = () => {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3 }}
+                      className="h-full"
                     >
                       <Card 
-                        className={`cursor-pointer transition-all hover:border-[#8B8B73] ${
+                        className={`cursor-pointer transition-all hover:border-[#8B8B73] h-full ${
                           companyType === type.id ? 'border-[#8B8B73] bg-[#F2FCE2]' : 'border-[#E8E8D8]'
                         }`}
                         onClick={() => handleCompanySelect(type.id as CompanyType)}
                       >
-                        <CardContent className="p-6 space-y-4">
+                        <CardContent className="p-6 space-y-4 flex flex-col h-full">
                           <div className="flex justify-center">
                             <type.icon className="h-8 w-8 text-[#8B8B73]" />
                           </div>
-                          <div className="text-center">
+                          <div className="text-center flex-1 flex flex-col justify-between">
                             <h3 className="font-semibold text-[#4A4A3F] mb-2">{type.title}</h3>
                             <p className="text-sm text-[#6B6B5F]">{type.description}</p>
                           </div>
