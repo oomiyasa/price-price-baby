@@ -6,12 +6,14 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { CurrentPriceForm } from "@/components/repricing/CurrentPriceForm";
-import { RepricingData } from "@/types/repricing";
+import { PerformanceForm } from "@/components/repricing/PerformanceForm";
+import { SalesPerformance, RepricingData } from "@/types/repricing";
 
 const Repricing = () => {
   const [step, setStep] = useState(1);
   const [currentPrice, setCurrentPrice] = useState("");
   const [historicalPrices, setHistoricalPrices] = useState<string[]>([]);
+  const [salesPerformance, setSalesPerformance] = useState<SalesPerformance>(0);
   
   const handleNext = () => {
     if (step < 5) {
@@ -85,6 +87,12 @@ const Repricing = () => {
                     onCurrentPriceChange={setCurrentPrice}
                     historicalPrices={historicalPrices}
                     onHistoricalPricesChange={setHistoricalPrices}
+                  />
+                )}
+                {step === 2 && (
+                  <PerformanceForm
+                    salesPerformance={salesPerformance}
+                    onSalesPerformanceChange={setSalesPerformance}
                   />
                 )}
                 {/* Additional steps will be implemented here */}
