@@ -24,7 +24,9 @@ export const EditSalesDialog = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        {trigger}
+        <div id="edit-sales-dialog">
+          {trigger}
+        </div>
       </DialogTrigger>
       <DialogContent className="max-w-2xl">
         <DialogHeader>

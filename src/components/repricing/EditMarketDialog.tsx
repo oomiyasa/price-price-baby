@@ -27,7 +27,9 @@ export const EditMarketDialog = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        {trigger}
+        <div id="edit-market-dialog">
+          {trigger}
+        </div>
       </DialogTrigger>
       <DialogContent className="max-w-2xl">
         <DialogHeader>

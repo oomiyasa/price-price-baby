@@ -1,4 +1,3 @@
-
 import {
   Tooltip,
   TooltipContent,
@@ -114,6 +113,7 @@ export const RecommendationsForm = ({
               onWeightChange={(value) =>
                 onWeightsChange({ ...weights, salesPerformance: value })
               }
+              onClick={() => document.getElementById('edit-sales-dialog')?.click()}
             />
           }
         />
@@ -132,6 +132,7 @@ export const RecommendationsForm = ({
               onWeightChange={(value) =>
                 onWeightsChange({ ...weights, marketConditions: value })
               }
+              onClick={() => document.getElementById('edit-market-dialog')?.click()}
             />
           }
         />
@@ -150,6 +151,7 @@ export const RecommendationsForm = ({
               onWeightChange={(value) =>
                 onWeightsChange({ ...weights, positioning: value })
               }
+              onClick={() => document.getElementById('edit-differentiation-dialog')?.click()}
             />
           }
         />

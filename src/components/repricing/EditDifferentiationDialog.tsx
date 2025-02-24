@@ -27,7 +27,9 @@ export const EditDifferentiationDialog = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        {trigger}
+        <div id="edit-differentiation-dialog">
+          {trigger}
+        </div>
       </DialogTrigger>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
