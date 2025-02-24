@@ -133,6 +133,11 @@ const Repricing = () => {
                     uniqueness={uniqueness}
                     valuePerception={valuePerception}
                     onStepChange={setStep}
+                    onSalesPerformanceChange={setSalesPerformance}
+                    onCompetitorPricesChange={setCompetitorPrices}
+                    onMarketDemandChange={setMarketDemand}
+                    onUniquenessChange={setUniqueness}
+                    onValuePerceptionChange={setValuePerception}
                     weights={weights}
                     onWeightsChange={setWeights}
                   />

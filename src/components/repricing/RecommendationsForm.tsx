@@ -4,14 +4,16 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import { HelpCircle, Edit2 } from "lucide-react";
+import { HelpCircle } from "lucide-react";
 import { PriceRecommendationSummary } from "./PriceRecommendationSummary";
 import { ImpactFactorSlider } from "./ImpactFactorSlider";
 import { EditSalesDialog } from "./EditSalesDialog";
 import { EditMarketDialog } from "./EditMarketDialog";
 import { EditDifferentiationDialog } from "./EditDifferentiationDialog";
 import { SalesPerformance } from "@/types/repricing";
+import { analyzePriceTrend } from "@/utils/priceTrendAnalysis";
+import { calculateRecommendation } from "@/utils/priceImpactCalculations";
+import { impactDescriptions } from "@/constants/impactDescriptions";
 
 interface RecommendationsFormProps {
   currentPrice: string;
@@ -22,7 +24,6 @@ interface RecommendationsFormProps {
   uniqueness: "low" | "medium" | "high";
   valuePerception: number;
   onStepChange: (step: number) => void;
-  // Add the missing setter functions:
   onSalesPerformanceChange: (value: SalesPerformance) => void;
   onCompetitorPricesChange: (value: "increased" | "decreased" | "mixed" | "unchanged") => void;
   onMarketDemandChange: (value: "growing" | "shrinking" | "stable") => void;
@@ -61,116 +62,17 @@ export const RecommendationsForm = ({
   },
   onWeightsChange = () => {},
 }: RecommendationsFormProps) => {
-  const analyzePriceTrend = () => {
-    if (historicalPrices.length < 2) return { trend: 0, volatility: 0 };
-    
-    const validPrices = [...historicalPrices.map(p => parseFloat(p)), parseFloat(currentPrice)]
-      .filter(p => !isNaN(p));
-    
-    if (validPrices.length < 2) return { trend: 0, volatility: 0 };
-
-    const changes = validPrices.slice(1).map((price, i) => 
-      ((price - validPrices[i]) / validPrices[i]) * 100
-    );
-
-    const trend = changes.reduce((sum, change) => sum + change, 0) / changes.length;
-    
-    const meanChange = trend;
-    const squaredDiffs = changes.map(change => Math.pow(change - meanChange, 2));
-    const volatility = Math.sqrt(squaredDiffs.reduce((sum, diff) => sum + diff, 0) / changes.length);
-
-    return { trend, volatility };
-  };
-
-  const calculateSalesImpact = () => {
-    if (salesPerformance <= -30) return -10;
-    if (salesPerformance <= -10) return -5;
-    if (salesPerformance >= 30) return 10;
-    if (salesPerformance >= 10) return 5;
-    return (salesPerformance / 10);
-  };
-
-  const calculateMarketImpact = () => {
-    let impact = 0;
-    const { trend, volatility } = analyzePriceTrend();
-    
-    if (competitorPrices === "increased") impact += 5;
-    if (competitorPrices === "decreased") impact -= 5;
-    if (marketDemand === "growing") impact += 5;
-    if (marketDemand === "shrinking") impact -= 5;
-    
-    if (Math.abs(trend) > 2) {
-      const trendFactor = Math.min(Math.abs(trend), 5) / 5;
-      impact *= (1 + trendFactor);
-    }
-
-    if (volatility > 5) {
-      impact *= (1 - Math.min(volatility, 10) / 20);
-    }
-    
-    return impact;
-  };
-
-  const calculatePositioningImpact = () => {
-    let impact = 0;
-    const { trend } = analyzePriceTrend();
-    
-    if (uniqueness === "high") impact += 5;
-    if (uniqueness === "low") impact -= 5;
-    
-    const perceptionImpact = ((valuePerception - 50) / 10);
-    
-    if (Math.abs(trend) > 2) {
-      const trendAlignment = trend * perceptionImpact > 0 ? 1.2 : 0.8;
-      impact = (impact + perceptionImpact) * trendAlignment;
-    } else {
-      impact = impact + perceptionImpact;
-    }
-    
-    return impact;
-  };
-
-  const calculateRecommendation = () => {
-    const basePrice = parseFloat(currentPrice);
-    if (isNaN(basePrice)) return { min: 0, max: 0 };
-
-    const { volatility } = analyzePriceTrend();
-    
-    const rawSalesImpact = calculateSalesImpact();
-    const rawMarketImpact = calculateMarketImpact();
-    const rawPositioningImpact = calculatePositioningImpact();
-    
-    const totalWeight = weights.salesPerformance + weights.marketConditions + weights.positioning;
-    
-    const salesImpact = rawSalesImpact * (weights.salesPerformance / 100);
-    const marketImpact = rawMarketImpact * (weights.marketConditions / 100);
-    const positioningImpact = rawPositioningImpact * (weights.positioning / 100);
-    
-    const weightIntensityFactor = Math.min(totalWeight / 100, 2);
-    const totalImpact = (salesImpact + marketImpact + positioningImpact) * weightIntensityFactor;
-    
-    const baseRange = 2 + (volatility / 4);
-    
-    return {
-      min: basePrice * (1 + (totalImpact - baseRange) / 100),
-      max: basePrice * (1 + (totalImpact + baseRange) / 100),
-      impacts: {
-        sales: salesImpact,
-        market: marketImpact,
-        positioning: positioningImpact,
-        total: totalImpact
-      }
-    };
-  };
-
-  const { trend, volatility } = analyzePriceTrend();
-  const recommendation = calculateRecommendation();
-
-  const impactDescriptions = {
-    salesPerformance: "Based on recent sales performance trends. Strong sales may suggest room for price increases, while declining sales might indicate pricing pressure.",
-    marketConditions: "Combines competitor price movements and market demand trends. Also considers how your historical price changes align with market conditions.",
-    positioning: "Reflects your product's uniqueness and perceived value. High differentiation and strong value perception can support premium pricing."
-  };
+  const { trend, volatility } = analyzePriceTrend(historicalPrices, currentPrice);
+  const recommendation = calculateRecommendation(
+    currentPrice,
+    historicalPrices,
+    salesPerformance,
+    competitorPrices,
+    marketDemand,
+    uniqueness,
+    valuePerception,
+    weights
+  );
 
   return (
     <div className="space-y-8 max-w-2xl mx-auto">
