@@ -1,4 +1,6 @@
 
+import { ProductItem } from "@/types/bundle";
+
 export interface ProductDiscount {
   productId: string;
   discount: number;
