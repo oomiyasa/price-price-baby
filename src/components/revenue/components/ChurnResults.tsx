@@ -1,8 +1,9 @@
+
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { TrendingDown, TrendingUp } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Text } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from "recharts";
 import { ChurnResults as ChurnResultsType } from "../types";
 
 interface ChurnResultsProps {
@@ -26,25 +27,6 @@ const preventionStrategies = {
     "Offer flexible payment options",
     "Monitor failed payment patterns",
   ],
-};
-
-const formatIndustryName = (industry: string) => {
-  switch (industry) {
-    case "saas":
-      return "SaaS";
-    case "ecommerce":
-      return "E-commerce";
-    case "fintech":
-      return "FinTech";
-    case "healthcare":
-      return "Healthcare";
-    case "telecom":
-      return "Telecom";
-    case "media":
-      return "Media";
-    default:
-      return "Other";
-  }
 };
 
 export const ChurnResults: React.FC<ChurnResultsProps> = ({ 
@@ -88,7 +70,7 @@ export const ChurnResults: React.FC<ChurnResultsProps> = ({
       <Card className="bg-[#FAFAFA]">
         <CardContent className="pt-6">
           <h3 className="text-lg font-semibold text-[#4A4A3F] mb-4">
-            Industry Benchmarks - {formatIndustryName(results.industryData.industry)}
+            Industry Benchmarks
           </h3>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -115,7 +97,7 @@ export const ChurnResults: React.FC<ChurnResultsProps> = ({
                     fill: "#8B8B73"
                   }
                 ]}
-                margin={{ top: 20, right: 30, left: 20, bottom: 40 }}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
@@ -125,9 +107,6 @@ export const ChurnResults: React.FC<ChurnResultsProps> = ({
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <p className="text-sm text-[#6B6B5F] mt-4 text-center italic">
-            Source: Industry benchmarks based on OpenView Partners 2023 SaaS Benchmarks Report and McKinsey Digital Consumer Survey 2023
-          </p>
         </CardContent>
       </Card>
 

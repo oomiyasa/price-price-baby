@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronRight, DollarSign, RefreshCw, Calculator, Box, Percent, ChartBar, UserMinus, TrendingUp, CreditCard } from "lucide-react";
+import { ChevronRight, DollarSign, RefreshCw, Calculator, Box, Percent, ChartBar, UserMinus, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const pricingTools = [
@@ -32,13 +32,6 @@ const pricingTools = [
     description: "Calculate and optimize customer lifetime value",
     route: "/ltv",
     icon: TrendingUp
-  },
-  {
-    id: "cac",
-    title: "Customer Acquisition Cost",
-    description: "Calculate and analyze your customer acquisition costs",
-    route: "/cac",
-    icon: CreditCard
   },
   {
     id: "new-offer",

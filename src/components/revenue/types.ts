@@ -1,4 +1,3 @@
-
 export interface RevenueData {
   monthlyRevenue: number;
   growthRate: number;
@@ -34,6 +33,7 @@ export interface ChurnData {
   churnedMRR: number;
   expansionMRR?: number;
   customerAcquisitionCost?: number;
+  renewalRate?: number;
   timePeriod: "monthly" | "quarterly" | "annually";
   churnType: "voluntary" | "involuntary" | "both";
   industry: Industry;
@@ -83,19 +83,4 @@ export interface LTVResults {
   netProfitLTV: number;
   growthAdjustedLTV: number;
   referralValue: number;
-}
-
-export interface CACData {
-  marketingCosts: number | undefined;
-  salesCosts: number | undefined;
-  newCustomers: number | undefined;
-  timePeriod: "monthly" | "quarterly" | "annually";
-}
-
-export interface CACResults {
-  cac: number;
-  marketingSplit: number;
-  salesSplit: number;
-  customersPerPeriod: number;
-  efficiency: "excellent" | "good" | "average" | "poor";
 }
