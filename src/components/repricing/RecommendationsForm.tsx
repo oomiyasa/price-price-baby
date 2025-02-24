@@ -1,10 +1,11 @@
+
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { HelpCircle } from "lucide-react";
+import { HelpCircle, Edit2 } from "lucide-react";
 import { PriceRecommendationSummary } from "./PriceRecommendationSummary";
 import { ImpactFactorSlider } from "./ImpactFactorSlider";
 import { EditSalesDialog } from "./EditSalesDialog";
@@ -21,6 +22,12 @@ interface RecommendationsFormProps {
   uniqueness: "low" | "medium" | "high";
   valuePerception: number;
   onStepChange: (step: number) => void;
+  // Add the missing setter functions:
+  onSalesPerformanceChange: (value: SalesPerformance) => void;
+  onCompetitorPricesChange: (value: "increased" | "decreased" | "mixed" | "unchanged") => void;
+  onMarketDemandChange: (value: "growing" | "shrinking" | "stable") => void;
+  onUniquenessChange: (value: "low" | "medium" | "high") => void;
+  onValuePerceptionChange: (value: number) => void;
   weights?: {
     salesPerformance: number;
     marketConditions: number;
@@ -42,6 +49,11 @@ export const RecommendationsForm = ({
   uniqueness,
   valuePerception,
   onStepChange,
+  onSalesPerformanceChange,
+  onCompetitorPricesChange,
+  onMarketDemandChange,
+  onUniquenessChange,
+  onValuePerceptionChange,
   weights = {
     salesPerformance: 33.33,
     marketConditions: 33.33,
@@ -160,17 +172,6 @@ export const RecommendationsForm = ({
     positioning: "Reflects your product's uniqueness and perceived value. High differentiation and strong value perception can support premium pricing."
   };
 
-  const renderEditButton = (onClick: () => void) => (
-    <Button
-      variant="ghost"
-      size="sm"
-      className="text-[#8B8B73] hover:text-[#4A4A3F]"
-      onClick={onClick}
-    >
-      <Edit2 className="h-4 w-4" />
-    </Button>
-  );
-
   return (
     <div className="space-y-8 max-w-2xl mx-auto">
       <PriceRecommendationSummary
@@ -201,7 +202,7 @@ export const RecommendationsForm = ({
 
         <EditSalesDialog
           salesPerformance={salesPerformance}
-          onSalesPerformanceChange={setSalesPerformance}
+          onSalesPerformanceChange={onSalesPerformanceChange}
           trigger={
             <ImpactFactorSlider
               label="Sales Performance"
