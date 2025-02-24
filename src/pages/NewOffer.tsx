@@ -13,19 +13,19 @@ const companyTypes = [
   {
     id: "SMB",
     title: "Small Business",
-    description: "Perfect for solo entrepreneurs and small teams looking to establish pricing for their first offers",
+    description: "Solo entrepreneurs and small teams looking to establish pricing for their first offers",
     icon: User,
   },
   {
     id: "Growth",
     title: "Growth Company",
-    description: "For established businesses looking to scale their pricing strategy and optimize revenue",
+    description: "Established businesses looking to scale their pricing strategy and optimize revenue",
     icon: Building,
   },
   {
     id: "Enterprise",
     title: "Enterprise",
-    description: "For large organizations with complex pricing needs and multiple stakeholders",
+    description: "Large organizations with complex pricing needs and multiple stakeholders",
     icon: Users,
   },
 ];
@@ -49,6 +49,11 @@ const NewOffer = () => {
   const [step, setStep] = useState(1);
   const [companyType, setCompanyType] = useState<CompanyType>(null);
   const [pricingPath, setPricingPath] = useState<PricingPath>(null);
+
+  const handleCompanySelect = (type: CompanyType) => {
+    setCompanyType(type);
+    setStep(2); // Automatically advance to next step
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#F2FCE2] to-[#FEF7CD]/20">
@@ -98,7 +103,7 @@ const NewOffer = () => {
                         className={`cursor-pointer transition-all hover:border-[#8B8B73] ${
                           companyType === type.id ? 'border-[#8B8B73] bg-[#F2FCE2]' : 'border-[#E8E8D8]'
                         }`}
-                        onClick={() => setCompanyType(type.id as CompanyType)}
+                        onClick={() => handleCompanySelect(type.id as CompanyType)}
                       >
                         <CardContent className="p-6 space-y-4">
                           <div className="flex justify-center">
@@ -151,14 +156,6 @@ const NewOffer = () => {
                   >
                     <ArrowLeft className="h-4 w-4 mr-2" />
                     Previous
-                  </Button>
-                )}
-                {step === 1 && companyType && (
-                  <Button
-                    className="ml-auto bg-[#8B8B73] hover:bg-[#6B6B5F] text-white"
-                    onClick={() => setStep(2)}
-                  >
-                    Next Step
                   </Button>
                 )}
               </div>
