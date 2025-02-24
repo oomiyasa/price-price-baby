@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronRight, DollarSign, RefreshCw, Calculator, Box, Percent, ChartBar, UserMinus } from "lucide-react";
+import { ChevronRight, DollarSign, RefreshCw, Calculator, Box, Percent, ChartBar, UserMinus, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const pricingTools = [
@@ -25,6 +25,13 @@ const pricingTools = [
     description: "Analyze and prevent customer churn",
     route: "/churn",
     icon: UserMinus
+  },
+  {
+    id: "ltv",
+    title: "Customer Lifetime Value",
+    description: "Calculate and optimize customer lifetime value",
+    route: "/ltv",
+    icon: TrendingUp
   },
   {
     id: "new-offer",

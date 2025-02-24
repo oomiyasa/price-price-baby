@@ -41,3 +41,21 @@ export interface ChurnResults {
   netCustomerChange: number;
   growthRate: number;
 }
+
+export interface LTVData {
+  averageRevenue: number;
+  customerLifespan: number;
+  profitMargin: number;
+  revenueGrowth: number;
+  crossSellRevenue: number;
+  referralRate: number;
+  timePeriod: "monthly" | "annually";
+}
+
+export interface LTVResults {
+  basicLTV: number;
+  adjustedLTV: number;
+  netProfitLTV: number;
+  growthAdjustedLTV: number;
+  referralValue: number;
+}
