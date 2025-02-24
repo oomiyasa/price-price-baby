@@ -7,7 +7,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { HelpCircle } from "lucide-react";
+import { HelpCircle, Pencil } from "lucide-react";
 
 interface ImpactFactorSliderProps {
   label: string;
@@ -44,6 +44,7 @@ export const ImpactFactorSlider = ({
             <TooltipContent>{tooltipContent}</TooltipContent>
           </Tooltip>
         </div>
+        <Pencil className="h-4 w-4 text-[#8B8B73]" />
       </div>
       <div className="text-sm text-[#6B6B5F] mb-3">
         Impact: {getImpactDescription(impact)}
