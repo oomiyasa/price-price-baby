@@ -199,3 +199,12 @@ export function useToast() {
   }
   return context
 }
+
+// Add toast function export
+export const toast = (props: Omit<ToasterToast, "id">) => {
+  const context = React.useContext(ToastContext)
+  if (!context) {
+    throw new Error("useToast must be used within a ToastProvider")
+  }
+  return context.toast(props)
+}
