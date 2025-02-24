@@ -11,9 +11,6 @@ const Index = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="flex flex-col items-center justify-center px-6 py-24"
       >
-        <span className="inline-block px-3 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-full mb-4">
-          Welcome
-        </span>
         <h1 className="text-5xl md:text-6xl font-semibold text-gray-900 tracking-tight mb-4 text-center">
           Price Price Baby
         </h1>
