@@ -5,12 +5,11 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarRail,
   SidebarHeader,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 
 const items = [
@@ -29,9 +28,9 @@ const items = [
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarHeader className="flex justify-between items-center px-2 py-2">
+      <SidebarRail />
+      <SidebarHeader className="px-2 py-2">
         <span className="text-sm font-medium text-sidebar-foreground/70">Navigation</span>
-        <SidebarTrigger />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
