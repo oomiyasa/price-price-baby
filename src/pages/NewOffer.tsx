@@ -439,7 +439,8 @@ const NewOffer = () => {
                 {step === 3 && (
                   <Button 
                     className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F] ml-auto"
-                    onClick={() => setStep(4)}
+                    onClick={() => pricingPath === 'cost' ? setStep(4) : handleMarketFormSubmit()}
+                    disabled={pricingPath === 'market' && (!marketPrice || !competitorLow || !competitorHigh)}
                   >
                     Next
                   </Button>
