@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Building, Users, User, DollarSign, ChartBar, HelpCircle } from "lucide-react";
+import { ArrowLeft, Building, Users, User, DollarSign, ChartBar, HelpCircle, ArrowDown, ArrowRight, Crown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +15,7 @@ import {
 
 type CompanyType = "SMB" | "Growth" | "Enterprise" | null;
 type PricingPath = "cost" | "market" | null;
+type PricingStrategy = "lower" | "similar" | "premium" | null;
 
 const companyTypes = [
   {
@@ -53,10 +53,35 @@ const pricingPaths = [
   },
 ];
 
+const pricingStrategies = [
+  {
+    id: "lower",
+    title: "Lower Price Strategy",
+    description: "Compete on price by offering lower rates than the market average. Best for high-efficiency operations and volume-based business models.",
+    icon: ArrowDown,
+    impact: "Potentially higher sales volume but lower margins. May need to optimize operations for cost efficiency.",
+  },
+  {
+    id: "similar",
+    title: "Market Match Strategy",
+    description: "Align with market rates to compete on value and features rather than price. Ideal for established markets with differentiated offerings.",
+    icon: ArrowRight,
+    impact: "Balanced approach focusing on value proposition and service quality. Requires clear differentiation from competitors.",
+  },
+  {
+    id: "premium",
+    title: "Premium Strategy",
+    description: "Position as a premium offering with higher prices than market average. Suitable for unique, high-value products or services.",
+    icon: Crown,
+    impact: "Higher margins but may require significant investment in quality, branding, and customer service.",
+  },
+];
+
 const NewOffer = () => {
   const [step, setStep] = useState(1);
   const [companyType, setCompanyType] = useState<CompanyType>(null);
   const [pricingPath, setPricingPath] = useState<PricingPath>(null);
+  const [pricingStrategy, setPricingStrategy] = useState<PricingStrategy>(null);
   const [costPerUnit, setCostPerUnit] = useState("");
   const [marketPrice, setMarketPrice] = useState("");
   const [competitorLow, setCompetitorLow] = useState("");
@@ -71,6 +96,11 @@ const NewOffer = () => {
   const handlePricingPathSelect = (path: PricingPath) => {
     setPricingPath(path);
     setStep(3);
+  };
+
+  const handlePricingStrategySelect = (strategy: PricingStrategy) => {
+    setPricingStrategy(strategy);
+    setStep(4);
   };
 
   const renderCostBasedForm = () => (
@@ -170,6 +200,43 @@ const NewOffer = () => {
     </div>
   );
 
+  const renderPricingStrategySelection = () => (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {pricingStrategies.map((strategy) => (
+        <motion.div
+          key={strategy.id}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="h-full"
+        >
+          <Card 
+            className={`cursor-pointer transition-all hover:border-[#8B8B73] h-full ${
+              pricingStrategy === strategy.id ? 'border-[#8B8B73] bg-[#F2FCE2]' : 'border-[#E8E8D8]'
+            }`}
+            onClick={() => handlePricingStrategySelect(strategy.id as PricingStrategy)}
+          >
+            <CardContent className="p-8 flex flex-col h-full items-center justify-between">
+              <div className="flex flex-col items-center gap-6">
+                <div className="p-3 rounded-full bg-[#F2FCE2]">
+                  <strategy.icon className="h-8 w-8 text-[#8B8B73]" />
+                </div>
+                <h3 className="font-semibold text-[#4A4A3F] text-lg text-center">{strategy.title}</h3>
+              </div>
+              <div className="space-y-4 text-center">
+                <p className="text-sm text-[#6B6B5F]">{strategy.description}</p>
+                <div className="pt-4 border-t border-[#E8E8D8]">
+                  <p className="text-sm text-[#8B8B73] font-medium">Impact</p>
+                  <p className="text-sm text-[#6B6B5F]">{strategy.impact}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      ))}
+    </div>
+  );
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#F2FCE2] to-[#FEF7CD]/20">
       <div className="container max-w-6xl mx-auto px-4 py-8">
@@ -198,14 +265,14 @@ const NewOffer = () => {
               <CardTitle className="text-[#4A4A3F]">
                 {step === 1 ? "Select Your Company Type" : 
                  step === 2 ? "Choose Your Pricing Path" :
-                 pricingPath === "cost" ? "Cost-Based Pricing Details" :
-                 "Market-Based Pricing Details"}
+                 step === 3 ? (pricingPath === "cost" ? "Cost-Based Pricing Details" : "Market-Based Pricing Details") :
+                 "Select Your Pricing Strategy"}
               </CardTitle>
               <CardDescription className="text-[#6B6B5F]">
                 {step === 1 ? "Choose the option that best describes your business" : 
                  step === 2 ? "Select the pricing strategy that aligns with your goals" :
-                 pricingPath === "cost" ? "Enter your costs to calculate optimal pricing" :
-                 "Enter market research data to determine competitive pricing"}
+                 step === 3 ? (pricingPath === "cost" ? "Enter your costs to calculate optimal pricing" : "Enter market research data to determine competitive pricing") :
+                 "Choose how you want to position your pricing relative to the market"}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -282,6 +349,14 @@ const NewOffer = () => {
                   >
                     <ArrowLeft className="h-4 w-4 mr-2" />
                     Previous
+                  </Button>
+                )}
+                {(step === 3) && (
+                  <Button
+                    className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
+                    onClick={() => setStep(4)}
+                  >
+                    Next
                   </Button>
                 )}
               </div>
