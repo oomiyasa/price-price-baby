@@ -16,8 +16,8 @@ const items = [{
 export function AppSidebar() {
   return <Sidebar>
       <SidebarRail className="cursor-ew-resize hover:bg-gray-300 after:bg-gray-400 after:w-[3px] after:opacity-100 relative">
-        <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-gray-300 hover:bg-gray-400 rounded-md p-1 transition-colors mx-[221px] my-[240px]">
-          <GripVertical className="h-6 w-6 text-gray-600" />
+        <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 rounded-md p-1 transition-colors mx-[221px] my-[240px] bg-slate-500">
+          <GripVertical className="h-6 w-6 text-gray-600 mx-[5px]" />
         </div>
       </SidebarRail>
       <SidebarHeader className="px-2 py-2">
