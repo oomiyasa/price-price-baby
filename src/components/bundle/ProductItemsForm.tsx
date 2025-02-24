@@ -62,16 +62,17 @@ export const ProductItemsForm = ({
     onReorderProducts(items);
   };
 
-  const getFrequencyText = (product: ProductItem) => {
+  const formatPriceWithFrequency = (product: ProductItem) => {
+    const price = `$${product.price}`;
     switch (product.chargeModel) {
       case "one-time":
-        return "One-time payment";
+        return price;
       case "subscription":
-        return `${product.billingPeriod?.charAt(0).toUpperCase()}${product.billingPeriod?.slice(1)} subscription`;
+        return `${price}/${product.billingPeriod === 'monthly' ? 'mo' : 'yr'}`;
       case "usage":
-        return `Usage-based (${product.usageUnits} units ${product.usagePeriod})`;
+        return `${price}/${product.usagePeriod}`;
       default:
-        return "";
+        return price;
     }
   };
 
@@ -163,14 +164,21 @@ export const ProductItemsForm = ({
               </div>
               <div>
                 <Label htmlFor="usagePeriod">Usage Period</Label>
-                <Input
-                  id="usagePeriod"
-                  value={newProduct.usagePeriod || ""}
-                  onChange={(e) =>
-                    setNewProduct({ ...newProduct, usagePeriod: e.target.value })
+                <Select
+                  value={newProduct.usagePeriod}
+                  onValueChange={(value: string) =>
+                    setNewProduct({ ...newProduct, usagePeriod: value })
                   }
-                  placeholder="e.g., per month"
-                />
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select usage period" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="day">Per Day</SelectItem>
+                    <SelectItem value="month">Per Month</SelectItem>
+                    <SelectItem value="year">Per Year</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           )}
@@ -207,7 +215,7 @@ export const ProductItemsForm = ({
                       <div {...provided.dragHandleProps}>
                         <GripVertical className="h-5 w-5 text-gray-400" />
                       </div>
-                      <div className="flex-1 grid grid-cols-3 gap-4">
+                      <div className="flex-1 grid grid-cols-2 gap-4">
                         <div>
                           <span className="block text-sm font-medium text-gray-700">
                             {product.name}
@@ -215,12 +223,7 @@ export const ProductItemsForm = ({
                         </div>
                         <div>
                           <span className="block text-sm font-medium text-gray-700">
-                            ${product.price}
-                          </span>
-                        </div>
-                        <div>
-                          <span className="block text-sm text-gray-600">
-                            {getFrequencyText(product)}
+                            {formatPriceWithFrequency(product)}
                           </span>
                         </div>
                       </div>
