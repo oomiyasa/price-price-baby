@@ -25,23 +25,24 @@ export const PricingImpactGraph = () => {
     const includedUnits = Number(formData?.pricingComponents?.includedUnits) || 0;
     const customerLifetime = Number(formData?.customerLifetime) || 3;
     const growthRate = Number(formData?.growthRate) || 15;
+    const setupFee = Number(formData?.pricingComponents?.setupFee) || 0;
 
     // Calculate additional usage revenue
     const additionalUsageRevenue = Math.max(0, avgUsage - includedUnits) * additionalUnitPrice;
     
-    // Calculate current MRR
+    // Calculate current MRR (excluding setup fee)
     const currentMRR = baseMonthlyRevenue + additionalUsageRevenue;
     
-    // Calculate projected MRR with growth rate
+    // Calculate projected MRR with growth rate (excluding setup fee)
     const projectedMRR = currentMRR * (1 + (growthRate / 100));
     
-    // Calculate ARR
+    // Calculate ARR (excluding setup fee)
     const currentARR = currentMRR * 12;
     const projectedARR = projectedMRR * 12;
     
-    // Calculate CLTV
-    const currentCLTV = currentARR * customerLifetime;
-    const projectedCLTV = projectedARR * customerLifetime;
+    // Calculate CLTV including setup fee only once
+    const currentCLTV = (currentARR * customerLifetime) + setupFee;
+    const projectedCLTV = (projectedARR * customerLifetime) + setupFee;
 
     return [
       {
@@ -49,21 +50,21 @@ export const PricingImpactGraph = () => {
         current: currentMRR,
         projected: projectedMRR,
         percentChange: ((projectedMRR - currentMRR) / currentMRR * 100).toFixed(1),
-        tooltip: "Monthly Recurring Revenue based on current usage patterns and pricing",
+        tooltip: "Monthly Recurring Revenue based on current usage patterns and pricing (excludes one-time setup fee)",
       },
       {
         name: "ARR",
         current: currentARR,
         projected: projectedARR,
         percentChange: ((projectedARR - currentARR) / currentARR * 100).toFixed(1),
-        tooltip: "Annual Recurring Revenue calculated as MRR × 12",
+        tooltip: "Annual Recurring Revenue calculated as MRR × 12 (excludes one-time setup fee)",
       },
       {
         name: "CLTV",
         current: currentCLTV,
         projected: projectedCLTV,
         percentChange: ((projectedCLTV - currentCLTV) / currentCLTV * 100).toFixed(1),
-        tooltip: "Customer Lifetime Value calculated as ARR × Average Customer Lifetime (years)",
+        tooltip: "Customer Lifetime Value calculated as (ARR × Average Customer Lifetime) + Setup Fee",
       },
     ];
   };
