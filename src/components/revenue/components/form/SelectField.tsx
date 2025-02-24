@@ -31,7 +31,7 @@ export function SelectField<T extends Record<string, any>>({
   options,
 }: SelectFieldProps<T>) {
   return (
-    <FormFieldWrapper<T>
+    <FormFieldWrapper
       control={control}
       name={name}
       label={label}

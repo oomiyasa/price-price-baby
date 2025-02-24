@@ -22,7 +22,7 @@ export function NumericInput<T extends Record<string, any>>({
   optional = false,
 }: NumericInputProps<T>) {
   return (
-    <FormFieldWrapper<T>
+    <FormFieldWrapper
       control={control}
       name={name}
       label={label}
