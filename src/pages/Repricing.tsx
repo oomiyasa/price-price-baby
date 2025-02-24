@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -9,7 +8,7 @@ import { CurrentPriceForm } from "@/components/repricing/CurrentPriceForm";
 import { PerformanceForm } from "@/components/repricing/PerformanceForm";
 import { MarketChangesForm } from "@/components/repricing/MarketChangesForm";
 import { DifferentiationForm } from "@/components/repricing/DifferentiationForm";
-import { SalesPerformance, RepricingData } from "@/types/repricing";
+import { SalesPerformance } from "@/types/repricing";
 
 interface Feature {
   id: string;
@@ -37,7 +36,9 @@ const Repricing = () => {
   const [marketDemand, setMarketDemand] = useState<"growing" | "shrinking" | "stable" | null>(null);
   const [features, setFeatures] = useState<Feature[]>(defaultFeatures);
   const [valueProposition, setValueProposition] = useState("");
-  
+  const [uniqueness, setUniqueness] = useState<"low" | "medium" | "high">("medium");
+  const [valuePerception, setValuePerception] = useState(50);
+
   const handleNext = () => {
     if (step < 5) {
       setStep(step + 1);
@@ -132,9 +133,12 @@ const Repricing = () => {
                     onFeatureChange={setFeatures}
                     valueProposition={valueProposition}
                     onValuePropositionChange={setValueProposition}
+                    uniqueness={uniqueness}
+                    onUniquenessChange={setUniqueness}
+                    valuePerception={valuePerception}
+                    onValuePerceptionChange={setValuePerception}
                   />
                 )}
-                {/* Additional steps will be implemented here */}
                 
                 <div className="mt-6 flex justify-between">
                   {step > 1 && (
