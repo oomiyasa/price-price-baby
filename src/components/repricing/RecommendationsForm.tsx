@@ -121,12 +121,24 @@ export const RecommendationsForm = ({
 
     const { volatility } = analyzePriceTrend();
     
-    const salesImpact = calculateSalesImpact() * (weights.salesPerformance / 100);
-    const marketImpact = calculateMarketImpact() * (weights.marketConditions / 100);
-    const positioningImpact = calculatePositioningImpact() * (weights.positioning / 100);
+    // Get individual impacts before weighting
+    const rawSalesImpact = calculateSalesImpact();
+    const rawMarketImpact = calculateMarketImpact();
+    const rawPositioningImpact = calculatePositioningImpact();
     
-    const totalImpact = salesImpact + marketImpact + positioningImpact;
+    // Calculate total weight for relative scaling
+    const totalWeight = weights.salesPerformance + weights.marketConditions + weights.positioning;
     
+    // Scale impacts by relative weights
+    const salesImpact = rawSalesImpact * (weights.salesPerformance / 100);
+    const marketImpact = rawMarketImpact * (weights.marketConditions / 100);
+    const positioningImpact = rawPositioningImpact * (weights.positioning / 100);
+    
+    // Scale total impact based on weight intensity
+    const weightIntensityFactor = Math.min(totalWeight / 100, 2); // Cap at 2x
+    const totalImpact = (salesImpact + marketImpact + positioningImpact) * weightIntensityFactor;
+    
+    // Adjust range based on price history volatility
     const baseRange = 2 + (volatility / 4);
     
     return {
@@ -145,30 +157,6 @@ export const RecommendationsForm = ({
     const basePrice = parseFloat(currentPrice);
     if (isNaN(basePrice) || basePrice === 0) return 0;
     return ((price - basePrice) / basePrice) * 100;
-  };
-
-  const balanceWeights = (changedWeight: number, changedKey: keyof typeof weights) => {
-    const remainingKeys = Object.keys(weights).filter(key => key !== changedKey) as Array<keyof typeof weights>;
-    const remainingTotal = 100 - changedWeight;
-    
-    const currentRemainingTotal = remainingKeys.reduce((sum, key) => sum + weights[key], 0);
-    const ratio = currentRemainingTotal === 0 ? 1 / remainingKeys.length : 1;
-    
-    const newWeights = {
-      ...weights,
-      [changedKey]: changedWeight,
-    };
-
-    remainingKeys.forEach((key, index) => {
-      if (index === remainingKeys.length - 1) {
-        newWeights[key] = Math.round((100 - changedWeight - remainingKeys.slice(0, -1)
-          .reduce((sum, k) => sum + newWeights[k], 0)) * 100) / 100;
-      } else {
-        newWeights[key] = Math.round((weights[key] * ratio * remainingTotal / currentRemainingTotal) * 100) / 100;
-      }
-    });
-
-    onWeightsChange(newWeights);
   };
 
   const impactDescriptions = {
@@ -233,8 +221,7 @@ export const RecommendationsForm = ({
               <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
             </TooltipTrigger>
             <TooltipContent>
-              Adjust the weights to customize how each factor influences the final price. 
-              Total weight will always equal 100%.
+              Adjust the importance of each factor. Higher values increase that factor's influence on the final price.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -272,12 +259,15 @@ export const RecommendationsForm = ({
             max={100}
             step={1}
             onValueChange={([value]) => {
-              balanceWeights(value, 'salesPerformance');
+              onWeightsChange({
+                ...weights,
+                salesPerformance: value,
+              });
             }}
             className="w-full"
           />
           <div className="text-xs text-[#8B8B73] mt-2">
-            Weight: {weights.salesPerformance.toFixed(1)}%
+            Weight: {weights.salesPerformance.toFixed(1)}
           </div>
         </div>
 
@@ -314,12 +304,15 @@ export const RecommendationsForm = ({
             max={100}
             step={1}
             onValueChange={([value]) => {
-              balanceWeights(value, 'marketConditions');
+              onWeightsChange({
+                ...weights,
+                marketConditions: value,
+              });
             }}
             className="w-full"
           />
           <div className="text-xs text-[#8B8B73] mt-2">
-            Weight: {weights.marketConditions.toFixed(1)}%
+            Weight: {weights.marketConditions.toFixed(1)}
           </div>
         </div>
 
@@ -356,12 +349,15 @@ export const RecommendationsForm = ({
             max={100}
             step={1}
             onValueChange={([value]) => {
-              balanceWeights(value, 'positioning');
+              onWeightsChange({
+                ...weights,
+                positioning: value,
+              });
             }}
             className="w-full"
           />
           <div className="text-xs text-[#8B8B73] mt-2">
-            Weight: {weights.positioning.toFixed(1)}%
+            Weight: {weights.positioning.toFixed(1)}
           </div>
         </div>
       </div>
