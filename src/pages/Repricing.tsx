@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { CurrentPriceForm } from "@/components/repricing/CurrentPriceForm";
 import { PerformanceForm } from "@/components/repricing/PerformanceForm";
+import { MarketChangesForm } from "@/components/repricing/MarketChangesForm";
 import { SalesPerformance, RepricingData } from "@/types/repricing";
 
 const Repricing = () => {
@@ -14,6 +15,8 @@ const Repricing = () => {
   const [currentPrice, setCurrentPrice] = useState("");
   const [historicalPrices, setHistoricalPrices] = useState<string[]>([]);
   const [salesPerformance, setSalesPerformance] = useState<SalesPerformance>(0);
+  const [competitorPrices, setCompetitorPrices] = useState<"increased" | "decreased" | "mixed" | "unchanged" | null>(null);
+  const [marketDemand, setMarketDemand] = useState<"growing" | "shrinking" | "stable" | null>(null);
   
   const handleNext = () => {
     if (step < 5) {
@@ -93,6 +96,14 @@ const Repricing = () => {
                   <PerformanceForm
                     salesPerformance={salesPerformance}
                     onSalesPerformanceChange={setSalesPerformance}
+                  />
+                )}
+                {step === 3 && (
+                  <MarketChangesForm
+                    competitorPrices={competitorPrices}
+                    onCompetitorPricesChange={setCompetitorPrices}
+                    marketDemand={marketDemand}
+                    onMarketDemandChange={setMarketDemand}
                   />
                 )}
                 {/* Additional steps will be implemented here */}
