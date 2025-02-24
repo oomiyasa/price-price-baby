@@ -72,6 +72,33 @@ const pricingStrategies = [
   },
 ];
 
+const industryGuidelines = [
+  {
+    id: "software",
+    title: "Software/Digital Products",
+    description: "Click for detailed cost breakdown",
+    guidance: "Include: Development costs, hosting, maintenance, customer support, licensing fees. Consider: Updates and feature development costs."
+  },
+  {
+    id: "manufacturing",
+    title: "Manufacturing",
+    description: "Click for detailed cost breakdown",
+    guidance: "Include: Raw materials, labor, equipment depreciation, overhead costs, storage. Consider: Waste reduction and quality control costs."
+  },
+  {
+    id: "services",
+    title: "Professional Services",
+    description: "Click for detailed cost breakdown",
+    guidance: "Include: Labor hours, overhead, software licenses, equipment. Consider: Training and professional development costs."
+  },
+  {
+    id: "retail",
+    title: "Retail/E-commerce",
+    description: "Click for detailed cost breakdown",
+    guidance: "Include: Product cost, shipping, handling, storage, platform fees. Consider: Returns and customer service costs."
+  }
+];
+
 const NewOffer = () => {
   const [step, setStep] = useState(1);
   const [companyType, setCompanyType] = useState<CompanyType>(null);
@@ -82,6 +109,7 @@ const NewOffer = () => {
   const [competitorLow, setCompetitorLow] = useState("");
   const [competitorHigh, setCompetitorHigh] = useState("");
   const [demandTrend, setDemandTrend] = useState("stable");
+  const [selectedIndustry, setSelectedIndustry] = useState<string | null>(null);
 
   const handleCompanySelect = (type: CompanyType) => {
     setCompanyType(type);
@@ -108,32 +136,71 @@ const NewOffer = () => {
   };
 
   const renderCostBasedForm = () => (
-    <div className="space-y-6">
-      <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <Label htmlFor="costPerUnit">Cost per Unit</Label>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
-            </TooltipTrigger>
-            <TooltipContent className="max-w-xs">
-              Include direct costs (materials, labor) and indirect costs (overhead, shipping). Exclude marketing and sales costs.
-            </TooltipContent>
-          </Tooltip>
+    <div className="space-y-8 max-w-2xl mx-auto">
+      <div>
+        <h3 className="text-xl font-medium text-[#4A4A3F] mb-2">Enter your total cost per unit/service</h3>
+        <div className="space-y-4">
+          <Input
+            id="costPerUnit"
+            type="text"
+            value={costPerUnit}
+            onChange={(e) => {
+              const value = e.target.value.replace(/[^\d.]/g, '');
+              if (value === '' || /^\d*\.?\d*$/.test(value)) {
+                setCostPerUnit(value);
+              }
+            }}
+            className="border-[#8B8B73] text-lg"
+            placeholder="0.00"
+          />
         </div>
-        <Input
-          id="costPerUnit"
-          type="text"
-          value={costPerUnit}
-          onChange={(e) => {
-            const value = e.target.value.replace(/[^\d.]/g, '');
-            if (value === '' || /^\d*\.?\d*$/.test(value)) {
-              setCostPerUnit(value);
-            }
-          }}
-          className="border-[#8B8B73]"
-          placeholder="0.00"
-        />
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-xl font-medium text-[#4A4A3F] mb-2">Select your industry for cost guidance:</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {industryGuidelines.map((industry) => (
+            <Tooltip key={industry.id}>
+              <TooltipTrigger asChild>
+                <Card 
+                  className={`cursor-pointer transition-all hover:border-[#8B8B73] ${
+                    selectedIndustry === industry.id ? 'border-[#8B8B73] bg-[#F2FCE2]' : 'border-[#E8E8D8]'
+                  }`}
+                  onClick={() => setSelectedIndustry(industry.id)}
+                >
+                  <CardContent className="p-4">
+                    <h4 className="font-medium text-[#4A4A3F]">{industry.title}</h4>
+                    <p className="text-sm text-[#6B6B5F]">{industry.description}</p>
+                  </CardContent>
+                </Card>
+              </TooltipTrigger>
+              <TooltipContent className="max-w-xs p-3">
+                <p className="text-sm">{industry.guidance}</p>
+              </TooltipContent>
+            </Tooltip>
+          ))}
+        </div>
+        <div className="flex items-center gap-2 text-sm text-[#6B6B5F] bg-[#F2FCE2] p-3 rounded-md">
+          <HelpCircle className="h-4 w-4" />
+          <span>Hover over or tap an industry for detailed cost guidance</span>
+        </div>
+      </div>
+
+      <div className="mt-8 flex justify-between">
+        <Button
+          variant="outline"
+          className="border-[#8B8B73] text-[#4A4A3F] hover:bg-[#8B8B73] hover:text-white"
+          onClick={handlePreviousStep}
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Previous
+        </Button>
+        <Button 
+          className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
+          onClick={() => setStep(4)}
+        >
+          Next
+        </Button>
       </div>
     </div>
   );
