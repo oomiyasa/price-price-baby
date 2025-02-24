@@ -161,36 +161,6 @@ const NewOffer = () => {
           />
         </div>
       </div>
-
-      <div className="space-y-4">
-        <h3 className="text-xl font-medium text-[#4A4A3F] mb-2">Select your industry for cost guidance:</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {industryGuidelines.map((industry) => (
-            <Tooltip key={industry.id}>
-              <TooltipTrigger asChild>
-                <Card 
-                  className={`cursor-pointer transition-all hover:border-[#8B8B73] ${
-                    selectedIndustry === industry.id ? 'border-[#8B8B73] bg-[#F2FCE2]' : 'border-[#E8E8D8]'
-                  }`}
-                  onClick={() => setSelectedIndustry(industry.id)}
-                >
-                  <CardContent className="p-4">
-                    <h4 className="font-medium text-[#4A4A3F]">{industry.title}</h4>
-                    <p className="text-sm text-[#6B6B5F]">{industry.description}</p>
-                  </CardContent>
-                </Card>
-              </TooltipTrigger>
-              <TooltipContent className="max-w-xs p-3">
-                <p className="text-sm">{industry.guidance}</p>
-              </TooltipContent>
-            </Tooltip>
-          ))}
-        </div>
-        <div className="flex items-center gap-2 text-sm text-[#6B6B5F] bg-[#F2FCE2] p-3 rounded-md">
-          <HelpCircle className="h-4 w-4" />
-          <span>Hover over or tap an industry for detailed cost guidance</span>
-        </div>
-      </div>
     </div>
   );
 
