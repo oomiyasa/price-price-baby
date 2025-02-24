@@ -9,6 +9,7 @@ import { CurrentPriceForm } from "@/components/repricing/CurrentPriceForm";
 import { PerformanceForm } from "@/components/repricing/PerformanceForm";
 import { MarketChangesForm } from "@/components/repricing/MarketChangesForm";
 import { DifferentiationForm } from "@/components/repricing/DifferentiationForm";
+import { RecommendationsForm } from "@/components/repricing/RecommendationsForm";
 import { SalesPerformance } from "@/types/repricing";
 
 const Repricing = () => {
@@ -20,6 +21,11 @@ const Repricing = () => {
   const [marketDemand, setMarketDemand] = useState<"growing" | "shrinking" | "stable" | null>(null);
   const [uniqueness, setUniqueness] = useState<"low" | "medium" | "high">("medium");
   const [valuePerception, setValuePerception] = useState(50);
+  const [weights, setWeights] = useState({
+    salesPerformance: 33.33,
+    marketConditions: 33.33,
+    positioning: 33.34,
+  });
 
   const handleNext = () => {
     if (step < 5) {
@@ -115,6 +121,19 @@ const Repricing = () => {
                     onUniquenessChange={setUniqueness}
                     valuePerception={valuePerception}
                     onValuePerceptionChange={setValuePerception}
+                  />
+                )}
+                {step === 5 && (
+                  <RecommendationsForm
+                    currentPrice={currentPrice}
+                    salesPerformance={salesPerformance}
+                    competitorPrices={competitorPrices}
+                    marketDemand={marketDemand}
+                    uniqueness={uniqueness}
+                    valuePerception={valuePerception}
+                    onStepChange={setStep}
+                    weights={weights}
+                    onWeightsChange={setWeights}
                   />
                 )}
                 
