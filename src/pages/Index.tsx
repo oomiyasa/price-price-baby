@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, FileImport, FileExport, Database } from "lucide-react";
+import { ArrowRight, Upload, Download, Database } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -77,8 +77,8 @@ const Index = () => {
               <CardContent>
                 <div className="flex justify-between items-center">
                   <div className="space-x-2">
-                    <PremiumFeatureButton icon={FileImport} label="Import Data" />
-                    <PremiumFeatureButton icon={FileExport} label="Export Results" />
+                    <PremiumFeatureButton icon={Upload} label="Import Data" />
+                    <PremiumFeatureButton icon={Download} label="Export Results" />
                     <PremiumFeatureButton icon={Database} label="Connect Data Source" />
                   </div>
                   <Button 
