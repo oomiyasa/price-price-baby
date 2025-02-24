@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -18,6 +17,7 @@ import { Info } from "lucide-react";
 
 const BundleDiscount = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [discount, setDiscount] = useState("");
   const [minItems, setMinItems] = useState("");
 
@@ -31,8 +31,14 @@ const BundleDiscount = () => {
       toast.error("Please fill in all fields");
       return;
     }
-    toast.success("Bundle discount saved");
-    // Navigate to next step when implemented
+    navigate("/bundle-configuration", { 
+      state: { 
+        ...location.state,
+        bundleDiscount: parseFloat(discount),
+        minItems: parseInt(minItems)
+      } 
+    });
+    toast.success("Proceeding to bundle configuration");
   };
 
   return (

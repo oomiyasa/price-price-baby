@@ -1,21 +1,22 @@
-
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Toaster } from "@/components/ui/sonner";
-import NotFound from "@/pages/NotFound";
-import Index from "@/pages/Index";
-import NewOffer from "@/pages/NewOffer";
-import Repricing from "@/pages/Repricing";
-import BundlePricing from "@/pages/BundlePricing";
-import BundleDiscount from "@/pages/BundleDiscount";
-import { Menu } from "lucide-react";
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+} from "@/components/ui/dropdown-menu"
+import { Menu } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Toaster } from "sonner"
+
+import Index from "@/pages/Index";
+import NewOffer from "@/pages/NewOffer";
+import BundlePricing from "@/pages/BundlePricing";
+import BundleDiscount from "@/pages/BundleDiscount";
+import NotFound from "@/pages/NotFound";
+import Repricing from "@/pages/Repricing";
+import BundleConfiguration from "@/pages/BundleConfiguration";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
             <Route path="/new-offer" element={<NewOffer />} />
             <Route path="/bundle-pricing" element={<BundlePricing />} />
             <Route path="/bundle-discount" element={<BundleDiscount />} />
+            <Route path="/bundle-configuration" element={<BundleConfiguration />} />
             <Route path="/repricing" element={<Repricing />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
