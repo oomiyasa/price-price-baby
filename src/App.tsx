@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Toaster } from "@/components/ui/toaster";
 import { ToastProvider } from "@/hooks/use-toast";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import COGS from "@/pages/COGS";
 import Index from "@/pages/Index";
 import NotFound from "@/pages/NotFound";
@@ -15,21 +16,23 @@ import MainNav from "@/components/MainNav";
 const App = () => {
   return (
     <ToastProvider>
-      <Router>
-        <div className="min-h-screen bg-[#FAFAFA]">
-          <MainNav />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/cogs" element={<COGS />} />
-            <Route path="/new-offer" element={<NewOffer />} />
-            <Route path="/repricing" element={<Repricing />} />
-            <Route path="/bundle-pricing" element={<BundlePricing />} />
-            <Route path="/bundle-configuration" element={<BundleConfiguration />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Toaster />
-        </div>
-      </Router>
+      <TooltipProvider>
+        <Router>
+          <div className="min-h-screen bg-[#FAFAFA]">
+            <MainNav />
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/cogs" element={<COGS />} />
+              <Route path="/new-offer" element={<NewOffer />} />
+              <Route path="/repricing" element={<Repricing />} />
+              <Route path="/bundle-pricing" element={<BundlePricing />} />
+              <Route path="/bundle-configuration" element={<BundleConfiguration />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Toaster />
+          </div>
+        </Router>
+      </TooltipProvider>
     </ToastProvider>
   );
 };

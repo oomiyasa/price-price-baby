@@ -23,10 +23,35 @@ const MainNav = () => {
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="bg-white">
+        <DropdownMenuContent align="start" className="bg-white">
           <DropdownMenuItem asChild>
             <Link to="/" className="cursor-pointer">
               Home
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/cogs" className="cursor-pointer">
+              COGS Calculator
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/new-offer" className="cursor-pointer">
+              New Offer
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/repricing" className="cursor-pointer">
+              Repricing
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/bundle-pricing" className="cursor-pointer">
+              Bundle Pricing
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/bundle-configuration" className="cursor-pointer">
+              Bundle Configuration
             </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
