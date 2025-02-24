@@ -8,6 +8,7 @@ import { MarginTarget } from "@/components/cogs/MarginTarget";
 import { Recommendations } from "@/components/cogs/Recommendations";
 import { COGSData, Industry } from "@/types/cogs";
 import { industryConfigs } from "@/constants/cogsCalculator";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const COGS = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -79,11 +80,13 @@ const COGS = () => {
   };
 
   return (
-    <div className="container max-w-3xl mx-auto py-8">
-      <Card>
-        {renderStep()}
-      </Card>
-    </div>
+    <TooltipProvider>
+      <div className="container max-w-3xl mx-auto py-8">
+        <Card>
+          {renderStep()}
+        </Card>
+      </div>
+    </TooltipProvider>
   );
 };
 
