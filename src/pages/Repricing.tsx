@@ -11,6 +11,7 @@ import { RepricingData } from "@/types/repricing";
 const Repricing = () => {
   const [step, setStep] = useState(1);
   const [currentPrice, setCurrentPrice] = useState("");
+  const [historicalPrices, setHistoricalPrices] = useState<string[]>([]);
   
   const handleNext = () => {
     if (step < 5) {
@@ -82,6 +83,8 @@ const Repricing = () => {
                   <CurrentPriceForm
                     currentPrice={currentPrice}
                     onCurrentPriceChange={setCurrentPrice}
+                    historicalPrices={historicalPrices}
+                    onHistoricalPricesChange={setHistoricalPrices}
                   />
                 )}
                 {/* Additional steps will be implemented here */}
@@ -101,6 +104,7 @@ const Repricing = () => {
                     <Button 
                       className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F] ml-auto"
                       onClick={handleNext}
+                      disabled={step === 1 && !currentPrice}
                     >
                       Next
                       <ArrowRight className="h-4 w-4 ml-2" />
