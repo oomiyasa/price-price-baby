@@ -32,47 +32,85 @@ const BundlePricing = () => {
 
   const calculateMRR = (products: ProductItem[]) => {
     return products.reduce((total, product) => {
-      if (product.chargeModel === "subscription") {
-        const price = parseFloat(product.price);
-        if (product.billingPeriod === "monthly") {
-          return total + price;
-        } else if (product.billingPeriod === "annually") {
-          return total + (price / 12);
-        }
-      } else if (product.chargeModel === "usage") {
-        const price = parseFloat(product.price);
-        const units = parseInt(product.usageUnits || "0");
-        const monthlyUnits = product.usagePeriod === "year" 
-          ? units / 12 
-          : product.usagePeriod === "day" 
-          ? units * 30 
-          : units;
-        return total + (price * monthlyUnits);
+      const price = parseFloat(product.price);
+      
+      switch (product.chargeModel) {
+        case "one-time":
+          return total + (price / 12); // One-time payments spread over a year for MRR
+        
+        case "subscription":
+          if (product.billingPeriod === "monthly") {
+            return total + price;
+          } else if (product.billingPeriod === "annually") {
+            return total + (price / 12);
+          }
+          return total;
+        
+        case "usage":
+          const units = parseInt(product.usageUnits || "0");
+          let monthlyUnits;
+          
+          switch (product.usagePeriod) {
+            case "day":
+              monthlyUnits = units * 30; // Approximate days in a month
+              break;
+            case "month":
+              monthlyUnits = units;
+              break;
+            case "year":
+              monthlyUnits = units / 12;
+              break;
+            default:
+              monthlyUnits = 0;
+          }
+          
+          return total + (price * monthlyUnits);
+        
+        default:
+          return total;
       }
-      return total;
     }, 0);
   };
 
   const calculateARR = (products: ProductItem[]) => {
     return products.reduce((total, product) => {
-      if (product.chargeModel === "subscription") {
-        const price = parseFloat(product.price);
-        if (product.billingPeriod === "annually") {
-          return total + price;
-        } else if (product.billingPeriod === "monthly") {
-          return total + (price * 12);
-        }
-      } else if (product.chargeModel === "usage") {
-        const price = parseFloat(product.price);
-        const units = parseInt(product.usageUnits || "0");
-        const yearlyUnits = product.usagePeriod === "month" 
-          ? units * 12 
-          : product.usagePeriod === "day" 
-          ? units * 365 
-          : units;
-        return total + (price * yearlyUnits);
+      const price = parseFloat(product.price);
+      
+      switch (product.chargeModel) {
+        case "one-time":
+          return total + price; // One-time payments count fully for ARR
+        
+        case "subscription":
+          if (product.billingPeriod === "annually") {
+            return total + price;
+          } else if (product.billingPeriod === "monthly") {
+            return total + (price * 12);
+          }
+          return total;
+        
+        case "usage":
+          const units = parseInt(product.usageUnits || "0");
+          let yearlyUnits;
+          
+          switch (product.usagePeriod) {
+            case "day":
+              yearlyUnits = units * 365;
+              break;
+            case "month":
+              yearlyUnits = units * 12;
+              break;
+            case "year":
+              yearlyUnits = units;
+              break;
+            default:
+              yearlyUnits = 0;
+          }
+          
+          return total + (price * yearlyUnits);
+        
+        default:
+          return total;
       }
-      return total;
     }, 0);
   };
 
