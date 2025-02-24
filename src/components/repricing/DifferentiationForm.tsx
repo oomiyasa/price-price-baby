@@ -6,38 +6,34 @@ import {
 } from "@/components/ui/tooltip";
 import { Label } from "@/components/ui/label";
 import { HelpCircle } from "lucide-react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { RadioGroup } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
 interface Feature {
   id: string;
   name: string;
   checked: boolean;
+  weight: number;
 }
 
 interface DifferentiationFormProps {
   selectedFeatures: Feature[];
   onFeatureChange: (features: Feature[]) => void;
-  valueProposition: string;
-  onValuePropositionChange: (value: string) => void;
-  uniqueness?: "low" | "medium" | "high";
-  onUniquenessChange?: (value: "low" | "medium" | "high") => void;
-  valuePerception?: number;
-  onValuePerceptionChange?: (value: number) => void;
+  uniqueness: "low" | "medium" | "high";
+  onUniquenessChange: (value: "low" | "medium" | "high") => void;
+  valuePerception: number;
+  onValuePerceptionChange: (value: number) => void;
 }
 
 export const DifferentiationForm = ({
   selectedFeatures,
   onFeatureChange,
-  valueProposition,
-  onValuePropositionChange,
   uniqueness = "medium",
-  onUniquenessChange = () => {},
+  onUniquenessChange,
   valuePerception = 50,
-  onValuePerceptionChange = () => {},
+  onValuePerceptionChange,
 }: DifferentiationFormProps) => {
   const handleFeatureChange = (featureId: string, checked: boolean) => {
     const updatedFeatures = selectedFeatures.map(feature =>
@@ -57,6 +53,12 @@ export const DifferentiationForm = ({
       default:
         return "";
     }
+  };
+
+  const calculateCompetitiveScore = () => {
+    return selectedFeatures
+      .filter(f => f.checked)
+      .reduce((sum, feature) => sum + feature.weight, 0) * 100;
   };
 
   return (
@@ -147,7 +149,7 @@ export const DifferentiationForm = ({
               <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
             </TooltipTrigger>
             <TooltipContent>
-              Select the features that give you competitive advantage
+              Select features that give you pricing power (each feature adds to your competitive score)
             </TooltipContent>
           </Tooltip>
         </div>
@@ -161,38 +163,16 @@ export const DifferentiationForm = ({
                 onCheckedChange={(checked) => handleFeatureChange(feature.id, checked as boolean)}
                 className="border-[#8B8B73] data-[state=checked]:bg-[#8B8B73] data-[state=checked]:text-white"
               />
-              <Label htmlFor={feature.id} className="text-[#4A4A3F]">{feature.name}</Label>
+              <Label htmlFor={feature.id} className="text-[#4A4A3F]">
+                {feature.name} (+{feature.weight * 100}%)
+              </Label>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Value Proposition */}
-      <div>
-        <div className="flex items-center gap-2 mb-4">
-          <Label className="text-xl font-medium text-[#4A4A3F]">
-            Value Proposition
-          </Label>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <HelpCircle className="h-4 w-4 text-[#8B8B73] cursor-help" />
-            </TooltipTrigger>
-            <TooltipContent>
-              Describe your unique value proposition
-            </TooltipContent>
-          </Tooltip>
-        </div>
-        
-        <Textarea
-          value={valueProposition}
-          onChange={(e) => onValuePropositionChange(e.target.value)}
-          placeholder="What makes your product stand out from competitors?"
-          className="min-h-[100px] border-[#8B8B73] text-[#4A4A3F] placeholder:text-[#8B8B73]/50"
-        />
-      </div>
-
       {/* Competitive Summary */}
-      {(selectedFeatures.some(f => f.checked) || valueProposition || uniqueness || valuePerception !== 50) && (
+      {(selectedFeatures.some(f => f.checked) || uniqueness || valuePerception !== 50) && (
         <div className="p-4 bg-[#FAFAFA] rounded-lg border border-[#E5E5E0]">
           <h3 className="text-lg font-medium text-[#4A4A3F] mb-3">Competitive Analysis Summary</h3>
           <div className="space-y-2 text-sm text-[#6B6B5F]">
@@ -205,12 +185,7 @@ export const DifferentiationForm = ({
             </p>
             {selectedFeatures.some(f => f.checked) && (
               <p>
-                • Competitive advantages: {selectedFeatures.filter(f => f.checked).map(f => f.name.toLowerCase()).join(", ")}
-              </p>
-            )}
-            {valueProposition && (
-              <p>
-                • Value proposition: {valueProposition.split(' ').slice(0, 10).join(' ')}...
+                • Total competitive advantage: +{calculateCompetitiveScore().toFixed(1)}% pricing power
               </p>
             )}
           </div>

@@ -14,17 +14,18 @@ interface Feature {
   id: string;
   name: string;
   checked: boolean;
+  weight: number;
 }
 
 const defaultFeatures: Feature[] = [
-  { id: "quality", name: "Superior Quality", checked: false },
-  { id: "service", name: "Better Service", checked: false },
-  { id: "features", name: "More Features", checked: false },
-  { id: "delivery", name: "Faster Delivery", checked: false },
-  { id: "support", name: "24/7 Support", checked: false },
-  { id: "customization", name: "Customization Options", checked: false },
-  { id: "warranty", name: "Better Warranty", checked: false },
-  { id: "integration", name: "Easy Integration", checked: false }
+  { id: "quality", name: "Superior Quality", checked: false, weight: 0.15 },
+  { id: "service", name: "Better Service", checked: false, weight: 0.10 },
+  { id: "features", name: "More Features", checked: false, weight: 0.12 },
+  { id: "delivery", name: "Faster Delivery", checked: false, weight: 0.08 },
+  { id: "support", name: "24/7 Support", checked: false, weight: 0.10 },
+  { id: "customization", name: "Customization Options", checked: false, weight: 0.12 },
+  { id: "warranty", name: "Better Warranty", checked: false, weight: 0.08 },
+  { id: "integration", name: "Easy Integration", checked: false, weight: 0.10 }
 ];
 
 const Repricing = () => {
@@ -35,7 +36,6 @@ const Repricing = () => {
   const [competitorPrices, setCompetitorPrices] = useState<"increased" | "decreased" | "mixed" | "unchanged" | null>(null);
   const [marketDemand, setMarketDemand] = useState<"growing" | "shrinking" | "stable" | null>(null);
   const [features, setFeatures] = useState<Feature[]>(defaultFeatures);
-  const [valueProposition, setValueProposition] = useState("");
   const [uniqueness, setUniqueness] = useState<"low" | "medium" | "high">("medium");
   const [valuePerception, setValuePerception] = useState(50);
 
@@ -131,8 +131,6 @@ const Repricing = () => {
                   <DifferentiationForm
                     selectedFeatures={features}
                     onFeatureChange={setFeatures}
-                    valueProposition={valueProposition}
-                    onValuePropositionChange={setValueProposition}
                     uniqueness={uniqueness}
                     onUniquenessChange={setUniqueness}
                     valuePerception={valuePerception}
