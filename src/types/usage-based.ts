@@ -9,4 +9,5 @@ export type CurrentPricingForm = {
   averageDiscount?: string;
   annualChurnRate?: string;
   annualPurchases?: string;
+  usagePattern?: "daily" | "weekly" | "monthly" | "occasional";
 };

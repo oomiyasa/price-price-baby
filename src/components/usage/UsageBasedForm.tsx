@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -62,7 +63,7 @@ export const UsageBasedForm = () => {
                   </FormControl>
                   <SelectContent>
                     <SelectItem value="subscription">Subscription</SelectItem>
-                    <SelectItem value="perpetual">Perpetual License</SelectItem>
+                    <SelectItem value="perpetual">Perpetual License/One Time Purchase</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -92,10 +93,62 @@ export const UsageBasedForm = () => {
     </div>
   );
 
+  const renderStep2 = () => (
+    <div className="space-y-6">
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium text-[#4A4A3F]">
+          Expected Usage Pattern
+        </h3>
+        <FormField
+          control={form.control}
+          name="usagePattern"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>How frequently will customers use your product?</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select usage pattern" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="daily">Multiple times per day</SelectItem>
+                  <SelectItem value="weekly">Few times per week</SelectItem>
+                  <SelectItem value="monthly">Few times per month</SelectItem>
+                  <SelectItem value="occasional">Occasional/Sporadic use</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+
+      <div className="flex justify-between">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => setStep(1)}
+          className="border-[#8B8B73] text-[#8B8B73] hover:bg-[#8B8B73] hover:text-white"
+        >
+          Previous Step
+        </Button>
+        <Button
+          type="button"
+          onClick={form.handleSubmit(onSubmit)}
+          className="bg-[#8B8B73] text-white hover:bg-[#6B6B5F]"
+        >
+          Next Step
+        </Button>
+      </div>
+    </div>
+  );
+
   return (
     <Form {...form}>
       <form className="space-y-6">
         {step === 1 && renderStep1()}
+        {step === 2 && renderStep2()}
         {/* Additional steps will be added here */}
       </form>
     </Form>
