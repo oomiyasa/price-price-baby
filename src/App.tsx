@@ -13,6 +13,7 @@ import BundlePricing from "@/pages/BundlePricing";
 import BundleConfiguration from "@/pages/BundleConfiguration";
 import UsageBasedPricing from "@/pages/UsageBasedPricing";
 import UsagePricingImpact from "@/pages/UsagePricingImpact";
+import MarketSizing from "@/pages/MarketSizing";
 import MainNav from "@/components/MainNav";
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
               <Route path="/bundle-configuration" element={<BundleConfiguration />} />
               <Route path="/usage-based" element={<UsageBasedPricing />} />
               <Route path="/usage-pricing-impact" element={<UsagePricingImpact />} />
+              <Route path="/market-size" element={<MarketSizing />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
