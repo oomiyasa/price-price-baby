@@ -7,7 +7,6 @@ import { ElasticityData } from "../types/elasticity";
 import { NumericInput } from "@/components/revenue/components/form/NumericInput";
 import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
-import { RotateCcw } from "lucide-react";
 
 interface ElasticityFormProps {
   onCalculate: (data: ElasticityData) => void;
@@ -31,16 +30,6 @@ export function ElasticityForm({ onCalculate }: ElasticityFormProps) {
     }
     onCalculate(data);
     toast.success("Elasticity calculated successfully");
-  };
-
-  const handleReset = () => {
-    form.reset({
-      currentPrice: undefined,
-      currentDemand: undefined,
-      newPrice: undefined,
-      newDemand: undefined,
-    });
-    toast.info("Form has been reset");
   };
 
   return (
@@ -79,20 +68,9 @@ export function ElasticityForm({ onCalculate }: ElasticityFormProps) {
               tooltip="Expected number of units sold at the new price"
               placeholder="Enter expected demand"
             />
-            <div className="flex gap-4">
-              <Button type="submit" className="flex-1">
-                Calculate Elasticity
-              </Button>
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={handleReset}
-                className="border-[#8B8B73] text-[#4A4A3F] hover:bg-gray-50"
-              >
-                <RotateCcw className="h-4 w-4 mr-2" />
-                Reset
-              </Button>
-            </div>
+            <Button type="submit" className="w-full">
+              Calculate Elasticity
+            </Button>
           </form>
         </Form>
       </CardContent>
