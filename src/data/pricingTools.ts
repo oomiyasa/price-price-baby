@@ -14,6 +14,7 @@ import {
   Calculator,
   Box,
   Percent,
+  ArrowLeftRight
 } from "lucide-react";
 import { LucideIcon } from "lucide-react";
 
@@ -97,11 +98,11 @@ export const pricingTools: PricingTool[] = [
     icon: Tags
   },
   {
-    id: "value-based-pricing",
-    title: "Value-Based Pricing",
-    description: "Develop pricing based on customer value",
-    route: "/value-based-pricing",
-    icon: BarChart3
+    id: "competitive",
+    title: "Competitive Pricing Analysis",
+    description: "Compare your pricing against competitors",
+    route: "/competitive-pricing",
+    icon: ArrowLeftRight
   },
   {
     id: "new-offer",
