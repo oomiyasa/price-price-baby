@@ -28,27 +28,61 @@ export const calculateBurnMultiple = (data: BurnMultipleData): BurnMultipleResul
   let efficiency: "Excellent" | "Good" | "Poor";
   let recommendation: string;
 
+  // First, assess the burn multiple
   if (burnMultiple <= 1) {
     efficiency = "Excellent";
-    recommendation = `Your burn efficiency is excellent. With ${runwayMonths} months of runway, ${
-      runwayMonths > 18 
-        ? "you have a healthy cash buffer to execute your growth strategy." 
-        : "consider raising additional capital to extend your runway."
-    }`;
   } else if (burnMultiple <= 2) {
     efficiency = "Good";
-    recommendation = `Your burn rate is healthy. With ${runwayMonths} months of runway, ${
-      runwayMonths > 12 
-        ? "focus on optimizing spending while maintaining growth." 
-        : "prioritize extending runway through cost optimization or fundraising."
-    }`;
   } else {
     efficiency = "Poor";
-    recommendation = `Your burn rate is high relative to growth. With ${runwayMonths} months of runway, ${
-      runwayMonths > 6 
-        ? "urgent focus needed on improving operational efficiency." 
-        : "immediate action required to reduce burn rate or secure additional funding."
-    }`;
+  }
+
+  // Then create a recommendation that considers both burn multiple and runway
+  if (runwayMonths > 24) {
+    // Very healthy runway
+    if (efficiency === "Excellent") {
+      recommendation = `Outstanding capital efficiency with ${runwayMonths} months of runway. Well positioned for long-term sustainable growth.`;
+    } else if (efficiency === "Good") {
+      recommendation = `Good burn efficiency and a very healthy ${runwayMonths} month runway. Consider optimizing spend while maintaining growth trajectory.`;
+    } else {
+      recommendation = `While burn efficiency could be improved, your ${runwayMonths} month runway provides ample time to optimize operations without immediate pressure.`;
+    }
+  } else if (runwayMonths > 18) {
+    // Healthy runway
+    if (efficiency === "Excellent") {
+      recommendation = `Strong capital efficiency and a healthy ${runwayMonths} month runway. Well positioned for continued growth.`;
+    } else if (efficiency === "Good") {
+      recommendation = `Solid burn efficiency with ${runwayMonths} months of runway. Focus on maintaining or improving efficiency metrics.`;
+    } else {
+      recommendation = `With ${runwayMonths} months of runway, you have time to improve burn efficiency through operational optimizations.`;
+    }
+  } else if (runwayMonths > 12) {
+    // Moderate runway
+    if (efficiency === "Excellent") {
+      recommendation = `Good capital efficiency. With ${runwayMonths} months runway, consider future fundraising plans while maintaining growth.`;
+    } else if (efficiency === "Good") {
+      recommendation = `Reasonable efficiency metrics. With ${runwayMonths} months runway, focus on optimization while planning next funding round.`;
+    } else {
+      recommendation = `With ${runwayMonths} months runway, prioritize improving burn efficiency and begin preparing for your next funding round.`;
+    }
+  } else if (runwayMonths > 6) {
+    // Limited runway
+    if (efficiency === "Excellent") {
+      recommendation = `Despite strong efficiency, ${runwayMonths} month runway suggests initiating fundraising discussions soon.`;
+    } else if (efficiency === "Good") {
+      recommendation = `With ${runwayMonths} months runway, focus on maintaining efficiency while actively pursuing additional funding.`;
+    } else {
+      recommendation = `${runwayMonths} month runway requires attention. Focus on improving burn efficiency while preparing for fundraising.`;
+    }
+  } else {
+    // Critical runway
+    if (efficiency === "Excellent") {
+      recommendation = `Despite excellent efficiency, ${runwayMonths} month runway requires immediate fundraising attention.`;
+    } else if (efficiency === "Good") {
+      recommendation = `${runwayMonths} month runway requires urgent fundraising focus while maintaining current efficiency.`;
+    } else {
+      recommendation = `Critical: ${runwayMonths} month runway requires immediate focus on both fundraising and burn rate reduction.`;
+    }
   }
 
   return {
