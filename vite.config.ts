@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
-  base: "./", // Add this line for GitHub Pages compatibility
+  base: "/price-price-baby/", // Update base URL to match your GitHub Pages repository name
   plugins: [
     react(),
     mode === 'development' &&
