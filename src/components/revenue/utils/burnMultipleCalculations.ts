@@ -38,50 +38,59 @@ export const calculateBurnMultiple = (data: BurnMultipleData): BurnMultipleResul
   }
 
   // Then create a recommendation that considers both burn multiple and runway
-  if (runwayMonths > 24) {
-    // Very healthy runway
+  if (runwayMonths > 36) {
+    // Exceptional runway (3+ years)
     if (efficiency === "Excellent") {
-      recommendation = `Outstanding capital efficiency with ${runwayMonths} months of runway. Well positioned for long-term sustainable growth.`;
+      recommendation = `Outstanding capital efficiency with ${runwayMonths} months of runway. Exceptionally well positioned for long-term growth and strategic investments.`;
     } else if (efficiency === "Good") {
-      recommendation = `Good burn efficiency and a very healthy ${runwayMonths} month runway. Consider optimizing spend while maintaining growth trajectory.`;
+      recommendation = `Good burn efficiency with an exceptional ${runwayMonths} month runway. Strong position to optimize growth strategies at your own pace.`;
     } else {
-      recommendation = `While burn efficiency could be improved, your ${runwayMonths} month runway provides ample time to optimize operations without immediate pressure.`;
+      recommendation = `Your ${runwayMonths} month runway provides a very comfortable cushion. Take advantage of this strong cash position to gradually optimize burn efficiency.`;
+    }
+  } else if (runwayMonths > 24) {
+    // Very healthy runway (2+ years)
+    if (efficiency === "Excellent") {
+      recommendation = `Strong capital efficiency with a healthy ${runwayMonths} month runway. Well positioned for sustainable long-term growth.`;
+    } else if (efficiency === "Good") {
+      recommendation = `Good burn efficiency and a healthy ${runwayMonths} month runway. Comfortable position to fine-tune growth strategies.`;
+    } else {
+      recommendation = `With ${runwayMonths} months of runway, you have ample time to improve burn efficiency while maintaining current operations.`;
     }
   } else if (runwayMonths > 18) {
-    // Healthy runway
+    // Solid runway (1.5+ years)
     if (efficiency === "Excellent") {
-      recommendation = `Strong capital efficiency and a healthy ${runwayMonths} month runway. Well positioned for continued growth.`;
+      recommendation = `Strong capital efficiency and a solid ${runwayMonths} month runway. Good position for executing growth plans.`;
     } else if (efficiency === "Good") {
-      recommendation = `Solid burn efficiency with ${runwayMonths} months of runway. Focus on maintaining or improving efficiency metrics.`;
+      recommendation = `Solid burn efficiency with ${runwayMonths} months of runway. Consider gradual optimizations to extend runway further.`;
     } else {
-      recommendation = `With ${runwayMonths} months of runway, you have time to improve burn efficiency through operational optimizations.`;
+      recommendation = `Your ${runwayMonths} month runway provides time to implement operational improvements. Focus on enhancing burn efficiency.`;
     }
   } else if (runwayMonths > 12) {
-    // Moderate runway
+    // Standard runway (1+ year)
     if (efficiency === "Excellent") {
-      recommendation = `Good capital efficiency. With ${runwayMonths} months runway, consider future fundraising plans while maintaining growth.`;
+      recommendation = `Good capital efficiency. With ${runwayMonths} months runway, start planning future fundraising while focusing on growth.`;
     } else if (efficiency === "Good") {
-      recommendation = `Reasonable efficiency metrics. With ${runwayMonths} months runway, focus on optimization while planning next funding round.`;
+      recommendation = `Decent metrics with ${runwayMonths} months runway. Begin considering next funding round while optimizing operations.`;
     } else {
-      recommendation = `With ${runwayMonths} months runway, prioritize improving burn efficiency and begin preparing for your next funding round.`;
+      recommendation = `With ${runwayMonths} months runway, focus on improving burn efficiency while preparing for your next funding round.`;
     }
   } else if (runwayMonths > 6) {
-    // Limited runway
+    // Getting tight (6-12 months)
     if (efficiency === "Excellent") {
-      recommendation = `Despite strong efficiency, ${runwayMonths} month runway suggests initiating fundraising discussions soon.`;
+      recommendation = `Strong efficiency metrics, but ${runwayMonths} month runway suggests starting fundraising preparations soon.`;
     } else if (efficiency === "Good") {
-      recommendation = `With ${runwayMonths} months runway, focus on maintaining efficiency while actively pursuing additional funding.`;
+      recommendation = `With ${runwayMonths} months runway, begin fundraising preparations while maintaining current efficiency.`;
     } else {
-      recommendation = `${runwayMonths} month runway requires attention. Focus on improving burn efficiency while preparing for fundraising.`;
+      recommendation = `${runwayMonths} month runway indicates need for attention. Consider both fundraising preparation and efficiency improvements.`;
     }
   } else {
-    // Critical runway
+    // Critical runway (<6 months)
     if (efficiency === "Excellent") {
       recommendation = `Despite excellent efficiency, ${runwayMonths} month runway requires immediate fundraising attention.`;
     } else if (efficiency === "Good") {
-      recommendation = `${runwayMonths} month runway requires urgent fundraising focus while maintaining current efficiency.`;
+      recommendation = `${runwayMonths} month runway indicates urgent need to secure additional funding while maintaining operations.`;
     } else {
-      recommendation = `Critical: ${runwayMonths} month runway requires immediate focus on both fundraising and burn rate reduction.`;
+      recommendation = `Critical: ${runwayMonths} month runway requires immediate fundraising focus and burn rate optimization.`;
     }
   }
 
