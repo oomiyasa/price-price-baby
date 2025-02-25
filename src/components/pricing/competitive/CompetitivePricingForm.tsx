@@ -67,6 +67,19 @@ export function CompetitivePricingForm({ onAnalysisComplete }: CompetitivePricin
     name: "competitors",
   });
 
+  const handleAddCompetitor = () => {
+    append({
+      name: "",
+      pricePerUnit: undefined,
+      metrics: {
+        productQuality: 0 as RelativeScore,
+        serviceQuality: 0 as RelativeScore,
+        brandEquity: 0 as RelativeScore,
+        customerSatisfaction: 0 as RelativeScore,
+      },
+    });
+  };
+
   function onSubmit(data: CompetitivePricingFormData) {
     const analysis: CompetitiveAnalysis = {
       selfAssessment: {
@@ -104,32 +117,51 @@ export function CompetitivePricingForm({ onAnalysisComplete }: CompetitivePricin
                   type="button"
                   variant="outline"
                   size="sm"
-                  onClick={() =>
-                    append({
-                      name: "",
-                      pricePerUnit: undefined,
-                      metrics: {
-                        productQuality: 0 as RelativeScore,
-                        serviceQuality: 0 as RelativeScore,
-                        brandEquity: 0 as RelativeScore,
-                        customerSatisfaction: 0 as RelativeScore,
-                      },
-                    })
-                  }
+                  onClick={handleAddCompetitor}
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Add Competitor
                 </Button>
               </div>
 
-              {fields.map((field, index) => (
-                <CompetitorSection
-                  key={field.id}
-                  control={form.control}
-                  index={index}
-                  onRemove={() => remove(index)}
-                />
-              ))}
+              <div className="space-y-6">
+                {fields.map((field, index) => (
+                  <div key={field.id} className="space-y-4">
+                    <CompetitorSection
+                      control={form.control}
+                      index={index}
+                      onRemove={() => remove(index)}
+                    />
+                    {index === fields.length - 1 && (
+                      <div className="flex justify-end">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={handleAddCompetitor}
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Another Competitor
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {fields.length === 0 && (
+                <div className="text-center p-8 border-2 border-dashed rounded-lg">
+                  <p className="text-muted-foreground mb-4">No competitors added yet</p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleAddCompetitor}
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Your First Competitor
+                  </Button>
+                </div>
+              )}
             </div>
 
             <Button type="submit" className="w-full">
