@@ -16,7 +16,7 @@ export default function DiscountStrategy() {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-6">
+    <div className="container mx-auto py-6 space-y-6 mt-12">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <DiscountForm onCalculate={handleCalculate} />
         {results && discountPercentage && (
