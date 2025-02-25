@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { ElasticityData } from "../types/elasticity";
 import { NumericInput } from "@/components/revenue/components/form/NumericInput";
 import { Form } from "@/components/ui/form";
+import { toast } from "sonner";
+import { RotateCcw } from "lucide-react";
 
 interface ElasticityFormProps {
   onCalculate: (data: ElasticityData) => void;
@@ -21,6 +23,21 @@ export function ElasticityForm({ onCalculate }: ElasticityFormProps) {
     },
   });
 
+  const handleSubmit = (data: ElasticityData) => {
+    // Validate that all numbers are positive
+    if (Object.values(data).some(value => value <= 0)) {
+      toast.error("All values must be greater than zero");
+      return;
+    }
+    onCalculate(data);
+    toast.success("Elasticity calculated successfully");
+  };
+
+  const handleReset = () => {
+    form.reset();
+    toast.info("Form has been reset");
+  };
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -28,7 +45,7 @@ export function ElasticityForm({ onCalculate }: ElasticityFormProps) {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onCalculate)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
             <NumericInput
               control={form.control}
               name="currentPrice"
@@ -57,9 +74,20 @@ export function ElasticityForm({ onCalculate }: ElasticityFormProps) {
               tooltip="Expected number of units sold at the new price"
               placeholder="Enter expected demand"
             />
-            <Button type="submit" className="w-full">
-              Calculate Elasticity
-            </Button>
+            <div className="flex gap-4">
+              <Button type="submit" className="flex-1">
+                Calculate Elasticity
+              </Button>
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={handleReset}
+                className="border-[#8B8B73] text-[#4A4A3F] hover:bg-gray-50"
+              >
+                <RotateCcw className="h-4 w-4 mr-2" />
+                Reset
+              </Button>
+            </div>
           </form>
         </Form>
       </CardContent>
