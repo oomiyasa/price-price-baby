@@ -17,6 +17,7 @@ export function DiscountForm({ onCalculate }: DiscountFormProps) {
     defaultValues: {
       basePrice: undefined,
       discountPercentage: undefined,
+      currentSales: undefined,
       expectedSales: undefined,
       costPerUnit: undefined,
     },
@@ -29,6 +30,10 @@ export function DiscountForm({ onCalculate }: DiscountFormProps) {
     }
     if (Object.values(data).some(value => value <= 0)) {
       toast.error("All values must be greater than zero");
+      return;
+    }
+    if (data.expectedSales <= data.currentSales) {
+      toast.error("Expected sales should be higher than current sales when applying a discount");
       return;
     }
     onCalculate(data);
@@ -59,9 +64,16 @@ export function DiscountForm({ onCalculate }: DiscountFormProps) {
             />
             <NumericInput
               control={form.control}
+              name="currentSales"
+              label="Current Monthly Sales"
+              tooltip="Your current monthly sales volume without discount"
+              placeholder="Enter current sales volume"
+            />
+            <NumericInput
+              control={form.control}
               name="expectedSales"
-              label="Expected Sales Volume"
-              tooltip="Estimated number of units you expect to sell at this price"
+              label="Expected Monthly Sales"
+              tooltip="Estimated monthly sales volume after applying the discount"
               placeholder="Enter expected sales volume"
             />
             <NumericInput
