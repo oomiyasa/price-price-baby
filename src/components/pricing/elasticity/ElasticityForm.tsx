@@ -34,7 +34,12 @@ export function ElasticityForm({ onCalculate }: ElasticityFormProps) {
   };
 
   const handleReset = () => {
-    form.reset();
+    form.reset({
+      currentPrice: undefined,
+      currentDemand: undefined,
+      newPrice: undefined,
+      newDemand: undefined,
+    });
     toast.info("Form has been reset");
   };
 
