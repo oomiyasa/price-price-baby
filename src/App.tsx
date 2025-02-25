@@ -22,6 +22,7 @@ import CACCalculator from "@/pages/CACCalculator";
 import QuickRatioCalculator from "@/pages/QuickRatioCalculator";
 import MagicNumberCalculator from "@/pages/MagicNumberCalculator";
 import BurnMultipleCalculator from "@/pages/BurnMultipleCalculator";
+import PriceElasticity from "@/pages/PriceElasticity";
 import MainNav from "@/components/MainNav";
 
 const App = () => {
@@ -49,6 +50,7 @@ const App = () => {
               <Route path="/quick-ratio" element={<QuickRatioCalculator />} />
               <Route path="/magic-number" element={<MagicNumberCalculator />} />
               <Route path="/burn-multiple" element={<BurnMultipleCalculator />} />
+              <Route path="/price-elasticity" element={<PriceElasticity />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
