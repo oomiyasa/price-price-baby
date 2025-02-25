@@ -52,11 +52,11 @@ export function CompetitivePricingForm({ onAnalysisComplete }: CompetitivePricin
     resolver: zodResolver(formSchema),
     defaultValues: {
       selfAssessment: {
-        productQuality: 4,
-        serviceQuality: 4,
-        brandEquity: 4,
-        customerSatisfaction: 4,
-        pricePerUnit: 0,
+        productQuality: undefined,
+        serviceQuality: undefined,
+        brandEquity: undefined,
+        customerSatisfaction: undefined,
+        pricePerUnit: undefined,
       },
       competitors: [],
     },
@@ -107,7 +107,7 @@ export function CompetitivePricingForm({ onAnalysisComplete }: CompetitivePricin
                   onClick={() =>
                     append({
                       name: "",
-                      pricePerUnit: 0,
+                      pricePerUnit: undefined,
                       metrics: {
                         productQuality: 0 as RelativeScore,
                         serviceQuality: 0 as RelativeScore,

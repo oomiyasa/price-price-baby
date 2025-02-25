@@ -26,21 +26,25 @@ export function SelfAssessmentSection({ control }: SelfAssessmentSectionProps) {
       name: "productQuality",
       label: "Product Quality",
       tooltip: "Rate your product quality on a scale of 1-7",
+      placeholder: "Enter a rating from 1-7",
     },
     {
       name: "serviceQuality",
       label: "Service Quality",
       tooltip: "Rate your service quality on a scale of 1-7",
+      placeholder: "Enter a rating from 1-7",
     },
     {
       name: "brandEquity",
       label: "Brand Equity",
       tooltip: "Rate your brand strength on a scale of 1-7",
+      placeholder: "Enter a rating from 1-7",
     },
     {
       name: "customerSatisfaction",
       label: "Customer Satisfaction",
       tooltip: "Rate your customer satisfaction on a scale of 1-7",
+      placeholder: "Enter a rating from 1-7",
     },
   ];
 
@@ -71,8 +75,10 @@ export function SelfAssessmentSection({ control }: SelfAssessmentSectionProps) {
                   type="number"
                   min={1}
                   max={7}
+                  placeholder={metric.placeholder}
                   {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  value={field.value || ""}
+                  onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
                 />
               </FormControl>
               <FormMessage />
@@ -104,7 +110,8 @@ export function SelfAssessmentSection({ control }: SelfAssessmentSectionProps) {
                 step={0.01}
                 placeholder="Enter your price per unit"
                 {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
+                value={field.value || ""}
+                onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
               />
             </FormControl>
             <FormMessage />
