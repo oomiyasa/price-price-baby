@@ -144,6 +144,7 @@ export interface BurnMultipleData {
   currentQuarterRevenue: number;
   previousQuarterRevenue: number;
   currentQuarterBurn: number;
+  cashOnHand: number;
   timePeriod: "quarterly" | "annually";
 }
 
@@ -153,4 +154,6 @@ export interface BurnMultipleResult {
   recommendation: string;
   revenueGrowth: number;
   quarterlyBurn: number;
+  runwayMonths: number;
+  cashOnHand: number;
 }

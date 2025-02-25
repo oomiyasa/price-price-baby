@@ -18,6 +18,7 @@ export function BurnMultipleForm({ onSubmit }: BurnMultipleFormProps) {
       currentQuarterRevenue: undefined,
       previousQuarterRevenue: undefined,
       currentQuarterBurn: undefined,
+      cashOnHand: undefined,
       timePeriod: "quarterly",
     },
   });
@@ -50,6 +51,13 @@ export function BurnMultipleForm({ onSubmit }: BurnMultipleFormProps) {
                 label="Cash Burn"
                 tooltip="Net cash consumed this quarter (negative cash flow)"
                 placeholder="Enter cash burn amount"
+              />
+              <NumericInput
+                control={control}
+                name="cashOnHand"
+                label="Cash on Hand"
+                tooltip="Current available cash reserves"
+                placeholder="Enter current cash reserves"
               />
               <SelectField
                 control={control}

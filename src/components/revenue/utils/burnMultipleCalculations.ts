@@ -6,6 +6,7 @@ export const calculateBurnMultiple = (data: BurnMultipleData): BurnMultipleResul
     currentQuarterRevenue,
     previousQuarterRevenue,
     currentQuarterBurn,
+    cashOnHand,
     timePeriod,
   } = data;
 
@@ -19,19 +20,35 @@ export const calculateBurnMultiple = (data: BurnMultipleData): BurnMultipleResul
   
   const burnMultiple = Math.abs(annualizedBurn / (currentQuarterRevenue - previousQuarterRevenue));
 
+  // Calculate runway in months
+  const monthlyBurn = currentQuarterBurn / (timePeriod === "annually" ? 12 : 3);
+  const runwayMonths = monthlyBurn > 0 ? Math.floor(cashOnHand / monthlyBurn) : 0;
+
   // Determine efficiency rating
   let efficiency: "Excellent" | "Good" | "Poor";
   let recommendation: string;
 
   if (burnMultiple <= 1) {
     efficiency = "Excellent";
-    recommendation = "Your burn efficiency is excellent. Consider maintaining current strategies while exploring opportunities for growth acceleration.";
+    recommendation = `Your burn efficiency is excellent. With ${runwayMonths} months of runway, ${
+      runwayMonths > 18 
+        ? "you have a healthy cash buffer to execute your growth strategy." 
+        : "consider raising additional capital to extend your runway."
+    }`;
   } else if (burnMultiple <= 2) {
     efficiency = "Good";
-    recommendation = "Your burn rate is healthy. Look for opportunities to optimize spending without sacrificing growth.";
+    recommendation = `Your burn rate is healthy. With ${runwayMonths} months of runway, ${
+      runwayMonths > 12 
+        ? "focus on optimizing spending while maintaining growth." 
+        : "prioritize extending runway through cost optimization or fundraising."
+    }`;
   } else {
     efficiency = "Poor";
-    recommendation = "Your burn rate is high relative to growth. Focus on improving operational efficiency and reducing non-essential expenses.";
+    recommendation = `Your burn rate is high relative to growth. With ${runwayMonths} months of runway, ${
+      runwayMonths > 6 
+        ? "urgent focus needed on improving operational efficiency." 
+        : "immediate action required to reduce burn rate or secure additional funding."
+    }`;
   }
 
   return {
@@ -40,5 +57,7 @@ export const calculateBurnMultiple = (data: BurnMultipleData): BurnMultipleResul
     recommendation,
     revenueGrowth,
     quarterlyBurn: currentQuarterBurn,
+    runwayMonths,
+    cashOnHand,
   };
 };

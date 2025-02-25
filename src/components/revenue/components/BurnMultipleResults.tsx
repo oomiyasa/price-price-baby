@@ -14,8 +14,15 @@ interface BurnMultipleResultsProps {
 }
 
 export function BurnMultipleResults({ results }: BurnMultipleResultsProps) {
-  const { burnMultiple, efficiency, revenueGrowth, quarterlyBurn, recommendation } =
-    results;
+  const { 
+    burnMultiple, 
+    efficiency, 
+    revenueGrowth, 
+    quarterlyBurn, 
+    recommendation,
+    runwayMonths,
+    cashOnHand
+  } = results;
 
   const getEfficiencyColor = (efficiency: string) => {
     switch (efficiency) {
@@ -28,6 +35,12 @@ export function BurnMultipleResults({ results }: BurnMultipleResultsProps) {
       default:
         return "text-gray-600";
     }
+  };
+
+  const getRunwayColor = (months: number) => {
+    if (months > 18) return "text-green-600";
+    if (months > 12) return "text-yellow-600";
+    return "text-red-600";
   };
 
   const renderScaleItem = (range: string, label: string, color: string) => (
@@ -97,6 +110,25 @@ export function BurnMultipleResults({ results }: BurnMultipleResultsProps) {
               </h4>
               <p className="text-2xl font-semibold text-[#8B8B73]">
                 ${quarterlyBurn.toLocaleString()}
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="text-center">
+              <h4 className="text-lg font-medium text-[#4A4A3F] mb-2">
+                Cash on Hand
+              </h4>
+              <p className="text-2xl font-semibold text-[#8B8B73]">
+                ${cashOnHand.toLocaleString()}
+              </p>
+            </div>
+            <div className="text-center">
+              <h4 className="text-lg font-medium text-[#4A4A3F] mb-2">
+                Runway
+              </h4>
+              <p className={`text-2xl font-semibold ${getRunwayColor(runwayMonths)}`}>
+                {runwayMonths} months
               </p>
             </div>
           </div>
