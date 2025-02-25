@@ -130,7 +130,7 @@ export interface MagicNumberData {
   currentQuarterRevenue: number;
   previousQuarterRevenue: number;
   salesAndMarketingSpend: number;
-  timePeriod: "quarterly" | "annually";
+  timePeriod: "monthly" | "quarterly" | "annually";
 }
 
 export interface MagicNumberResult {

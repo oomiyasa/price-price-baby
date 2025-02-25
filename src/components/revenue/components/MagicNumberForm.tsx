@@ -22,7 +22,21 @@ export function MagicNumberForm({ onSubmit }: MagicNumberFormProps) {
     },
   });
 
-  const { control } = form;
+  const { control, watch } = form;
+  const timePeriod = watch("timePeriod");
+
+  const getPeriodLabel = () => {
+    switch (timePeriod) {
+      case "monthly":
+        return "Month";
+      case "quarterly":
+        return "Quarter";
+      case "annually":
+        return "Year";
+      default:
+        return "Period";
+    }
+  };
 
   return (
     <Card className="bg-[#FAFAFA]">
@@ -30,36 +44,38 @@ export function MagicNumberForm({ onSubmit }: MagicNumberFormProps) {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
-              <NumericInput
-                control={control}
-                name="currentQuarterRevenue"
-                label="Current Quarter Revenue"
-                tooltip="Your current quarter's revenue"
-                placeholder="Enter current quarter revenue"
-              />
-              <NumericInput
-                control={control}
-                name="previousQuarterRevenue"
-                label="Previous Quarter Revenue"
-                tooltip="Your previous quarter's revenue"
-                placeholder="Enter previous quarter revenue"
-              />
-              <NumericInput
-                control={control}
-                name="salesAndMarketingSpend"
-                label="Sales & Marketing Spend"
-                tooltip="Your total sales and marketing spend for the quarter"
-                placeholder="Enter sales and marketing spend"
-              />
               <SelectField
                 control={control}
                 name="timePeriod"
                 label="Time Period"
-                tooltip="Select the time period for your data"
+                tooltip="Select the time period for your revenue data"
                 options={[
+                  { value: "monthly", label: "Monthly" },
                   { value: "quarterly", label: "Quarterly" },
                   { value: "annually", label: "Annually" },
                 ]}
+              />
+              
+              <NumericInput
+                control={control}
+                name="currentQuarterRevenue"
+                label={`Current ${getPeriodLabel()} Revenue`}
+                tooltip={`Your current ${getPeriodLabel().toLowerCase()}'s revenue`}
+                placeholder={`Enter current ${getPeriodLabel().toLowerCase()} revenue`}
+              />
+              <NumericInput
+                control={control}
+                name="previousQuarterRevenue"
+                label={`Previous ${getPeriodLabel()} Revenue`}
+                tooltip={`Your previous ${getPeriodLabel().toLowerCase()}'s revenue`}
+                placeholder={`Enter previous ${getPeriodLabel().toLowerCase()} revenue`}
+              />
+              <NumericInput
+                control={control}
+                name="salesAndMarketingSpend"
+                label={`Sales & Marketing Spend (${getPeriodLabel()})`}
+                tooltip={`Your total sales and marketing spend for the ${getPeriodLabel().toLowerCase()}`}
+                placeholder={`Enter ${getPeriodLabel().toLowerCase()} sales and marketing spend`}
               />
             </div>
 
