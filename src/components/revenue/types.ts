@@ -125,3 +125,17 @@ export interface QuickRatioResult {
   growthEfficiency: "Poor" | "Good" | "Excellent";
   netMRR: number;
 }
+
+export interface MagicNumberData {
+  currentQuarterRevenue: number;
+  previousQuarterRevenue: number;
+  salesAndMarketingSpend: number;
+  timePeriod: "quarterly" | "annually";
+}
+
+export interface MagicNumberResult {
+  magicNumber: number;
+  efficiency: "Poor" | "Good" | "Excellent";
+  revenueGrowth: number;
+  recommendation: string;
+}
