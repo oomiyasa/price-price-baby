@@ -5,20 +5,28 @@ import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { CompetitiveAnalysis, RELATIVE_SCORE_OPTIONS } from "../types/competitive";
+import { CompetitiveAnalysis, RELATIVE_SCORE_OPTIONS, RelativeScore } from "../types/competitive";
 import { SelfAssessmentSection } from "./SelfAssessmentSection";
 import { CompetitorSection } from "./CompetitorSection";
 import { Plus } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
+const relativeScoreSchema = z.union([
+  z.literal(-2),
+  z.literal(-1),
+  z.literal(0),
+  z.literal(1),
+  z.literal(2),
+]);
+
 const competitorSchema = z.object({
   name: z.string().min(1, "Competitor name is required"),
   pricePerUnit: z.number().positive("Price must be positive"),
   metrics: z.object({
-    productQuality: z.number().min(-2).max(2),
-    serviceQuality: z.number().min(-2).max(2),
-    brandEquity: z.number().min(-2).max(2),
-    customerSatisfaction: z.number().min(-2).max(2),
+    productQuality: relativeScoreSchema,
+    serviceQuality: relativeScoreSchema,
+    brandEquity: relativeScoreSchema,
+    customerSatisfaction: relativeScoreSchema,
   }),
 });
 
@@ -60,7 +68,6 @@ export function CompetitivePricingForm({ onAnalysisComplete }: CompetitivePricin
   });
 
   function onSubmit(data: CompetitivePricingFormData) {
-    // Since we've validated the data with Zod, we can safely assert it matches our CompetitiveAnalysis type
     const analysis: CompetitiveAnalysis = {
       selfAssessment: {
         productQuality: data.selfAssessment.productQuality,
@@ -73,10 +80,10 @@ export function CompetitivePricingForm({ onAnalysisComplete }: CompetitivePricin
         name: competitor.name,
         pricePerUnit: competitor.pricePerUnit,
         metrics: {
-          productQuality: competitor.metrics.productQuality,
-          serviceQuality: competitor.metrics.serviceQuality,
-          brandEquity: competitor.metrics.brandEquity,
-          customerSatisfaction: competitor.metrics.customerSatisfaction,
+          productQuality: competitor.metrics.productQuality as RelativeScore,
+          serviceQuality: competitor.metrics.serviceQuality as RelativeScore,
+          brandEquity: competitor.metrics.brandEquity as RelativeScore,
+          customerSatisfaction: competitor.metrics.customerSatisfaction as RelativeScore,
         },
       })),
     };
@@ -102,10 +109,10 @@ export function CompetitivePricingForm({ onAnalysisComplete }: CompetitivePricin
                       name: "",
                       pricePerUnit: 0,
                       metrics: {
-                        productQuality: 0,
-                        serviceQuality: 0,
-                        brandEquity: 0,
-                        customerSatisfaction: 0,
+                        productQuality: 0 as RelativeScore,
+                        serviceQuality: 0 as RelativeScore,
+                        brandEquity: 0 as RelativeScore,
+                        customerSatisfaction: 0 as RelativeScore,
                       },
                     })
                   }
