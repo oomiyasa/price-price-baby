@@ -28,6 +28,8 @@ import CompetitivePricing from "@/pages/CompetitivePricing";
 import MainNav from "@/components/MainNav";
 
 const App = () => {
+  console.log('App rendering, checking routes...'); // Debug log
+
   return (
     <ToastProvider>
       <TooltipProvider>

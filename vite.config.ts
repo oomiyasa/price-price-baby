@@ -4,13 +4,17 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
-// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
   },
-  base: "/price-price-baby/", // Update base URL to match your GitHub Pages repository name
+  base: "/price-price-baby/",
+  build: {
+    outDir: 'dist',
+    sourcemap: true,
+    assetsDir: 'assets',
+  },
   plugins: [
     react(),
     mode === 'development' &&
