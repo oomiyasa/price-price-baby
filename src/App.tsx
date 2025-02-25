@@ -21,6 +21,7 @@ import LTVCalculator from "@/pages/LTVCalculator";
 import CACCalculator from "@/pages/CACCalculator";
 import QuickRatioCalculator from "@/pages/QuickRatioCalculator";
 import MagicNumberCalculator from "@/pages/MagicNumberCalculator";
+import BurnMultipleCalculator from "@/pages/BurnMultipleCalculator";
 import MainNav from "@/components/MainNav";
 
 const App = () => {
@@ -47,6 +48,7 @@ const App = () => {
               <Route path="/cac" element={<CACCalculator />} />
               <Route path="/quick-ratio" element={<QuickRatioCalculator />} />
               <Route path="/magic-number" element={<MagicNumberCalculator />} />
+              <Route path="/burn-multiple" element={<BurnMultipleCalculator />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
