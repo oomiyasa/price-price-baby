@@ -60,7 +60,27 @@ export function CompetitivePricingForm({ onAnalysisComplete }: CompetitivePricin
   });
 
   function onSubmit(data: CompetitivePricingFormData) {
-    onAnalysisComplete(data);
+    // Since we've validated the data with Zod, we can safely assert it matches our CompetitiveAnalysis type
+    const analysis: CompetitiveAnalysis = {
+      selfAssessment: {
+        productQuality: data.selfAssessment.productQuality,
+        serviceQuality: data.selfAssessment.serviceQuality,
+        brandEquity: data.selfAssessment.brandEquity,
+        customerSatisfaction: data.selfAssessment.customerSatisfaction,
+        pricePerUnit: data.selfAssessment.pricePerUnit,
+      },
+      competitors: data.competitors.map(competitor => ({
+        name: competitor.name,
+        pricePerUnit: competitor.pricePerUnit,
+        metrics: {
+          productQuality: competitor.metrics.productQuality,
+          serviceQuality: competitor.metrics.serviceQuality,
+          brandEquity: competitor.metrics.brandEquity,
+          customerSatisfaction: competitor.metrics.customerSatisfaction,
+        },
+      })),
+    };
+    onAnalysisComplete(analysis);
   }
 
   return (
