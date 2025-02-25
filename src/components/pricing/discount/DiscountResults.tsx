@@ -52,11 +52,11 @@ export function DiscountResults({ results, discountPercentage }: DiscountResults
         </div>
         <div className="grid grid-cols-2 gap-4 pt-4 border-t">
           <div className="space-y-1">
-            <p className="text-sm text-muted-foreground">New Monthly Revenue</p>
+            <p className="text-sm text-muted-foreground">New Revenue</p>
             <p className="text-2xl font-semibold">${results.revenue.toFixed(2)}</p>
           </div>
           <div className="space-y-1">
-            <p className="text-sm text-muted-foreground">New Monthly Profit</p>
+            <p className="text-sm text-muted-foreground">New Profit</p>
             <p className="text-2xl font-semibold">${results.profit.toFixed(2)}</p>
           </div>
           <div className="space-y-1 col-span-2">

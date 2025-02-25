@@ -1,10 +1,13 @@
 
+export type TimeSpan = "monthly" | "quarterly" | "annual";
+
 export interface DiscountScenario {
   basePrice: number;
   discountPercentage: number;
   currentSales: number;
   expectedSales: number;
   costPerUnit: number;
+  timespan: TimeSpan;
 }
 
 export interface DiscountResults {

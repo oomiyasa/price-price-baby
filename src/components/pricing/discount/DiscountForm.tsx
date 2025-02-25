@@ -5,12 +5,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { NumericInput } from "@/components/revenue/components/form/NumericInput";
+import { SelectField } from "@/components/revenue/components/form/SelectField";
 import { toast } from "sonner";
-import { DiscountScenario } from "../types/discount";
+import { DiscountScenario, TimeSpan } from "../types/discount";
 
 interface DiscountFormProps {
   onCalculate: (data: DiscountScenario) => void;
 }
+
+const timespanOptions = [
+  { value: "monthly", label: "Monthly" },
+  { value: "quarterly", label: "Quarterly" },
+  { value: "annual", label: "Annual" },
+];
 
 export function DiscountForm({ onCalculate }: DiscountFormProps) {
   const form = useForm<DiscountScenario>({
@@ -20,6 +27,7 @@ export function DiscountForm({ onCalculate }: DiscountFormProps) {
       currentSales: undefined,
       expectedSales: undefined,
       costPerUnit: undefined,
+      timespan: "monthly",
     },
   });
 
@@ -48,6 +56,13 @@ export function DiscountForm({ onCalculate }: DiscountFormProps) {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+            <SelectField
+              control={form.control}
+              name="timespan"
+              label="Time Period"
+              tooltip="Select the time period for analysis"
+              options={timespanOptions}
+            />
             <NumericInput
               control={form.control}
               name="basePrice"
@@ -65,15 +80,15 @@ export function DiscountForm({ onCalculate }: DiscountFormProps) {
             <NumericInput
               control={form.control}
               name="currentSales"
-              label="Current Monthly Sales"
-              tooltip="Your current monthly sales volume without discount"
+              label="Current Sales Volume"
+              tooltip={`Your current ${form.watch("timespan")} sales volume without discount`}
               placeholder="Enter current sales volume"
             />
             <NumericInput
               control={form.control}
               name="expectedSales"
-              label="Expected Monthly Sales"
-              tooltip="Estimated monthly sales volume after applying the discount"
+              label="Expected Sales Volume"
+              tooltip={`Estimated ${form.watch("timespan")} sales volume after applying the discount`}
               placeholder="Enter expected sales volume"
             />
             <NumericInput
