@@ -15,9 +15,9 @@ interface MagicNumberFormProps {
 export function MagicNumberForm({ onSubmit }: MagicNumberFormProps) {
   const form = useForm<MagicNumberData>({
     defaultValues: {
-      currentQuarterRevenue: 0,
-      previousQuarterRevenue: 0,
-      salesAndMarketingSpend: 0,
+      currentQuarterRevenue: undefined,
+      previousQuarterRevenue: undefined,
+      salesAndMarketingSpend: undefined,
       timePeriod: "quarterly",
     },
   });

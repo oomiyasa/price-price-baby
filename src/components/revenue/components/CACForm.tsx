@@ -16,10 +16,10 @@ interface CACFormProps {
 export function CACForm({ onSubmit }: CACFormProps) {
   const form = useForm<CACData>({
     defaultValues: {
-      marketingCosts: [{ channel: "", cost: 0 }],
-      salesCosts: [{ category: "", cost: 0 }],
+      marketingCosts: [{ channel: "", cost: undefined }],
+      salesCosts: [{ category: "", cost: undefined }],
       timePeriod: "monthly",
-      newCustomers: 0,
+      newCustomers: undefined,
       avgContractValue: undefined,
     },
   });
@@ -68,7 +68,7 @@ export function CACForm({ onSubmit }: CACFormProps) {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => marketingFields.append({ channel: "", cost: 0 })}
+                  onClick={() => marketingFields.append({ channel: "", cost: undefined })}
                 >
                   <Plus className="mr-2 h-4 w-4" />
                   Add Marketing Cost
@@ -103,7 +103,7 @@ export function CACForm({ onSubmit }: CACFormProps) {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => salesFields.append({ category: "", cost: 0 })}
+                  onClick={() => salesFields.append({ category: "", cost: undefined })}
                 >
                   <Plus className="mr-2 h-4 w-4" />
                   Add Sales Cost

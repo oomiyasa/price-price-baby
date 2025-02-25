@@ -15,10 +15,10 @@ interface QuickRatioFormProps {
 export function QuickRatioForm({ onSubmit }: QuickRatioFormProps) {
   const form = useForm<QuickRatioData>({
     defaultValues: {
-      newMRR: 0,
-      expansionMRR: 0,
-      churnMRR: 0,
-      contractionMRR: 0,
+      newMRR: undefined,
+      expansionMRR: undefined,
+      churnMRR: undefined,
+      contractionMRR: undefined,
       timePeriod: "monthly",
     },
   });
