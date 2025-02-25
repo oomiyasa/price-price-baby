@@ -139,3 +139,18 @@ export interface MagicNumberResult {
   revenueGrowth: number;
   recommendation: string;
 }
+
+export interface BurnMultipleData {
+  currentQuarterRevenue: number;
+  previousQuarterRevenue: number;
+  currentQuarterBurn: number;
+  timePeriod: "quarterly" | "annually";
+}
+
+export interface BurnMultipleResult {
+  burnMultiple: number;
+  efficiency: "Excellent" | "Good" | "Poor";
+  recommendation: string;
+  revenueGrowth: number;
+  quarterlyBurn: number;
+}
