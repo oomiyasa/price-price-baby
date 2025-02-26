@@ -9,11 +9,16 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
-  base: "/price-price-baby/",
+  base: mode === 'production' ? '/price-price-baby/' : '/',
   build: {
     outDir: 'dist',
     sourcemap: true,
     assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
   },
   plugins: [
     react(),
