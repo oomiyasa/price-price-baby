@@ -1,79 +1,64 @@
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
-import React, { useState } from "react";
-import { ChurnData, ChurnResults as ChurnResultsType } from "./types";
-import { ChurnForm } from "./components/ChurnForm";
-import { ChurnResults } from "./components/ChurnResults";
-import { industryBenchmarks, getChurnRating } from "./utils/benchmarkData";
+export function ChurnCalculator() {
+  const [isCalculating, setIsCalculating] = useState(false);
 
-export const ChurnCalculator = () => {
-  const [results, setResults] = useState<ChurnResultsType | null>(null);
-  const [churnType, setChurnType] = useState<"voluntary" | "involuntary" | "both">("both");
-
-  const calculateChurnMetrics = (data: ChurnData): ChurnResultsType => {
-    setChurnType(data.churnType);
-    
-    // Calculate churned customers if not provided
-    const actualChurnedCustomers = data.churnedCustomers ?? 
-      (data.startingCustomers + data.newCustomers - data.endingCustomers);
-
-    const logoChurnRate = (actualChurnedCustomers / data.startingCustomers) * 100;
-    const revenueChurnRate = (data.churnedMRR / data.startingMRR) * 100;
-    const retentionRate = 100 - logoChurnRate;
-    const customerLifetimeMonths = 1 / (logoChurnRate / 100);
-    const netCustomerChange = data.endingCustomers - data.startingCustomers;
-    const growthRate = (netCustomerChange / data.startingCustomers) * 100;
-    const netRevenueLoss = data.churnedMRR - (data.expansionMRR || 0);
-
-    const benchmark = industryBenchmarks[data.industry];
-    const benchmarkComparison = getChurnRating(logoChurnRate, benchmark);
-
-    return {
-      logoChurnRate,
-      revenueChurnRate,
-      customerLifetimeMonths,
-      retentionRate,
-      netCustomerChange,
-      growthRate,
-      netRevenueLoss,
-      benchmarkComparison,
-      industryData: benchmark,
-    };
-  };
-
-  const getBenchmarkColor = (rating: "good" | "average" | "risk") => {
-    switch (rating) {
-      case "good":
-        return "text-green-600";
-      case "average":
-        return "text-yellow-600";
-      case "risk":
-        return "text-red-600";
-    }
-  };
-
-  const onSubmit = (data: ChurnData) => {
-    const calculatedResults = calculateChurnMetrics(data);
-    setResults(calculatedResults);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsCalculating(true);
+    // Simulate calculation time
+    await new Promise(resolve => setTimeout(resolve, 500));
+    setIsCalculating(false);
   };
 
   return (
-    <div className="space-y-8 max-w-5xl mx-auto p-6">
-      <h1 className="text-2xl font-semibold text-[#4A4A3F] mb-6">
-        Churn Rate Calculator
-      </h1>
+    <div className="container mx-auto p-4 max-w-4xl">
+      <Card className="bg-white shadow-sm">
+        <CardContent className="p-6">
+          <h2 className="text-2xl font-semibold text-[#4A4A3F] mb-6">
+            Churn Calculator
+          </h2>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label htmlFor="customersLost" className="block text-sm font-medium text-gray-700">
+                Customers Lost This Period
+              </label>
+              <input
+                type="number"
+                id="customersLost"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#8B8B73] focus:ring-[#8B8B73]"
+                placeholder="Enter number of customers lost"
+              />
+            </div>
 
-      <ChurnForm onSubmit={onSubmit} />
-      {results && (
-        <ChurnResults 
-          results={results} 
-          getBenchmarkColor={getBenchmarkColor} 
-          churnType={churnType}
-        />
-      )}
-
-      <footer className="text-center p-4 text-sm text-gray-600 border-t">
-        Price Price Baby | Oomiyasa LLC
-      </footer>
+            <div className="mb-4">
+              <label htmlFor="totalCustomersStart" className="block text-sm font-medium text-gray-700">
+                Total Customers at Start of Period
+              </label>
+              <input
+                type="number"
+                id="totalCustomersStart"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#8B8B73] focus:ring-[#8B8B73]"
+                placeholder="Enter total customers at the start"
+              />
+            </div>
+            <div className="mt-6">
+              {isCalculating ? (
+                <LoadingSpinner className="my-4" />
+              ) : (
+                <button
+                  type="submit"
+                  className="w-full bg-[#8B8B73] text-white py-2 px-4 rounded hover:bg-[#6B6B5F] transition-colors"
+                >
+                  Calculate Churn
+                </button>
+              )}
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
-};
+}
